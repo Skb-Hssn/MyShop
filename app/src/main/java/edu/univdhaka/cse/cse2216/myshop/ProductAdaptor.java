@@ -172,7 +172,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
     private void addProduct(Product product)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Quantity ? ");
+        builder.setTitle("Change Price");
 
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -278,5 +278,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         this.productInList = products;
         this.products = products;
         notifyDataSetChanged();
+    }
+
+    public class ProductViewHolderInCart {
     }
 }

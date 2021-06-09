@@ -1,0 +1,57 @@
+package edu.univdhaka.cse.cse2216.myshop;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
+public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInCart.CartViewHolder> {
+    private Context context;
+    private ArrayList<Product> items;
+    TextView nameText,quantityText,totalPriceText;
+    public ProductAdaptorInCart(Context context,ArrayList<Product> items)
+    {
+        this.context = context;
+        this.items = items;
+    }
+
+
+    @NonNull
+    @NotNull
+    @Override
+    public ProductAdaptorInCart.CartViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.product_in_cart,parent,false);
+        return new CartViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull @NotNull ProductAdaptorInCart.CartViewHolder holder, int position) {
+            nameText.setText(items.get(position).getCompanyName()+" "+items.get(position).getName());
+            quantityText.setText(String.valueOf(items.get(position).getAvailableQuantity()));
+            totalPriceText.setText(String.valueOf(items.get(position).getSoldPrice()));
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public class
+    CartViewHolder extends RecyclerView.ViewHolder {
+        public CartViewHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+            nameText = (TextView)itemView.findViewById(R.id.nameInCartDeatail);
+            quantityText = (TextView)itemView.findViewById(R.id.quantityInCartDetail);
+            totalPriceText = (TextView)itemView.findViewById(R.id.priceInCartDeatail);
+        }
+    }
+}

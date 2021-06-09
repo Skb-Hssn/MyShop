@@ -9,19 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShop">
+        <activity android:name=".CartDetailsActivity" android:label="Cart Details" android:parentActivityName=".HistoryActivity"></activity>
         <activity
-            android:name=".AddProductActivity"
-            android:parentActivityName=".ProductActivity" android:label="ADD PRODUCT">
-        </activity>
-        <activity
-            android:name=".ProductActivity"
-            android:label="Products">
+            android:name=".HistoryActivity"
+            android:label="History">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddProductActivity"
+            android:label="ADD PRODUCT"
+            android:parentActivityName=".ProductActivity" />
+        <activity
+            android:name=".ProductActivity"
+            android:label="Products"></activity>
         <activity
             android:name=".Home"
             android:label="HOME" />

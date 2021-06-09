@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private String name,companyName,unit;
     private double availableQuantity,soldPrice;
     private String firebaseProductId;
