@@ -5,10 +5,11 @@
         android:id="@+id/searchProduct"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
-        app:actionViewClass="android.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
     <item
         android:icon="@drawable/add_icon"
+        android:id="@+id/addProductActivityButton"
         android:title="Item"
         app:showAsAction="always" />
 

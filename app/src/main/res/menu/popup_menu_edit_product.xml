@@ -4,12 +4,15 @@
 
     <item
         android:icon="@drawable/add_icon"
+        android:id="@+id/addQuantity"
         android:title="Add Quantity" />
     <item
         android:icon="@drawable/minus_icon"
+        android:id="@+id/reduceQuantity"
         android:title="Reduce Quantity" />
     <item
         android:icon="@drawable/edit_icon"
+        android:id="@+id/changePrice"
         android:title="Change Price"
         app:showAsAction="never" />
 </menu>
