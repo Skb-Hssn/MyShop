@@ -11,7 +11,7 @@
         android:theme="@style/Theme.MyShop">
         <activity
             android:name=".AddProductActivity"
-            android:parentActivityName=".ProductActivity">
+            android:parentActivityName=".ProductActivity" android:label="ADD PRODUCT">
         </activity>
         <activity
             android:name=".ProductActivity"

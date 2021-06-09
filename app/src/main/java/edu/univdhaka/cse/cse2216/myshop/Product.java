@@ -26,6 +26,15 @@ public class Product {
     {
         this.firebaseProductId = firebaseProductId;
     }
+
+    public void setAvailableQuantity(double availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
+
+    public void setSoldPrice(double soldPrice) {
+        this.soldPrice = soldPrice;
+    }
+
     public String getName() {
         return name;
     }

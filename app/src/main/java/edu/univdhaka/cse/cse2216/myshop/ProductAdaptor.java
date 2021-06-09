@@ -1,7 +1,10 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,16 +12,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -73,12 +80,17 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                             {
                                 case R.id.addQuantity:
                                     Log.d("noman","add");
+//                                    updateProduct();
+                                    updateAddedProduct(productInList.get(position));
                                     break;
                                 case R.id.reduceQuantity:
+//                                    updateProduct();
                                     Log.d("noman","reduce");
+                                    updateReducedProduct(productInList.get(position));
                                     break;
                                 case R.id.changePrice:
                                     Log.d("noman","change");
+                                    addProduct(productInList.get(position));
                                     break;
                             }
                             return false;
@@ -89,13 +101,117 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 }
             });
     }
-    private void updateProduct(Product product)
+    private void updateAddedProduct(Product product)
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Quantity ? ");
+        EditText editText = new EditText(context);
+        editText.setHint("Type newly added quantity");
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(editText);
 
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String quantityText;
+                quantityText = editText.getText().toString();
+                if(quantityText.isEmpty())
+                {
+                    Toast.makeText(context,"Give Quantity",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    double quantity = Double.parseDouble(quantityText);
+                    product.setAvailableQuantity(product.getAvailableQuantity()+quantity);
+
+                }
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void updateReducedProduct(Product product)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Quantity ? ");
+        EditText editText = new EditText(context);
+        editText.setHint("Type reduced quantity");
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(editText);
+
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String quantityText;
+                quantityText = editText.getText().toString();
+                if(quantityText.isEmpty())
+                {
+                    Toast.makeText(context,"Give Quantity",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    double quantity = Double.parseDouble(quantityText);
+                    if(quantity > product.getAvailableQuantity())
+                    {
+                        Toast.makeText(context,"Not sufficient Quantity",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        product.setAvailableQuantity(product.getAvailableQuantity()-quantity);
+                    }
+
+
+                }
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
     private void addProduct(Product product)
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Quantity ? ");
 
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        EditText priceBox = new EditText(context);
+        priceBox.setHint("new Price");
+        EditText quantityBox = new EditText(context);
+        quantityBox.setHint("Quantity with this price");
+        quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+        priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+        linearLayout.addView(priceBox);
+        linearLayout.addView(quantityBox);
+        builder.setView(linearLayout);
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String quantityText,priceText;
+                quantityText = quantityBox.getText().toString();
+                priceText = priceBox.getText().toString();
+                if(priceText.isEmpty())
+                {
+                    Toast.makeText(context,"Give price",Toast.LENGTH_SHORT).show();
+
+                }
+                else if(quantityText.isEmpty())
+                {
+                    Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    product.setAvailableQuantity(Double.parseDouble(quantityText));
+                    product.setSoldPrice(Double.parseDouble(priceText));
+                    Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
     @Override
     public int getItemCount() {

@@ -2,6 +2,7 @@ package edu.univdhaka.cse.cse2216.myshop;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ public class ProductActivity extends AppCompatActivity {
         productAdaptor.setList(products);
         productRecyclerView.setAdapter(productAdaptor);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
 
     }

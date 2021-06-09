@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@drawable/add_icon"
         android:id="@+id/addQuantity"
+        android:icon="@drawable/add_icon"
         android:title="Add Quantity" />
     <item
         android:icon="@drawable/minus_icon"
