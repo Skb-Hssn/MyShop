@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import static android.widget.SearchView.*;
@@ -32,13 +35,14 @@ public class ProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         productRecyclerView = (RecyclerView)findViewById(R.id.productList);
         productAdaptor = new ProductAdaptor(this);
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product("sakib","aa","aaa",10,10));
-        products.add(new Product("ab","aa","aaa",10,100));
-        products.add(new Product("noman","aa","aaa",10,100));
-        productAdaptor.setList(products);
+//        ArrayList<Product> products = new ArrayList<>();
+//        products.add(new Product("sakib","aa","aaa",10,10));
+//        products.add(new Product("ab","aa","aaa",10,100));
+//        products.add(new Product("noman","aa","aaa",10,100));
+//        productAdaptor.setList(products);
         productRecyclerView.setAdapter(productAdaptor);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        workingWithFirebase();
 
 
 
@@ -78,9 +82,54 @@ public class ProductActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("noman","restart");
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("noman","start");
+        FirebaseDatabase.getProducts(ProductActivity.this,productAdaptor);
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d("noman","resume");
+        super.onPostResume();
+    }
+
     private void openAddProductActivity()
     {
         Intent intent = new Intent(ProductActivity.this,AddProductActivity.class);
         startActivity(intent);
     }
+    private void workingWithFirebase()
+    {
+        String email = "nsakhawathhossan29@gmail.com";
+        ShopKeeper shopKeeper = new ShopKeeper("Noman","MyShop",email);
+        String password = "noman123";
+//        FirebaseDatabase.signOut();
+//        FirebaseDatabase.signUp(shopKeeper,password,ProductActivity.this);
+//        FirebaseDatabase.signIn(email,password,ProductActivity.this);
+//        Log.d("noman",String.valueOf(FirebaseDatabase.isValidUser()));
+//        FirebaseDatabase.pro(ProductActivity.this);
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product("noman","komolo","a",4,5));
+        products.add(new Product("noman","komolo","a",4,5));
+        products.add(new Product("noman","komolo","a",4,5));
+        products.add(new Product("noman","komolo","a",4,5));
+        products.add(new Product("noman","komolo","a",4,5));
+
+    }
+    public static void updateList(ProductAdaptor productAdaptor,ArrayList<Product> products)
+    {
+        productAdaptor.setList(products);
+    }
+
 }

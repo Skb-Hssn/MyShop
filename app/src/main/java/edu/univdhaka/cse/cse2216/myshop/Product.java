@@ -24,6 +24,15 @@ public class Product implements Serializable {
         this.availableQuantity = availableQuantity;
         this.soldPrice = soldPrice;
     }
+    public Product(String name, String companyName, String unit, double availableQuantity, double soldPrice,String firebaseProductId)
+    {
+        this.name = name;
+        this.companyName = companyName;
+        this.unit = unit;
+        this.availableQuantity = availableQuantity;
+        this.soldPrice = soldPrice;
+        this.firebaseProductId = firebaseProductId;
+    }
     public void setFirebaseProductId(String firebaseProductId)
     {
         this.firebaseProductId = firebaseProductId;

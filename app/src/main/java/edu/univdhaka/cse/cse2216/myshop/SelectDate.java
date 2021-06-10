@@ -3,7 +3,9 @@ package edu.univdhaka.cse.cse2216.myshop;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +17,11 @@ import java.util.Calendar;
 
 public class SelectDate extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private CartAdaptor cartAdaptor;
-    public SelectDate(CartAdaptor cartAdaptor)
+    private TextView dateText;
+    public SelectDate(CartAdaptor cartAdaptor,TextView dateText)
     {
         this.cartAdaptor = cartAdaptor;
+        this.dateText = dateText;
     }
     @NonNull
     @NotNull
@@ -32,6 +36,31 @@ public class SelectDate extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//        filet adaptor
+//        filter adaptor
+        month++;
+        String yearString,monthString,dayString;
+        if(month < 10)
+        {
+            monthString = "0"+String.valueOf(month);
+        }
+        else
+        {
+            monthString = String.valueOf(month);
+        }
+        if(dayOfMonth < 10)
+        {
+            dayString = "0"+String.valueOf(dayOfMonth);
+        }
+        else
+        {
+            dayString = String.valueOf(dayOfMonth);
+        }
+        yearString = String.valueOf(year);
+        String date = yearString+"-"+monthString+"-"+dayString;
+        Log.d("noman",date);
+        Log.d("noman",String.valueOf(month));
+        dateText.setText(date);
+        FirebaseDatabase.getCarts(view.getContext(),cartAdaptor,date);
+
     }
 }

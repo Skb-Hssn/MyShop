@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CartDetailsActivity extends AppCompatActivity {
     private TextView totalText,discountText,paidText;
@@ -29,8 +31,10 @@ public class CartDetailsActivity extends AppCompatActivity {
         discountText.setText(String.valueOf(cart.getDiscount())+" Tk");
         paidText.setText(String.valueOf(cart.getPaidAmount()) +" ");
         cartHistoryRecyclerView = (RecyclerView)findViewById(R.id.cartHistoryRecycelerView);
-        ArrayList<Product> cartItems = cart.getItemList();
-        ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,cartItems);
+        ArrayList<Product> products = cart.getItemList();
+        Log.d("salman", String.valueOf(products.size()));
+
+        ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,products);
         cartHistoryRecyclerView.setAdapter(productAdaptorInCart);
         cartHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

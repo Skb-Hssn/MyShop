@@ -9,34 +9,37 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Cart implements Serializable {
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     double discount,paidAmount;
     int id;
     private ArrayList<Product> itemList;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Cart()
     {
-        date = LocalDate.now();
-        time = LocalTime.now();
-        Log.d("noman",date.toString());
-        Log.d("noman",time.toString());
+        date = LocalDate.now().toString();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
+        time = dateTimeFormatter.format(LocalTime.now());
         itemList = new ArrayList<>();
+        this.id = 3;
 //        set id
     }
-    public Cart(double discount)
+    public Cart(int id,String date,String time,double discount,double paidAmount,ArrayList<Product> itemList)
     {
-        date = LocalDate.now();
-        time = LocalTime.now();
-        Log.d("noman",date.toString());
-        Log.d("noman",time.toString());
-        itemList = new ArrayList<>();
+        this.id = id;
+        this.date = date;
+        this.time = time;
         this.discount = discount;
+        this.paidAmount = paidAmount;
+        this.itemList = itemList;
     }
+
 
     public int getId() {
         return id;
@@ -66,12 +69,15 @@ public class Cart implements Serializable {
         itemList.add(product);
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
+    public void setItemList(ArrayList<Product> itemList) {
+        this.itemList = itemList;
+    }
 }

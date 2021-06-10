@@ -11,14 +11,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class HistoryActivity extends AppCompatActivity {
     private CartAdaptor cartAdaptor;
     private RecyclerView cartRecycelerView;
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    private TextView dateText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,18 +28,13 @@ public class HistoryActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         cartAdaptor = new CartAdaptor(HistoryActivity.this);
-        ArrayList<Cart> carts = new ArrayList<Cart>();
-        carts.add(new Cart());
-        carts.add(new Cart());
-        Cart cart = new Cart(100);
-        cart.addItem(new Product("a","b","aa",10,100));
-        cart.addItem(new Product("c","b","aa",10,100));
-        cart.addItem(new Product("c","b","aa",10,100));
-        carts.add(cart);
-        cartAdaptor.set(carts);
         cartRecycelerView = (RecyclerView)findViewById(R.id.cardRecuycelerView);
         cartRecycelerView.setAdapter(cartAdaptor);
         cartRecycelerView.setLayoutManager(new LinearLayoutManager(this));
+        dateText = (TextView)findViewById(R.id.dateTextViewInHistory);
+        String date = LocalDate.now().toString();
+        dateText.setText(date);
+        FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,date);
     }
 
     @Override
@@ -51,7 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.filter)
         {
-            SelectDate selectDate = new SelectDate(cartAdaptor);
+            SelectDate selectDate = new SelectDate(cartAdaptor,dateText);
             selectDate.show(getSupportFragmentManager(),"Choose Date");
         }
         return super.onOptionsItemSelected(item);

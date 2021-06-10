@@ -81,16 +81,16 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                                 case R.id.addQuantity:
                                     Log.d("noman","add");
 //                                    updateProduct();
-                                    updateAddedProduct(productInList.get(position));
+                                    updateAddedProduct(productInList.get(position),position);
                                     break;
                                 case R.id.reduceQuantity:
 //                                    updateProduct();
                                     Log.d("noman","reduce");
-                                    updateReducedProduct(productInList.get(position));
+                                    updateReducedProduct(productInList.get(position),position);
                                     break;
                                 case R.id.changePrice:
                                     Log.d("noman","change");
-                                    addProduct(productInList.get(position));
+                                    updatePrice(productInList.get(position),position);
                                     break;
                             }
                             return false;
@@ -101,7 +101,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 }
             });
     }
-    private void updateAddedProduct(Product product)
+    private void updateAddedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
@@ -123,6 +123,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 {
                     double quantity = Double.parseDouble(quantityText);
                     product.setAvailableQuantity(product.getAvailableQuantity()+quantity);
+                    FirebaseDatabase.updateProduct(context,product,ProductAdaptor.this,position);
 
                 }
 
@@ -131,7 +132,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void updateReducedProduct(Product product)
+    private void updateReducedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
@@ -159,6 +160,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                     else
                     {
                         product.setAvailableQuantity(product.getAvailableQuantity()-quantity);
+                        FirebaseDatabase.updateProduct(context,product,ProductAdaptor.this,position);
                     }
 
 
@@ -169,7 +171,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void addProduct(Product product)
+    private void updatePrice(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Change Price");
@@ -204,6 +206,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 {
                     product.setAvailableQuantity(Double.parseDouble(quantityText));
                     product.setSoldPrice(Double.parseDouble(priceText));
+                    FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
                     Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
                 }
 
@@ -260,7 +263,11 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         };
     }
 
-
+    public void update(int position,Product product)
+    {
+        productInList.add(position,product);
+        notifyDataSetChanged();
+    }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         public ProductViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {

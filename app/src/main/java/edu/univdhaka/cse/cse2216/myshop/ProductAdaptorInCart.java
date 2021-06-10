@@ -1,6 +1,8 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInCart.CartViewHolder> {
     private Context context;
@@ -33,9 +36,11 @@ public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInC
         return new CartViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProductAdaptorInCart.CartViewHolder holder, int position) {
-            nameText.setText(items.get(position).getCompanyName()+" "+items.get(position).getName());
+            Log.d("noman",items.toString());
+            nameText.setText(items.get(position).getName()+" "+items.get(position).getCompanyName());
             quantityText.setText(String.valueOf(items.get(position).getAvailableQuantity()));
             totalPriceText.setText(String.valueOf(items.get(position).getSoldPrice()));
     }

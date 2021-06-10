@@ -35,6 +35,12 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         this.context = context;
         cartInList = new ArrayList<>();
     }
+    public void setList(ArrayList<Cart> carts)
+    {
+        this.cartInList = carts;
+        this.carts = carts;
+        notifyDataSetChanged();
+    }
     @NonNull
     @NotNull
     @Override
@@ -51,8 +57,8 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         totalText = (TextView)holder.itemView.findViewById(R.id.totalTextView);
         discountText = (TextView)holder.itemView.findViewById(R.id.discountTextView);
         paidText = (TextView)holder.itemView.findViewById(R.id.paidTextView);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-        timeText.setText(dateTimeFormatter.format(cartInList.get(position).getTime()));
+
+        timeText.setText(cartInList.get(position).getTime());
         totalText.setText(String.valueOf(cartInList.get(position).getDiscount()+cartInList.get(position).getPaidAmount()));
         discountText.setText(String.valueOf(cartInList.get(position).getDiscount()));
         paidText.setText(String.valueOf(cartInList.get(position).getPaidAmount()));

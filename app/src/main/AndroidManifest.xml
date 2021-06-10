@@ -18,6 +18,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".AddProductActivity"
@@ -25,7 +26,9 @@
             android:parentActivityName=".ProductActivity" />
         <activity
             android:name=".ProductActivity"
-            android:label="Products"></activity>
+            android:label="Products">
+
+        </activity>
         <activity
             android:name=".Home"
             android:label="HOME" />
