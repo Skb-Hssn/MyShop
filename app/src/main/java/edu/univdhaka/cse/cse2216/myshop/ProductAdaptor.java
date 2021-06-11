@@ -92,6 +92,10 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                                     Log.d("noman","change");
                                     updatePrice(productInList.get(position),position);
                                     break;
+                                case R.id.delete:
+                                    FirebaseDatabase.deleteProduct(context,productInList.get(position));
+                                    productInList.remove(position);
+                                    notifyDataSetChanged();
                             }
                             return false;
                         }
@@ -123,7 +127,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 {
                     double quantity = Double.parseDouble(quantityText);
                     product.setAvailableQuantity(product.getAvailableQuantity()+quantity);
-                    FirebaseDatabase.updateProduct(context,product,ProductAdaptor.this,position);
+                    notifyDataSetChanged();
+                    FirebaseDatabase.updateProduct(context,product);
 
                 }
 
@@ -160,7 +165,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                     else
                     {
                         product.setAvailableQuantity(product.getAvailableQuantity()-quantity);
-                        FirebaseDatabase.updateProduct(context,product,ProductAdaptor.this,position);
+                        notifyDataSetChanged();
+                        FirebaseDatabase.updateProduct(context,product);
                     }
 
 
@@ -171,50 +177,57 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void updatePrice(Product product,int position)
-    {
+    private void updatePrice(Product product,int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Change Price");
+        try {
+            Product newProduct = (Product) product.clone();
+            LinearLayout linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            EditText priceBox = new EditText(context);
+            priceBox.setHint("new Price");
+            EditText quantityBox = new EditText(context);
+            quantityBox.setHint("Quantity with this price");
+            quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+            priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+            linearLayout.addView(priceBox);
+            linearLayout.addView(quantityBox);
+            builder.setView(linearLayout);
+            builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String quantityText,priceText;
+                    quantityText = quantityBox.getText().toString();
+                    priceText = priceBox.getText().toString();
+                    if(priceText.isEmpty())
+                    {
+                        Toast.makeText(context,"Give price",Toast.LENGTH_SHORT).show();
 
-        LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        EditText priceBox = new EditText(context);
-        priceBox.setHint("new Price");
-        EditText quantityBox = new EditText(context);
-        quantityBox.setHint("Quantity with this price");
-        quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-        priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-        linearLayout.addView(priceBox);
-        linearLayout.addView(quantityBox);
-        builder.setView(linearLayout);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String quantityText,priceText;
-                quantityText = quantityBox.getText().toString();
-                priceText = priceBox.getText().toString();
-                if(priceText.isEmpty())
-                {
-                    Toast.makeText(context,"Give price",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(quantityText.isEmpty())
+                    {
+                        Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        newProduct.setAvailableQuantity(Double.parseDouble(quantityText));
+                        newProduct.setSoldPrice(Double.parseDouble(priceText));
+                        productInList.add(newProduct);
+                        notifyDataSetChanged();
+//                        FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
+                        FirebaseDatabase.addProduct(context,newProduct);
+                        Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }
-                else if(quantityText.isEmpty())
-                {
-                    Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    product.setAvailableQuantity(Double.parseDouble(quantityText));
-                    product.setSoldPrice(Double.parseDouble(priceText));
-                    FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
-                    Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
-
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
     @Override
     public int getItemCount() {

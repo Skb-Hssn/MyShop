@@ -28,6 +28,7 @@
             android:name=".ProductActivity"
             android:label="Products">
 
+
         </activity>
         <activity
             android:name=".Home"

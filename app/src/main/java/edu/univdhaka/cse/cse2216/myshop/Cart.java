@@ -18,7 +18,7 @@ public class Cart implements Serializable {
     private String time;
     double discount,paidAmount;
     int id;
-    private ArrayList<Product> itemList;
+    private ArrayList<Item> itemList;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Cart()
@@ -30,7 +30,7 @@ public class Cart implements Serializable {
         this.id = 3;
 //        set id
     }
-    public Cart(int id,String date,String time,double discount,double paidAmount,ArrayList<Product> itemList)
+    public Cart(int id,String date,String time,double discount,double paidAmount,ArrayList<Item> itemList)
     {
         this.id = id;
         this.date = date;
@@ -53,7 +53,7 @@ public class Cart implements Serializable {
         return discount;
     }
 
-    public ArrayList<Product> getItemList() {
+    public ArrayList<Item> getItemList() {
         return itemList;
     }
 
@@ -64,9 +64,9 @@ public class Cart implements Serializable {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-    public void addItem(Product product)
+    public void addItem(Item item)
     {
-        itemList.add(product);
+        itemList.add(item);
     }
 
     public String getDate() {
@@ -77,7 +77,7 @@ public class Cart implements Serializable {
         return time;
     }
 
-    public void setItemList(ArrayList<Product> itemList) {
+    public void setItemList(ArrayList<Item> itemList) {
         this.itemList = itemList;
     }
 }

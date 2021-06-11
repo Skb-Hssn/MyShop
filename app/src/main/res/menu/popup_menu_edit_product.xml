@@ -15,4 +15,7 @@
         android:id="@+id/changePrice"
         android:title="Change Price"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/delete"
+        android:title="delete" />
 </menu>

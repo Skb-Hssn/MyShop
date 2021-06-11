@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class AddProductActivity extends AppCompatActivity {
     private EditText productNameText,companyNameText,unitText,quantityText,priceText;
@@ -37,6 +38,7 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveProduct()
     {
         workingWithFirebase();
@@ -80,6 +82,7 @@ public class AddProductActivity extends AppCompatActivity {
             Toast.makeText(AddProductActivity.this,"Saved",Toast.LENGTH_SHORT).show();
             FirebaseDatabase.addProduct(AddProductActivity.this,product);
 
+
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -93,16 +96,15 @@ public class AddProductActivity extends AppCompatActivity {
 //        FirebaseDatabase.signIn(email,password,ProductActivity.this);
 //        Log.d("noman",String.valueOf(FirebaseDatabase.isValidUser()));
 //        FirebaseDatabase.pro(ProductActivity.this);
-//        ArrayList<Product> products = new ArrayList<>();
-//        products.add(new Product("noman","komolo","a",4,5));
-//        products.add(new Product("noman","komolo","a",4,5));
-//        products.add(new Product("noman","komolo","a",4,5));
-//        products.add(new Product("noman","komolo","a",4,5));
-//        products.add(new Product("noman","komolo","a",4,5));
-//        Cart cart = new Cart();
-//        cart.setItemList(products);
-//        cart.setPaidAmount(100);
-//        cart.setDiscount(20);
-//        FirebaseDatabase.addCart(AddProductActivity.this,cart);
+        ArrayList<Item> products = new ArrayList<>();
+        Product product = new Product("noman","komolo","a",4,5);
+        products.add(new Item(product,10,15));
+        products.add(new Item(new Product("noman","komolo","a",4,5),15,30));
+
+        Cart cart = new Cart();
+        cart.setItemList(products);
+        cart.setPaidAmount(100);
+        cart.setDiscount(20);
+        FirebaseDatabase.addCart(AddProductActivity.this,cart);
     }
 }

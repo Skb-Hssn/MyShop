@@ -18,9 +18,9 @@ import java.util.HashMap;
 
 public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInCart.CartViewHolder> {
     private Context context;
-    private ArrayList<Product> items;
+    private ArrayList<Item> items;
     TextView nameText,quantityText,totalPriceText;
-    public ProductAdaptorInCart(Context context,ArrayList<Product> items)
+    public ProductAdaptorInCart(Context context, ArrayList<Item> items)
     {
         this.context = context;
         this.items = items;
@@ -41,8 +41,8 @@ public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInC
     public void onBindViewHolder(@NonNull @NotNull ProductAdaptorInCart.CartViewHolder holder, int position) {
             Log.d("noman",items.toString());
             nameText.setText(items.get(position).getName()+" "+items.get(position).getCompanyName());
-            quantityText.setText(String.valueOf(items.get(position).getAvailableQuantity()));
-            totalPriceText.setText(String.valueOf(items.get(position).getSoldPrice()));
+            quantityText.setText(String.valueOf(items.get(position).getSoldQuantity()));
+            totalPriceText.setText(String.valueOf(items.get(position).getTotalPrice()));
     }
 
     @Override

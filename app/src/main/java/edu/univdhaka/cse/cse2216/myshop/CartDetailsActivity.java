@@ -31,10 +31,10 @@ public class CartDetailsActivity extends AppCompatActivity {
         discountText.setText(String.valueOf(cart.getDiscount())+" Tk");
         paidText.setText(String.valueOf(cart.getPaidAmount()) +" ");
         cartHistoryRecyclerView = (RecyclerView)findViewById(R.id.cartHistoryRecycelerView);
-        ArrayList<Product> products = cart.getItemList();
-        Log.d("salman", String.valueOf(products.size()));
+        ArrayList<Item> items = cart.getItemList();
+        Log.d("salman", String.valueOf(items.size()));
 
-        ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,products);
+        ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,items);
         cartHistoryRecyclerView.setAdapter(productAdaptorInCart);
         cartHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
@@ -196,6 +200,7 @@ public class FirebaseDatabase {
 
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_dailog);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return progressDialog;
 
 
@@ -220,9 +225,9 @@ public class FirebaseDatabase {
                 });
 
     }
-    public static void addExistingProduct(Context context,Product product,ProductAdaptor productAdaptor)
+    public static void addExistingProduct(Context context,Product product)
     {
-        ProgressDialog progressDialog = getProgressDialog(context);
+//        ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         myDatabase.collection("products").document(user.getUid()).collection("products")
@@ -232,14 +237,14 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
                         if(task.isSuccessful())
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-                            getProducts(context,productAdaptor);
+//                            getProducts(context,productAdaptor);
 
                         }
                         else
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -247,14 +252,14 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
     }
     public static void addProduct(Context context,Product product)
     {
-        ProgressDialog progressDialog = getProgressDialog(context);
+//        ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         myDatabase.collection("products").document(user.getUid()).collection("products")
@@ -264,14 +269,14 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
                         if(task.isSuccessful())
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
 
 
                         }
                         else
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -279,7 +284,7 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -336,14 +341,14 @@ public class FirebaseDatabase {
                 });
 
     }
-    public static void updateProduct(Context context,Product product,ProductAdaptor productAdaptor,int position)
+    public static void updateProduct(Context context,Product product)
     {
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
             return;
         myDatabase = FirebaseFirestore.getInstance();
-        ProgressDialog progressDialog = getProgressDialog(context);
+//        ProgressDialog progressDialog = getProgressDialog(context);
         DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
         documentReference.set(product)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -351,13 +356,13 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful())
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Toast.makeText(context,"Updated",Toast.LENGTH_SHORT).show();
-                            getProducts(context,productAdaptor);
+//                            getProducts(context,productAdaptor);
                         }
                         else
                         {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Log.d("noman","not success");
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
@@ -366,7 +371,7 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -428,15 +433,14 @@ public class FirebaseDatabase {
                                 Log.d("noman","noman");
                                 Map<String,Object> map = document.getData();
                                 String x = map.toString();
-                                String time = (String) map.get("name");
+                                String time = (String) map.get("time");
                                 String date = (String)map.get("date");
-//                                int id = Integer.parseInt((String)map.get("id"));
                                 long id = (long)map.get("id");
-                                Log.d("noman",x);
+
                                 double discount = (double)map.get("discount");
                                 double paidAmount = (double)map.get("paidAmount");
                                 ArrayList<HashMap<String,Object>> items = (ArrayList<HashMap<String,Object>>)map.get("itemList");
-                                ArrayList<Product> products = new ArrayList<>();
+                                ArrayList<Item> cartItems = new ArrayList<>();
 
                                 for(HashMap<String,Object> hashMap: items)
                                 {
@@ -445,10 +449,13 @@ public class FirebaseDatabase {
                                     String unit = (String)hashMap.get("unit");
                                     double quantity = (double)hashMap.get("availableQuantity");
                                     double price = (double)hashMap.get("soldPrice");
+                                    double soldQuantity = (double)hashMap.get("soldQuantity");
+                                    double totalCost = (double)hashMap.get("totalPrice");
                                     Product product = new Product(name,companyName,unit,quantity,price);
-                                    products.add(product);
+                                    Item newItem = new Item(product,soldQuantity,totalCost);
+                                    cartItems.add(newItem);
                                 }
-                                Cart cart = new Cart((int)id,date,time,discount,paidAmount,products);
+                                Cart cart = new Cart((int)id,date,time,discount,paidAmount,cartItems);
                                 carts.add(cart);
                             }
 
@@ -473,4 +480,127 @@ public class FirebaseDatabase {
                     }
                 });
     }
+    public static void deleteProduct(Context context,Product product)
+    {
+        authentication = FirebaseAuth.getInstance();
+        FirebaseUser user = authentication.getCurrentUser();
+        if(user == null)
+            return;
+        myDatabase = FirebaseFirestore.getInstance();
+//        ProgressDialog progressDialog = getProgressDialog(context);
+        DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
+        documentReference
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+//                            progressDialog.dismiss();
+                            Toast.makeText(context,"Deleted",Toast.LENGTH_SHORT).show();
+//                            getProducts(context,productAdaptor);
+                        }
+                        else
+                        {
+//                            progressDialog.dismiss();
+                            Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+//                        progressDialog.dismiss();
+                        Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    public static void updateJust(Product product)
+    {
+        authentication = FirebaseAuth.getInstance();
+        FirebaseUser user = authentication.getCurrentUser();
+        if(user == null)
+            return;
+        myDatabase = FirebaseFirestore.getInstance();
+
+        DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
+        documentReference.set(product)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+
+                    }
+                });
+    }
+    public static void getProducts(Context context,ItemAdaptor itemAdaptor)
+    {
+
+        authentication = FirebaseAuth.getInstance();
+        FirebaseUser user = authentication.getCurrentUser();
+        if(user == null) {
+            Log.d("noman","null");
+            return;
+        }
+        myDatabase = FirebaseFirestore.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
+        myDatabase.collection("products").document(user.getUid()).collection("products")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            ArrayList<Product> products = new ArrayList<>();
+                            for(QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Log.d("noman","calling");
+                                String name,companyName,unit,firebaseId;
+                                double availableQuantity,price;
+                                name = document.get("name",String.class);
+                                companyName = document.get("companyName",String.class);
+                                unit = document.get("unit",String.class);
+                                firebaseId = document.getId();
+                                availableQuantity = document.get("availableQuantity",Double.class);
+                                price = document.get("soldPrice",Double.class);
+                                Product product = new Product(name,companyName,unit,availableQuantity,price,firebaseId);
+                                products.add(product);
+
+                            }
+                            Log.d("noman","setting");
+                            itemAdaptor.setList(products);
+                            progressDialog.dismiss();
+                        }
+                        else
+                        {
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
 }

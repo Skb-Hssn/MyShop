@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B4B0B0"
+    android:backgroundTint="#777272"
     tools:context=".ProductActivity">
 
     <androidx.recyclerview.widget.RecyclerView
