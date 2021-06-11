@@ -1,13 +1,17 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
+import android.app.AlertDialog;
+
 import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Product {
-    private String name,companyName,unit;
-    private double availableQuantity,soldPrice;
-    private String firebaseProductId;
+import java.io.Serializable;
+
+public class Product implements Serializable,Cloneable {
+    protected String name,companyName,unit;
+    protected double availableQuantity,soldPrice;
+    protected String firebaseProductId;
 
     public Product()
     {
@@ -21,6 +25,15 @@ public class Product {
         this.unit = unit;
         this.availableQuantity = availableQuantity;
         this.soldPrice = soldPrice;
+    }
+    public Product(String name, String companyName, String unit, double availableQuantity, double soldPrice,String firebaseProductId)
+    {
+        this.name = name;
+        this.companyName = companyName;
+        this.unit = unit;
+        this.availableQuantity = availableQuantity;
+        this.soldPrice = soldPrice;
+        this.firebaseProductId = firebaseProductId;
     }
     public void setFirebaseProductId(String firebaseProductId)
     {
@@ -65,5 +78,12 @@ public class Product {
     public String toString() {
         String details = name +" "+companyName+" "+firebaseProductId+" "+String.valueOf(soldPrice);
         return details;
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

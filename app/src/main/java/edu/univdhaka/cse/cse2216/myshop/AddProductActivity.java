@@ -1,13 +1,20 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class AddProductActivity extends AppCompatActivity {
     private EditText productNameText,companyNameText,unitText,quantityText,priceText;
@@ -31,8 +38,10 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveProduct()
     {
+        workingWithFirebase();
         String name,companyName,unit;
         double quantity,price;
         name = productNameText.getText().toString();
@@ -66,11 +75,36 @@ public class AddProductActivity extends AppCompatActivity {
         }
         else
         {
-//            quantity = Double.parseDouble(quantityText.getText().toString());
-//            price = Double.parseDouble(priceText.getText().toString());
-//            Log.d("noman",quantityText.getText().toString());
+
+            quantity = Double.parseDouble(quantityText.getText().toString());
+            price = Double.parseDouble(priceText.getText().toString());
+            Product product = new Product(name,companyName,unit,quantity,price);
             Toast.makeText(AddProductActivity.this,"Saved",Toast.LENGTH_SHORT).show();
-            finish();
+            FirebaseDatabase.addProduct(AddProductActivity.this,product);
+
+
         }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void workingWithFirebase()
+    {
+        String email = "nsakhawathhossan29@gmail.com";
+        ShopKeeper shopKeeper = new ShopKeeper("Noman","MyShop",email);
+        String password = "noman123";
+//        FirebaseDatabase.signOut();
+//        FirebaseDatabase.signUp(shopKeeper,password,ProductActivity.this);
+//        FirebaseDatabase.signIn(email,password,ProductActivity.this);
+//        Log.d("noman",String.valueOf(FirebaseDatabase.isValidUser()));
+//        FirebaseDatabase.pro(ProductActivity.this);
+        ArrayList<Item> products = new ArrayList<>();
+        Product product = new Product("noman","komolo","a",4,5);
+        products.add(new Item(product,10,15));
+        products.add(new Item(new Product("noman","komolo","a",4,5),15,30));
+
+        Cart cart = new Cart();
+        cart.setItemList(products);
+        cart.setPaidAmount(100);
+        cart.setDiscount(20);
+        FirebaseDatabase.addCart(AddProductActivity.this,cart);
     }
 }

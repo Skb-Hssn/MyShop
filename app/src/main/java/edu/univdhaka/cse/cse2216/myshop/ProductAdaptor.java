@@ -81,17 +81,21 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                                 case R.id.addQuantity:
                                     Log.d("noman","add");
 //                                    updateProduct();
-                                    updateAddedProduct(productInList.get(position));
+                                    updateAddedProduct(productInList.get(position),position);
                                     break;
                                 case R.id.reduceQuantity:
 //                                    updateProduct();
                                     Log.d("noman","reduce");
-                                    updateReducedProduct(productInList.get(position));
+                                    updateReducedProduct(productInList.get(position),position);
                                     break;
                                 case R.id.changePrice:
                                     Log.d("noman","change");
-                                    addProduct(productInList.get(position));
+                                    updatePrice(productInList.get(position),position);
                                     break;
+                                case R.id.delete:
+                                    FirebaseDatabase.deleteProduct(context,productInList.get(position));
+                                    productInList.remove(position);
+                                    notifyDataSetChanged();
                             }
                             return false;
                         }
@@ -101,7 +105,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 }
             });
     }
-    private void updateAddedProduct(Product product)
+    private void updateAddedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
@@ -123,6 +127,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 {
                     double quantity = Double.parseDouble(quantityText);
                     product.setAvailableQuantity(product.getAvailableQuantity()+quantity);
+                    notifyDataSetChanged();
+                    FirebaseDatabase.updateProduct(context,product);
 
                 }
 
@@ -131,7 +137,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void updateReducedProduct(Product product)
+    private void updateReducedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
@@ -159,6 +165,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                     else
                     {
                         product.setAvailableQuantity(product.getAvailableQuantity()-quantity);
+                        notifyDataSetChanged();
+                        FirebaseDatabase.updateProduct(context,product);
                     }
 
 
@@ -169,49 +177,57 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void addProduct(Product product)
-    {
+    private void updatePrice(Product product,int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Quantity ? ");
+        builder.setTitle("Change Price");
+        try {
+            Product newProduct = (Product) product.clone();
+            LinearLayout linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            EditText priceBox = new EditText(context);
+            priceBox.setHint("new Price");
+            EditText quantityBox = new EditText(context);
+            quantityBox.setHint("Quantity with this price");
+            quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+            priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+            linearLayout.addView(priceBox);
+            linearLayout.addView(quantityBox);
+            builder.setView(linearLayout);
+            builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String quantityText,priceText;
+                    quantityText = quantityBox.getText().toString();
+                    priceText = priceBox.getText().toString();
+                    if(priceText.isEmpty())
+                    {
+                        Toast.makeText(context,"Give price",Toast.LENGTH_SHORT).show();
 
-        LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        EditText priceBox = new EditText(context);
-        priceBox.setHint("new Price");
-        EditText quantityBox = new EditText(context);
-        quantityBox.setHint("Quantity with this price");
-        quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-        priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-        linearLayout.addView(priceBox);
-        linearLayout.addView(quantityBox);
-        builder.setView(linearLayout);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String quantityText,priceText;
-                quantityText = quantityBox.getText().toString();
-                priceText = priceBox.getText().toString();
-                if(priceText.isEmpty())
-                {
-                    Toast.makeText(context,"Give price",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(quantityText.isEmpty())
+                    {
+                        Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        newProduct.setAvailableQuantity(Double.parseDouble(quantityText));
+                        newProduct.setSoldPrice(Double.parseDouble(priceText));
+                        productInList.add(newProduct);
+                        notifyDataSetChanged();
+//                        FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
+                        FirebaseDatabase.addProduct(context,newProduct);
+                        Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }
-                else if(quantityText.isEmpty())
-                {
-                    Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    product.setAvailableQuantity(Double.parseDouble(quantityText));
-                    product.setSoldPrice(Double.parseDouble(priceText));
-                    Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
-
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
     @Override
     public int getItemCount() {
@@ -260,7 +276,11 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         };
     }
 
-
+    public void update(int position,Product product)
+    {
+        productInList.add(position,product);
+        notifyDataSetChanged();
+    }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         public ProductViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
@@ -278,5 +298,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         this.productInList = products;
         this.products = products;
         notifyDataSetChanged();
+    }
+
+    public class ProductViewHolderInCart {
     }
 }

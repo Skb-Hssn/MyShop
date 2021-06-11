@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "832376779945",
+    "project_id": "myshop-27876",
+    "storage_bucket": "myshop-27876.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832376779945:android:f177e0000b3d2331d3a5b8",
+        "android_client_info": {
+          "package_name": "edu.univdhaka.cse.cse2216.myshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832376779945-nar4na06n4toe8aaia6h5d5q02ru1h61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA65QqN8iZIWqKt4BxI2Vq4Lr-Nm4sv_JM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832376779945-nar4na06n4toe8aaia6h5d5q02ru1h61.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
