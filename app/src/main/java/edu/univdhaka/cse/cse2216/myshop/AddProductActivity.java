@@ -41,7 +41,6 @@ public class AddProductActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveProduct()
     {
-        workingWithFirebase();
         String name,companyName,unit;
         double quantity,price;
         name = productNameText.getText().toString();
