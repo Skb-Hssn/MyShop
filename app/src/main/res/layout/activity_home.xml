@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTintMode="src_over"
     tools:context=".HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,14 +64,18 @@
             app:layout_constraintVertical_bias="0.805" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.utils.widget.ImageFilterButton
+    <Button
         android:id="@+id/addCartButton"
-        android:layout_width="255dp"
-        android:layout_height="99dp"
+        android:layout_width="219dp"
+        android:layout_height="96dp"
+        android:background="#9A5454"
+        android:backgroundTint="#8B5252"
+        android:text="Sale"
+        app:icon="@drawable/ic_baseline_add_shopping_cart_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822"
-        app:srcCompat="@drawable/ic_shopping_cart__2_" />
+        app:layout_constraintVertical_bias="0.89" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

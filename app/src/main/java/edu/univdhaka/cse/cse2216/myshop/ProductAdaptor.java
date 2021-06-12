@@ -300,6 +300,10 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         notifyDataSetChanged();
     }
 
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
     public class ProductViewHolderInCart {
     }
 }

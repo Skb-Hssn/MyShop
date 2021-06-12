@@ -114,6 +114,7 @@ public class ProductActivity extends AppCompatActivity {
     private void openAddProductActivity()
     {
         Intent intent = new Intent(ProductActivity.this,AddProductActivity.class);
+        intent.putExtra("object",productAdaptor.getProducts());
         startActivity(intent);
 //        seeItem();
     }

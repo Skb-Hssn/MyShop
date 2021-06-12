@@ -635,7 +635,7 @@ public class FirebaseDatabase {
                             }
 
 
-                            textView.setText(String.valueOf(total));
+                            textView.setText(String.valueOf(total)+" $");
                             Log.d("nomansalman",String.valueOf(carts.size()));
                             progressDialog.dismiss();
                         }

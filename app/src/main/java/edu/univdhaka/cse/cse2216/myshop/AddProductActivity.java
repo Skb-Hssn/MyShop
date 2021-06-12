@@ -3,6 +3,7 @@ package edu.univdhaka.cse.cse2216.myshop;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.function.Predicate;
 public class AddProductActivity extends AppCompatActivity {
     private EditText productNameText,companyNameText,unitText,quantityText,priceText;
     private Button productSaveButton;
+    ArrayList<Product> products;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,9 @@ public class AddProductActivity extends AppCompatActivity {
         quantityText = (EditText)findViewById(R.id.quantityEditBox);
         priceText = (EditText)findViewById(R.id.priceEditBox);
         productSaveButton = (Button)findViewById(R.id.productSaveButton);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        products = (ArrayList<Product>)bundle.get("object");
         productSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,9 +43,10 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void saveProduct()
     {
+//        workingWithFirebase();
         String name,companyName,unit;
         double quantity,price;
         name = productNameText.getText().toString();
@@ -78,6 +84,17 @@ public class AddProductActivity extends AppCompatActivity {
             quantity = Double.parseDouble(quantityText.getText().toString());
             price = Double.parseDouble(priceText.getText().toString());
             Product product = new Product(name,companyName,unit,quantity,price);
+            for(Product product1 : products)
+            {
+                Log.d("noman",product1.getName());
+                if(product1.getName().toLowerCase().compareTo(product.getName().toLowerCase()) == 0 && product1.getCompanyName().toLowerCase().compareTo(product.getCompanyName().toLowerCase()) == 0 && (int) product1.soldPrice == (int)product.soldPrice )
+                {
+                    Log.d("noman",product1.getName());
+                    Toast.makeText(AddProductActivity.this,"Already exist",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            products.add(product);
             Toast.makeText(AddProductActivity.this,"Saved",Toast.LENGTH_SHORT).show();
             FirebaseDatabase.addProduct(AddProductActivity.this,product);
 

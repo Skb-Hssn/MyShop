@@ -3,7 +3,6 @@ package edu.univdhaka.cse.cse2216.myshop;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     private TextView daySaleText,dateText;
-    private ImageFilterButton addCart;
+    private Button addCart;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +34,10 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.home_icon);
         daySaleText = (TextView)findViewById(R.id.daySaleTextView);
         dateText = (TextView)findViewById(R.id.homeDateTextView);
-        addCart = (ImageFilterButton) findViewById(R.id.addCartButton);
+        addCart = (Button) findViewById(R.id.addCartButton);
         String date = LocalDate.now().toString();
         dateText.setText(date);
-        FirebaseDatabase.signIn("nsakhawathhossan29@gmail.com","noman123",HomeActivity.this);
+//        FirebaseDatabase.signIn("nsakhawathhossan29@gmail.com","noman123",HomeActivity.this);
         FirebaseDatabase.getDaySaleTotal(HomeActivity.this,daySaleText,date);
         addCart.setOnClickListener(new View.OnClickListener() {
             @Override
