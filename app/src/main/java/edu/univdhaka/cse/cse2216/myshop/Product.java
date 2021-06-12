@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class Product implements Serializable,Cloneable {
+public class Product implements Serializable,Cloneable,Comparable<Product> {
     protected String name,companyName,unit;
     protected double availableQuantity,soldPrice;
     protected String firebaseProductId;
@@ -85,5 +85,15 @@ public class Product implements Serializable,Cloneable {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        if(this.name.toLowerCase().compareTo(o.getName().toLowerCase()) == 0 && this.companyName.toLowerCase().compareTo(o.getCompanyName().toLowerCase()) == 0 && Math.abs(this.soldPrice-o.getSoldPrice()) < .01)
+        {
+            return 0;
+        }
+        return 1;
+
     }
 }

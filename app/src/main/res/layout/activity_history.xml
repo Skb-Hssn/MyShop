@@ -11,6 +11,7 @@
         android:layout_width="89dp"
         android:layout_height="41dp"
         android:gravity="center"
+        android:background="#F4E3E3"
         android:text="date : "
         android:textColor="#A91010"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,6 +26,8 @@
         android:layout_width="143dp"
         android:layout_height="40dp"
         android:gravity="center"
+        android:background="#F10808"
+        android:textColor="@color/black"
         android:text="02-02-2021"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,5 +42,6 @@
         android:layout_height="648dp"
         android:layout_marginTop="80dp"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="#A78E8EDC"
         tools:layout_editor_absoluteX="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

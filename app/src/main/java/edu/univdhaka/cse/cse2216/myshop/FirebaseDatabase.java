@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -602,5 +603,56 @@ public class FirebaseDatabase {
                 });
 
     }
+    public static void getDaySaleTotal(Context context, TextView textView,String date)
+    {
+        authentication = FirebaseAuth.getInstance();
+        FirebaseUser user = authentication.getCurrentUser();
+        if(user == null)
+            return;
+        myDatabase = FirebaseFirestore.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
+        myDatabase.collection("cart").document(user.getUid()).collection("cart")
+                .whereEqualTo("date",date)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            double total = 0;
+                            ArrayList<Cart> carts = new ArrayList<>();
+                            for(QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Log.d("noman","noman");
+                                Map<String,Object> map = document.getData();
+
+
+
+                                double paidAmount = (double)map.get("paidAmount");
+                                total += paidAmount;
+
+                            }
+
+
+                            textView.setText(String.valueOf(total)+" $");
+                            Log.d("nomansalman",String.valueOf(carts.size()));
+                            progressDialog.dismiss();
+                        }
+                        else
+                        {
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
