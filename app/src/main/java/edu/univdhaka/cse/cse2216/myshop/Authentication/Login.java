@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import edu.univdhaka.cse.cse2216.myshop.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
@@ -40,9 +41,9 @@ public class Login extends AppCompatActivity {
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(v -> {
             if(validAccount()) {
-                Intent intent = new Intent(Login.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(Login.this, HomeActivity.class);
+//                startActivity(intent);
+//                finish();
             } else {
                 errorText.setText(getResources().getText(R.string.sign_in_not_found_error));
             }
@@ -64,8 +65,11 @@ public class Login extends AppCompatActivity {
             return false;
         }
 
-        if(email.equals("ABC") && password.equals("DEF")) return true;
+//        if(email.equals("ABC") && password.equals("DEF")) return true;
 
-        return false;
+//        return false;
+//        sign in from firebase and go to home if email and password is correct
+        FirebaseDatabase.signIn(email,password,Login.this,errorText);
+        return true;
     }
 }

@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseUser;
 
+import edu.univdhaka.cse.cse2216.myshop.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class SignUp extends AppCompatActivity {
 
@@ -42,12 +45,13 @@ public class SignUp extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_button);
         signUpButton.setOnClickListener(v -> {
             if(validAccount()) {
-                Intent intent = new Intent(SignUp.this, HomeActivity.class);
-                startActivity(intent);
-                if (!Login.signInActivity.isFinishing() && !Login.signInActivity.isDestroyed()) {
-                    Login.signInActivity.finish();
-                }
-                finish();
+//                go home activity from firebase class
+//                Intent intent = new Intent(SignUp.this, HomeActivity.class);
+//                startActivity(intent);
+//                if (!Login.signInActivity.isFinishing() && !Login.signInActivity.isDestroyed()) {
+//                    Login.signInActivity.finish();
+//                }
+//                finish();
             } else {
                 errorTextView.setText(errorText);
             }
@@ -102,6 +106,10 @@ public class SignUp extends AppCompatActivity {
             errorText = "Retyped password doesn't match";
             return false;
         }
+//        creating shop keeper object with given data
+        ShopKeeper shopKeeper = new ShopKeeper(nameInputText,shopNameInputText,emailInputText);
+//        check already an user and if not, then create account and send verification email
+        FirebaseDatabase.alreadyAnUser(shopKeeper,passwordInputText,SignUp.this);
 
         return true;
     }
