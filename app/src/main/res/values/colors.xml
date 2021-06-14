@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="accent_color">#FF3D3D3D</color>
     <color name="primary_color">#FFD9D9D9</color>
+    <color name="accent_color_light">#FF6B6B6B</color>
+    <color name="red">#FFFF0000</color>
+    <color name="transparent">#00000000</color>
 </resources>

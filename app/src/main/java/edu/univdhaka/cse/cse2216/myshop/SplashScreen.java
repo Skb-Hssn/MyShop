@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
+
 public class SplashScreen extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_TIMER = 500;

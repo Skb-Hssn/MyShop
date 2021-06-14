@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Authentication.SignUp"
+    android:orientation="vertical"
+    android:background="@color/primary_color">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:background="@color/accent_color"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back_arrow"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/back_arrow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:layout_marginStart="30dp"
+            android:textSize="25sp"
+            android:textColor="@color/primary_color"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up_name_input"
+            android:hint="@string/name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/accent_color_light"
+            app:hintTextColor="@color/accent_color"
+            android:layout_marginTop="30dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_color"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up_shop_name_input"
+            android:hint="@string/shop_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/accent_color_light"
+            app:hintTextColor="@color/accent_color"
+            android:layout_marginTop="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_color"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up_email_input"
+            android:hint="@string/email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/accent_color_light"
+            app:hintTextColor="@color/accent_color"
+            android:layout_marginTop="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_color"
+                android:inputType="textEmailAddress"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up_password"
+            android:hint="@string/password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/accent_color_light"
+            app:hintTextColor="@color/accent_color"
+            android:layout_marginTop="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_color"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up_retype_password"
+            android:hint="@string/retype_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/accent_color_light"
+            app:hintTextColor="@color/accent_color"
+            android:layout_marginTop="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_color"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/sign_up_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15sp"
+            android:layout_gravity="right"
+            android:textColor="@color/red"/>
+
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_background"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

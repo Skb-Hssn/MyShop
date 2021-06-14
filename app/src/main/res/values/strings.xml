@@ -2,4 +2,26 @@
     <string name="app_name">MyShop</string>
     <string name="splash_screen">SplashScreen</string>
     <string name="login">Login</string>
+    <string name="app_name_upper">MySHOP</string>
+    <string name="sign_in_to_cont">Please sign in to continue.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_not_found_error">Email or password doesn\'t match</string>
+    <string name="dont_have_account">Don\'t have an account? </string>
+    <string name="sign_up"><b>Sign Up</b></string>
+    <string name="name">Name</string>
+    <string name="shop_name">Shop name</string>
+    <string name="retype_password">Retype password</string>
+    <string name="filed_cant_be_empty">can\'t be empty</string>
+    <string name="retyped_password_doesnt_match">Retyped password doesn\'t match</string>
+    <string name="home">Home</string>
+    <string name="add_sale">Add Sale</string>
+    <string name="products">Products</string>
+    <string name="history">History</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name ="sign_out">Sign Out</string>
+    <string name="total">Total</string>
+    <string name="today">Today</string>
 </resources>

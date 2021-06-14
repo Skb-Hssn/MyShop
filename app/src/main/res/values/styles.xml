@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LogInTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/accent_color</item>
+        <item name="colorPrimary">@color/accent_color_light</item>
+    </style>
+</resources>

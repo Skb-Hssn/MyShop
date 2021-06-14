@@ -10,12 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".Login"
-            android:label="@string/login"/>
+        <activity android:name=".Home.HomeActivity"
+            android:label="@string/home"/>
+
+        <activity android:name=".Authentication.SignUp"
+            android:parentActivityName=".Authentication.Login"
+            android:label="@string/sign_up"
+            android:theme="@style/LogInTheme"/>
+
+        <activity
+            android:name=".Authentication.Login"
+            android:label="@string/login"
+            android:theme="@style/LogInTheme" />
 
         <activity
             android:name=".SplashScreen"
-            android:label="@string/splash_screen">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +33,6 @@
             </intent-filter>
         </activity>
     </application>
-
 
     <!--        <activity-->
     <!--            android:name=".CartDetailsActivity"-->
@@ -52,6 +61,5 @@
     <!--                <category android:name="android.intent.category.LAUNCHER" />-->
     <!--            </intent-filter>-->
     <!--        </activity>-->
-
 
 </manifest>
