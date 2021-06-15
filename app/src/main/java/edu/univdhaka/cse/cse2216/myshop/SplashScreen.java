@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
 
 public class SplashScreen extends AppCompatActivity {

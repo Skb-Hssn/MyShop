@@ -2,7 +2,6 @@ package edu.univdhaka.cse.cse2216.myshop.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,10 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseUser;
 
-import edu.univdhaka.cse.cse2216.myshop.FirebaseDatabase;
-import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 

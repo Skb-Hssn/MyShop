@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.Database;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -48,7 +48,15 @@ import java.util.regex.Pattern;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
 import edu.univdhaka.cse.cse2216.myshop.Authentication.SignUp;
+import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.CartAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.ProductAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
@@ -71,6 +79,7 @@ public class FirebaseDatabase {
     public static void alreadyAnUser(ShopKeeper shopKeeper, String password, Context context)
     {
         authentication = FirebaseAuth.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
         authentication.fetchSignInMethodsForEmail(shopKeeper.getEmail())
                 .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                     @Override
@@ -78,10 +87,11 @@ public class FirebaseDatabase {
                             boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
                             if(isNewUser)
                             {
-                                signUp(shopKeeper,password,context);
+                                signUp(shopKeeper,password,context,progressDialog);
                             }
                             else
                             {
+                                progressDialog.dismiss();
                                 Toast.makeText(context,"Already have an account",Toast.LENGTH_SHORT).show();
                             }
 
@@ -90,13 +100,13 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-
+                        progressDialog.dismiss();
                     }
                 });
     }
-    public static void signUp(ShopKeeper shopKeeper, String password, Context context)
+    public static void signUp(ShopKeeper shopKeeper, String password, Context context,ProgressDialog progressDialog)
     {
-        ProgressDialog progressDialog = getProgressDialog(context);
+
         authentication = FirebaseAuth.getInstance();
         authentication.createUserWithEmailAndPassword(shopKeeper.getEmail(),password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -328,7 +338,7 @@ public class FirebaseDatabase {
                 });
 
     }
-    public static void addExistingProduct(Context context,Product product)
+    public static void addExistingProduct(Context context, Product product)
     {
 //        ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
@@ -392,7 +402,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getProducts(Context context,ProductAdaptor productAdaptor)
+    public static void getProducts(Context context, ProductAdaptor productAdaptor)
     {
 
         authentication = FirebaseAuth.getInstance();
@@ -479,7 +489,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void addCart(Context context,Cart cart)
+    public static void addCart(Context context, Cart cart)
     {
         Log.d("noman","cart");
         ProgressDialog progressDialog = getProgressDialog(context);
@@ -512,7 +522,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getCarts(Context context,CartAdaptor cartAdaptor,String date)
+    public static void getCarts(Context context, CartAdaptor cartAdaptor, String date)
     {
         Log.d("noman",date);
         authentication = FirebaseAuth.getInstance();
@@ -650,7 +660,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getProducts(Context context,ItemAdaptor itemAdaptor)
+    public static void getProducts(Context context, ItemAdaptor itemAdaptor)
     {
 
         authentication = FirebaseAuth.getInstance();
@@ -754,6 +764,24 @@ public class FirebaseDatabase {
                     public void onFailure(@NonNull @NotNull Exception e) {
                         progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    public static void resetPassword(String email)
+    {
+        authentication = FirebaseAuth.getInstance();
+
+        authentication.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+
                     }
                 });
     }

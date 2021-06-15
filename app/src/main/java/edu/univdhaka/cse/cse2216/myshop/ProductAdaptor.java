@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -25,9 +24,9 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
+
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 
 public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductViewHolder> implements Filterable {
     private ArrayList<Product> productInList;

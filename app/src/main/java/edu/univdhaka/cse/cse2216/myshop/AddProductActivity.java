@@ -12,10 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.function.Predicate;
+
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 
 public class AddProductActivity extends AppCompatActivity {
     private EditText productNameText,companyNameText,unitText,quantityText,priceText;

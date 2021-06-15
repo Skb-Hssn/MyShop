@@ -1,22 +1,19 @@
 package edu.univdhaka.cse.cse2216.myshop.Home;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,11 +22,11 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
-import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,6 +46,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        seeUser();
 
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
@@ -194,5 +193,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * */
     public void addSale() {
 
+    }
+//    debug purpose noman
+    private void seeUser()
+    {
+        ShopKeeper shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
+        Log.d("noman",shopKeeper.getName());
+        Log.d("noman",shopKeeper.getEmail());
+        Log.d("noman",shopKeeper.getShopName());
     }
 }

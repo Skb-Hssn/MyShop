@@ -1,16 +1,12 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +14,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
+
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 
 import static android.widget.SearchView.*;
 
