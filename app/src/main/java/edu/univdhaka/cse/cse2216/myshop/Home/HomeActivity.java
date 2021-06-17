@@ -24,7 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
+import edu.univdhaka.cse.cse2216.myshop.History.CartDetailsActivity;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.History.HistoryActivity;
+import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
@@ -47,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        seeUser();
+//        seeUser();
 
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
@@ -132,21 +135,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO : Open product Activity.
     * */
     public void openProductActivity() {
-
+        Intent intent = new Intent(HomeActivity.this, ProductActivity.class);
+        startActivity(intent);
     }
 
     /*
     * TODO: Open History Activity
     * */
     public void openHistoryActivity() {
-
+        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     /*
     * TODO: Get the store name from FIREBASE
     * */
     public void setHomeNavigationHeaderStoreName() {
-        String name = "ABCDE";
+        String name = FirebaseDatabase.getCurrentShopKeeper().getShopName();
         homeNavigationHeaderStoreName.setText(name);
     }
 
@@ -154,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * TODO: Get the email from FIREBASE
     * */
     public void setHomeNavigationHeaderEmail() {
-        String email = "abcdef@gmail.com";
+        String email = FirebaseDatabase.getCurrentShopKeeper().getEmail();
         homeNavigationHeaderEmail.setText(email);
     }
 
@@ -162,6 +167,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO: set sign out state in FIREBASE
     * */
     public void signOut() {
+        FirebaseDatabase.signOut();
         Intent intent = new Intent(HomeActivity.this, Login.class);
         startActivity(intent);
         homeDrawerLayout.closeDrawer(GravityCompat.START);
@@ -183,6 +189,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO: Get today's total amount of sale From FIREBASE
     * */
     public void setTodayTotalSale() {
+//        FirebaseDatabase.getDaySaleTotal();
         String totalSale = "550";
         totalAmountToday.setText(totalSale);
     }

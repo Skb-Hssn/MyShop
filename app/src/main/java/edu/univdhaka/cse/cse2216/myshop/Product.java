@@ -83,7 +83,7 @@ public class Product implements Serializable,Cloneable,Comparable<Product> {
     @NonNull
     @NotNull
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 

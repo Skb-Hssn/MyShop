@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.ProductScreen;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class AddProductActivity extends AppCompatActivity {
     private EditText productNameText,companyNameText,unitText,quantityText,priceText;
@@ -86,7 +91,7 @@ public class AddProductActivity extends AppCompatActivity {
             for(Product product1 : products)
             {
                 Log.d("noman",product1.getName());
-                if(product1.getName().toLowerCase().compareTo(product.getName().toLowerCase()) == 0 && product1.getCompanyName().toLowerCase().compareTo(product.getCompanyName().toLowerCase()) == 0 && (int) product1.soldPrice == (int)product.soldPrice )
+                if(product1.getName().toLowerCase().compareTo(product.getName().toLowerCase()) == 0 && product1.getCompanyName().toLowerCase().compareTo(product.getCompanyName().toLowerCase()) == 0 && (int) product1.getSoldPrice() == (int)product.getSoldPrice() )
                 {
                     Log.d("noman",product1.getName());
                     Toast.makeText(AddProductActivity.this,"Already exist",Toast.LENGTH_SHORT).show();

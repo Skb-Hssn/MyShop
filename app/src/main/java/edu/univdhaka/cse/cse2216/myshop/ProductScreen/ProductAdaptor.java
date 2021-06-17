@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.ProductScreen;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductViewHolder> implements Filterable {
     private ArrayList<Product> productInList;
