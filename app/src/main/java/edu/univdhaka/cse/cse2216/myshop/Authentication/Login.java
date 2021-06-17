@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,13 +39,14 @@ public class Login extends AppCompatActivity {
 
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(v -> {
-            if(validAccount()) {
-//                Intent intent = new Intent(Login.this, HomeActivity.class);
-//                startActivity(intent);
-//                finish();
-            } else {
-                errorText.setText(getResources().getText(R.string.sign_in_not_found_error));
-            }
+//            if(validAccount()) {
+////                Intent intent = new Intent(Login.this, HomeActivity.class);
+////                startActivity(intent);
+////                finish();
+//            } else {
+////                errorText.setText(getResources().getText(R.string.sign_in_not_found_error));
+//            }
+            validAccount();
         });
 
         emailInput = findViewById(R.id.email_text_input);
@@ -55,12 +57,19 @@ public class Login extends AppCompatActivity {
     /*
     * TODO : Check in firebase if it is a valid account
     * */
-    public boolean validAccount() {
+    public void validAccount() {
         String email = emailInput.getEditText().getText().toString();
         String password = passwordInput.getEditText().getText().toString();
 
         if(email.equals("") || password.equals("")) {
-            return false;
+            errorText.setText("Field can't be empty");
+            return;
+        }
+        if(!FirebaseDatabase.isEmailAddressValid(email))
+        {
+            Log.d("noman","Invalid");
+            errorText.setText("Invalid Email");
+            return;
         }
 
 //        if(email.equals("ABC") && password.equals("DEF")) return true;
@@ -68,6 +77,5 @@ public class Login extends AppCompatActivity {
 //        return false;
 //        sign in from firebase and go to home if email and password is correct
         FirebaseDatabase.signIn(email,password,Login.this,errorText);
-        return true;
     }
 }

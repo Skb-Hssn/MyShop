@@ -103,6 +103,11 @@ public class SignUp extends AppCompatActivity {
             errorText = "Retyped password doesn't match";
             return false;
         }
+        if(!FirebaseDatabase.isEmailAddressValid(emailInputText))
+        {
+            errorText = "Invalid Email";
+            return false;
+        }
 //        creating shop keeper object with given data
         ShopKeeper shopKeeper = new ShopKeeper(nameInputText,shopNameInputText,emailInputText);
 //        check already an user and if not, then create account and send verification email

@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
 import edu.univdhaka.cse.cse2216.myshop.Cart;
@@ -259,7 +263,7 @@ public class FirebaseDatabase {
                             else
                             {
                                 Log.d("noman","untracked problem");
-                                Toast.makeText(context,"Connect to Internet",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,"Please Sign Up first",Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -824,5 +828,13 @@ public class FirebaseDatabase {
 
                     }
                 });
+    }
+    public static boolean isEmailAddressValid(String email)
+    {
+        final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_REGEX,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.find();
+
     }
 }
