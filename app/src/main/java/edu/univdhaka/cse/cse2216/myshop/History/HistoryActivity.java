@@ -1,12 +1,10 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.History;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,8 +12,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Objects;
+
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.SelectDate;
 
 public class HistoryActivity extends AppCompatActivity {
     private CartAdaptor cartAdaptor;

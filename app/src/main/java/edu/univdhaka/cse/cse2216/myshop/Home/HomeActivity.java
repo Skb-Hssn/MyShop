@@ -1,22 +1,19 @@
 package edu.univdhaka.cse.cse2216.myshop.Home;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,14 +22,17 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSale;
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
-import edu.univdhaka.cse.cse2216.myshop.HistoryActivity;
-import edu.univdhaka.cse.cse2216.myshop.Item;
-import edu.univdhaka.cse.cse2216.myshop.ProductActivity;
+
+import edu.univdhaka.cse.cse2216.myshop.History.CartDetailsActivity;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.History.HistoryActivity;
+import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
+
 import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -52,6 +52,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+//        seeUser();
 
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
@@ -152,22 +154,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO: Get the store name from FIREBASE
     * */
     public void setHomeNavigationHeaderStoreName() {
-        String name = "ABCDE";
-        homeNavigationHeaderStoreName.setText(name);
+//        String name = FirebaseDatabase.getCurrentShopKeeper().getShopName();
+        homeNavigationHeaderStoreName.setText("name");
     }
 
     /*
      * TODO: Get the email from FIREBASE
     * */
     public void setHomeNavigationHeaderEmail() {
-        String email = "abcdef@gmail.com";
-        homeNavigationHeaderEmail.setText(email);
+//        String email = FirebaseDatabase.getCurrentShopKeeper().getEmail();
+        homeNavigationHeaderEmail.setText("email");
     }
 
     /*
     * TODO: set sign out state in FIREBASE
     * */
     public void signOut() {
+//        FirebaseDatabase.signOut();
         Intent intent = new Intent(HomeActivity.this, Login.class);
         startActivity(intent);
         homeDrawerLayout.closeDrawer(GravityCompat.START);
@@ -189,6 +192,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO: Get today's total amount of sale From FIREBASE
     * */
     public void setTodayTotalSale() {
+//        FirebaseDatabase.getDaySaleTotal();
         String totalSale = "550";
         totalAmountToday.setText(totalSale);
     }
@@ -201,4 +205,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(HomeActivity.this, AddSale.class);
         startActivity(intent);
     }
+
+//    debug purpose noman
+//    private void seeUser()
+//    {
+//        ShopKeeper shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
+//        Log.d("noman",shopKeeper.getName());
+//        Log.d("noman",shopKeeper.getEmail());
+//        Log.d("noman",shopKeeper.getShopName());
+//    }
 }

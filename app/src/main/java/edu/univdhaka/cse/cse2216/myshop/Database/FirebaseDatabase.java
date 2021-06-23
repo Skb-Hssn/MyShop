@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.Database;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -7,48 +7,45 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+import android.location.Address;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
-import edu.univdhaka.cse.cse2216.myshop.Authentication.SignUp;
+import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.History.CartAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.R;
+import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
@@ -62,15 +59,18 @@ public class FirebaseDatabase {
     {
         authentication = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authentication.getCurrentUser();
+
         if(firebaseUser == null)
             return false;
         if(firebaseUser.isEmailVerified() == false)
             return false;
+        Log.d("noman",firebaseUser.getEmail());
         return true;
     }
     public static void alreadyAnUser(ShopKeeper shopKeeper, String password, Context context)
     {
         authentication = FirebaseAuth.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
         authentication.fetchSignInMethodsForEmail(shopKeeper.getEmail())
                 .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                     @Override
@@ -78,10 +78,11 @@ public class FirebaseDatabase {
                             boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
                             if(isNewUser)
                             {
-                                signUp(shopKeeper,password,context);
+                                signUp(shopKeeper,password,context,progressDialog);
                             }
                             else
                             {
+                                progressDialog.dismiss();
                                 Toast.makeText(context,"Already have an account",Toast.LENGTH_SHORT).show();
                             }
 
@@ -90,13 +91,13 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-
+                        progressDialog.dismiss();
                     }
                 });
     }
-    public static void signUp(ShopKeeper shopKeeper, String password, Context context)
+    public static void signUp(ShopKeeper shopKeeper, String password, Context context,ProgressDialog progressDialog)
     {
-        ProgressDialog progressDialog = getProgressDialog(context);
+
         authentication = FirebaseAuth.getInstance();
         authentication.createUserWithEmailAndPassword(shopKeeper.getEmail(),password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -105,12 +106,12 @@ public class FirebaseDatabase {
                         if(task.isSuccessful())
                         {
                             sendVerificationEmail(authentication,context);
-                            progressDialog.dismiss();
-                            storeUser(shopKeeper,context);
+//                            progressDialog.dismiss();
+                            storeUser(shopKeeper,context,progressDialog);
 //                            go to home
-                            Toast.makeText(context,"Please verify your Email and sign In",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(context, Login.class);
-                            context.startActivity(intent);
+//                            Toast.makeText(context,"Please verify your Email and sign In",Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(context, Login.class);
+//                            context.startActivity(intent);
 
                         }
                         else
@@ -134,6 +135,47 @@ public class FirebaseDatabase {
     {
         authentication = FirebaseAuth.getInstance();
         myDatabase = FirebaseFirestore.getInstance();
+        myDatabase.collection("users").whereEqualTo("email",email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            String name,email,shopName;
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult())
+                            {
+                                name = documentSnapshot.getString("name");
+                                email = documentSnapshot.getString("email");
+                                shopName = documentSnapshot.getString("shopName");
+                                currentShopKeeper = new ShopKeeper(name,shopName,email);
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(context, HomeActivity.class);
+                                context.startActivity(intent);
+                            }
+
+
+                        }
+                        else
+                        {
+                            progressDialog.dismiss();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+    public static void setCurrentShopKeeper(Context context)
+    {
+        authentication = FirebaseAuth.getInstance();
+        myDatabase = FirebaseFirestore.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
+        FirebaseUser firebaseUser = authentication.getCurrentUser();
+        assert firebaseUser != null;
+        String email = firebaseUser.getEmail();
         myDatabase.collection("users").whereEqualTo("email",email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -221,8 +263,7 @@ public class FirebaseDatabase {
                             else
                             {
                                 Log.d("noman","untracked problem");
-                                Toast.makeText(context,"Email or password is wrong",Toast.LENGTH_SHORT).show();
-                                errorText.setText("Email or password is wrong");
+                                Toast.makeText(context,"Please Sign Up first",Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -308,7 +349,7 @@ public class FirebaseDatabase {
     }
 
 
-    public static void storeUser(ShopKeeper shopKeeper,Context context)
+    public static void storeUser(ShopKeeper shopKeeper,Context context,ProgressDialog progressDialog)
     {
 //        ProgressDialog progressDialog = getProgressDialog(context);
         authentication = FirebaseAuth.getInstance();
@@ -318,17 +359,30 @@ public class FirebaseDatabase {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
 //                        progressDialog.dismiss();
+                        if(task.isSuccessful())
+                        {
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"Please verify your Email and sign In",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, Login.class);
+                            context.startActivity(intent);
+                        }
+                        else
+                        {
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"Can't save user",Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-//                        progressDialog.dismiss();
+                        progressDialog.dismiss();
                     }
                 });
 
     }
-    public static void addExistingProduct(Context context,Product product)
+    public static void addExistingProduct(Context context, Product product)
     {
 //        ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
@@ -392,7 +446,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getProducts(Context context,ProductAdaptor productAdaptor)
+    public static void getProducts(Context context, ProductAdaptor productAdaptor)
     {
 
         authentication = FirebaseAuth.getInstance();
@@ -479,7 +533,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void addCart(Context context,Cart cart)
+    public static void addCart(Context context, Cart cart)
     {
         Log.d("noman","cart");
         ProgressDialog progressDialog = getProgressDialog(context);
@@ -512,7 +566,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getCarts(Context context,CartAdaptor cartAdaptor,String date)
+    public static void getCarts(Context context, CartAdaptor cartAdaptor, String date)
     {
         Log.d("noman",date);
         authentication = FirebaseAuth.getInstance();
@@ -650,7 +704,7 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    public static void getProducts(Context context,ItemAdaptor itemAdaptor)
+    public static void getProducts(Context context, ItemAdaptor itemAdaptor)
     {
 
         authentication = FirebaseAuth.getInstance();
@@ -756,5 +810,31 @@ public class FirebaseDatabase {
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+    public static void resetPassword(String email)
+    {
+        authentication = FirebaseAuth.getInstance();
+
+        authentication.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+
+                    }
+                });
+    }
+    public static boolean isEmailAddressValid(String email)
+    {
+        final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_REGEX,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.find();
+
     }
 }

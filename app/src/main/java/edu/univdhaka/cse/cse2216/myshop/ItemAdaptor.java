@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+
 public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> implements Filterable {
     private Context context;
     private ArrayList<Product> availableItems;

@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.History;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.History.HistoryActivity;
+import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder> {
     TextView timeText;
@@ -74,7 +75,7 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
     }
     public void goToDetailActivity(Cart cart)
     {
-        Intent intent = new Intent(context,CartDetailsActivity.class);
+        Intent intent = new Intent(context, CartDetailsActivity.class);
         intent.putExtra("cartObject",cart);
         context.startActivity(intent);
     }

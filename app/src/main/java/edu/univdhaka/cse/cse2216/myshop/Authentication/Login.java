@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import edu.univdhaka.cse.cse2216.myshop.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity {
 
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(v -> {
+
             if(validAccount()) {
                 Intent intent = new Intent(Login.this, HomeActivity.class);
                 startActivity(intent);
@@ -57,12 +58,23 @@ public class Login extends AppCompatActivity {
     /*
     * TODO : Check in firebase if it is a valid account
     * */
+
     public boolean validAccount() {
+
+        return true;
+
 //        String email = emailInput.getEditText().getText().toString();
 //        String password = passwordInput.getEditText().getText().toString();
 //
 //        if(email.equals("") || password.equals("")) {
-//            return false;
+//            errorText.setText("Field can't be empty");
+//            return;
+//        }
+//        if(!FirebaseDatabase.isEmailAddressValid(email))
+//        {
+//            Log.d("noman","Invalid");
+//            errorText.setText("Invalid Email");
+//            return;
 //        }
 //
 ////        if(email.equals("ABC") && password.equals("DEF")) return true;
@@ -70,7 +82,6 @@ public class Login extends AppCompatActivity {
 ////        return false;
 ////        sign in from firebase and go to home if email and password is correct
 //        FirebaseDatabase.signIn(email,password,Login.this,errorText);
-//        return true;
-        return true;
+
     }
 }

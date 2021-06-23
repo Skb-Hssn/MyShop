@@ -10,18 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity
-            android:name=".HistoryActivity"
-            android:parentActivityName=".Home.HomeActivity"
+        <activity android:name=".History.CartDetailsActivity"
+            android:parentActivityName=".History.HistoryActivity"
             android:theme="@style/Theme.MaterialComponents.Light"/>
 
         <activity
-            android:name=".AddProductActivity"
+            android:name=".History.HistoryActivity"
+            android:parentActivityName=".Home.HomeActivity"
             android:theme="@style/Theme.MaterialComponents.Light"
-            android:parentActivityName=".ProductActivity"
             />
+
         <activity
-            android:name=".ProductActivity"
+            android:name=".ProductScreen.AddProductActivity"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:parentActivityName=".ProductScreen.ProductActivity"
+            />
+
+        <activity
+            android:name=".ProductScreen.ProductActivity"
             android:parentActivityName=".Home.HomeActivity"
             android:theme="@style/Theme.MaterialComponents.Light"/>
 
@@ -31,25 +37,30 @@
 
         <activity
             android:name=".Home.HomeActivity"
-            android:label="@string/home" />
+            android:label="@string/home"/>
+
         <activity
             android:name=".Authentication.SignUp"
             android:label="@string/sign_up"
             android:parentActivityName=".Authentication.Login"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".Authentication.Login"
             android:label="@string/login"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
+
         <activity
             android:name=".SplashScreen"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
