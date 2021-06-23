@@ -27,8 +27,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSale;
 import edu.univdhaka.cse.cse2216.myshop.Authentication.Login;
+import edu.univdhaka.cse.cse2216.myshop.HistoryActivity;
 import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,8 +84,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         /*
-        * Set up navigation header text
-        * */
+         * Set up navigation header text
+         */
         setHomeNavigationHeaderStoreName();
         setHomeNavigationHeaderEmail();
 
@@ -93,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setTodayTotalSale();
 
 
-        productItem.setOnMenuItemClickListener(item12 -> {
+        productItem.setOnMenuItemClickListener(v -> {
             openProductActivity();
             homeDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -111,7 +114,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         addSaleButton.setOnClickListener(v -> {
-
+            addSale();
         });
     }
 
@@ -133,14 +136,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO : Open product Activity.
     * */
     public void openProductActivity() {
-
+        Intent intent = new Intent(HomeActivity.this, ProductActivity.class);
+        startActivity(intent);
     }
 
     /*
     * TODO: Open History Activity
     * */
     public void openHistoryActivity() {
-
+        Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     /*
@@ -193,6 +198,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO : Make Add Sale Activity.
     * */
     public void addSale() {
-
+        Intent intent = new Intent(HomeActivity.this, AddSale.class);
+        startActivity(intent);
     }
 }

@@ -15,7 +15,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
+        android:visibility="visible"
         app:headerLayout="@layout/home_nav_header"
         app:menu="@menu/home_nav_menu">
 
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/button_background"
+            android:background="@drawable/sign_out_button_background"
             android:text="@string/sign_out"
             android:textColor="@color/white" />
 

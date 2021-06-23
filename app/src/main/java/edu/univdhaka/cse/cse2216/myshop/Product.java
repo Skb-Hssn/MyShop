@@ -26,6 +26,7 @@ public class Product implements Serializable,Cloneable,Comparable<Product> {
         this.availableQuantity = availableQuantity;
         this.soldPrice = soldPrice;
     }
+
     public Product(String name, String companyName, String unit, double availableQuantity, double soldPrice,String firebaseProductId)
     {
         this.name = name;

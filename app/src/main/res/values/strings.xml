@@ -21,7 +21,25 @@
     <string name="history">History</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name ="sign_out">Sign Out</string>
+    <string name="sign_out">Sign Out</string>
     <string name="total">Total</string>
     <string name="today">Today</string>
+    <string name="done">Done</string>
+    <string name="discount">Discount</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="payable_amount">Payable Amount</string>
+    <string name="zero_taka">0 ৳</string>
+    <string name="item_name">Item name</string>
+    <string name="taka_logo">৳</string>
+    <string name="add_item">Add Item</string>
+    <string name="add_quantity">Add Quantity</string>
+    <string name="select_item">Select Item</string>
+    <string name="quantity">Quantity</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="item_not_found">Item not found.</string>
+    <string name="not_enough_quantity">Not enough quantity.</string>
+    <string name="quantity_cant_be_empty">Quantity cannot be empty.</string>
+    <string name="discount_error">Discount cannot be greater than total amount</string>
+    <string name="discount_cant_be_empty">Discount cannot be empty.</string>
 </resources>
