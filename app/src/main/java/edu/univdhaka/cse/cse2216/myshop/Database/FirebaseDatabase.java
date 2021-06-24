@@ -198,7 +198,6 @@ public class FirebaseDatabase {
                                 currentShopKeeper = new ShopKeeper(name,shopName,email);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(context, HomeActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 context.startActivity(intent);
                             }
 
