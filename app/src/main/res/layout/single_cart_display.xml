@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#D7DBE4"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cartContainer"
         android:layout_width="392dp"
-        android:layout_height="176dp"
+        android:layout_height="175dp"
         android:background="@drawable/border"
         tools:layout_editor_absoluteX="-3dp"
         tools:layout_editor_absoluteY="-1dp">

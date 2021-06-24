@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -32,10 +34,12 @@ import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Item;
 import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.R.id;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue.AddSaleAddItemDialogueListener, DiscountDialog.DiscountDialogListener{
 
     private RecyclerView recyclerView;
@@ -96,11 +100,24 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     AddSale.super.onBackPressed();
+                                    updateDatabaseWhenCancel();
                                     finish();
                                 }
                             }
                     ).setNegativeButton("No", null)
                     .show();
+        }
+    }
+
+    private void updateDatabaseWhenCancel() {
+        for(Item item : adapter.getItems())
+        {
+            Product itemProduct = (Product)item;
+
+            FirebaseDatabase.updateJust(itemProduct);
+//            Log.d("noman","product");
+            Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
+
         }
     }
 
@@ -159,7 +176,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * Discount Dialog opener
      */
     public void openDiscountDialog() {
-        DiscountDialog dialog = new DiscountDialog(currentTotal);
+        DiscountDialog dialog = new DiscountDialog(newCart.getTotal());
         dialog.show(getSupportFragmentManager(), "Discount");
     }
 
@@ -250,8 +267,15 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * Done Button
      */
     public void setDone() {
+        Log.d("amount",String.valueOf(newCart.getTotal()));
+        if(String.valueOf(newCart.getTotal()).compareTo("0.0") == 0)
+        {
+            finish();
+            return;
+        }
         updateDataBase();
         done = true;
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

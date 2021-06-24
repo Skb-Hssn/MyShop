@@ -29,7 +29,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     private Context context;
     private ArrayList<Product> availableItems;
     private AddSaleAdapter addSaleAdapter;
-    private ArrayList<Item> soldItems;
+    private ArrayList<Product> soldProducts;
     private double cost = 0;
     TextView nameText,companyNameText,quantityText,priceText;
     public ItemAdaptor(Context context,AddSaleAdapter addSaleAdapter)
@@ -37,6 +37,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         this.context = context;
         availableItems = new ArrayList<>();
         this.addSaleAdapter = addSaleAdapter;
+        soldProducts = new ArrayList<>();
     }
     @NonNull
     @NotNull
@@ -92,19 +93,21 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                     itemPrice = product.getSoldPrice();
                     quantity = Double.parseDouble(quantityString);
                     price = itemPrice*quantity;
-//                    cost = price;
-//                    Product cartProduct = new Product(product.getName(), product.getCompanyName(), product.getUnit(),quantity,price);
+
                     Item cartItem = new Item(product,quantity,price);
                     boolean flag = false;
-                    for(Item item : addSaleAdapter.getItems())
+                    Log.d("size",String.valueOf(addSaleAdapter.getItems().size()));
+                    for (Product product1 : soldProducts)
                     {
-                        if(cartItem == item)
+                        if(product1 == product)
                         {
                             flag = true;
+                            break;
                         }
                     }
 
                     if(!flag) {
+                        soldProducts.add(product);
                         addSaleAdapter.addItem(cartItem);
                         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
                         notifyDataSetChanged();
@@ -184,7 +187,5 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
     }
 
-    public ArrayList<Item> getSoldItems() {
-        return soldItems;
-    }
+
 }

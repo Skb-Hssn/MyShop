@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_color"
     tools:context=".HistoryActivity">
 
     <TextView
@@ -25,23 +26,23 @@
         android:id="@+id/dateTextViewInHistory"
         android:layout_width="143dp"
         android:layout_height="40dp"
-        android:gravity="center"
         android:background="#F10808"
-        android:textColor="@color/black"
+        android:gravity="center"
         android:text="02-02-2021"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
+        app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.024" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cardRecuycelerView"
-        android:layout_width="409dp"
-        android:layout_height="648dp"
+        android:layout_width="388dp"
+        android:layout_height="657dp"
         android:layout_marginTop="80dp"
+        android:background="@color/primary_color"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#A78E8EDC"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="3dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

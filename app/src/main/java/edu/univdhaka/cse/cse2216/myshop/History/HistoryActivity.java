@@ -11,7 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
@@ -33,9 +35,12 @@ public class HistoryActivity extends AppCompatActivity {
         cartRecycelerView.setAdapter(cartAdaptor);
         cartRecycelerView.setLayoutManager(new LinearLayoutManager(this));
         dateText = (TextView)findViewById(R.id.dateTextViewInHistory);
-        String date = LocalDate.now().toString();
-        dateText.setText(date);
-        FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,date);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatter.format(date);
+        String dateForFirebase = LocalDate.now().toString();
+        dateText.setText(dateString);
+        FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,dateForFirebase);
     }
 
     @Override

@@ -26,11 +26,11 @@ public class DiscountDialog extends AppCompatDialogFragment {
     Button confirmButton;
     Button cancelButton;
     DiscountDialogListener listener;
-    int total = 0;
+    double total = 0;
     String discount;
     String errorText;
 
-    DiscountDialog(int total) {
+    DiscountDialog(double total) {
         this.total = total;
     }
 
@@ -51,7 +51,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
         confirmButton = view.findViewById(R.id.discount_confirm_button);
         cancelButton = view.findViewById(R.id.discount_cancel_button);
 
-        totalAmountTextView.setText(Integer.toString(total));
+        totalAmountTextView.setText(String.valueOf(total));
 
         confirmButton.setOnClickListener(v ->
                 {
@@ -90,8 +90,8 @@ public class DiscountDialog extends AppCompatDialogFragment {
             errorText = getResources().getString(R.string.discount_cant_be_empty);
             return false;
         }
-        int d = Integer.parseInt(discount);
-        if(d > total) {
+        double discountValue = Double.valueOf(discount);
+        if(discountValue > total) {
             errorText = getResources().getString(R.string.discount_error);
             return false;
         }

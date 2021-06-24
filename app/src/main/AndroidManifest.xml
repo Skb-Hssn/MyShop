@@ -12,23 +12,27 @@
 
         <activity android:name=".History.CartDetailsActivity"
             android:parentActivityName=".History.HistoryActivity"
-            android:theme="@style/Theme.MaterialComponents.Light"/>
+            android:label="DETAILS"
+            android:theme="@style/Theme.MyShop"/>
 
         <activity
             android:name=".History.HistoryActivity"
+            android:label="HISTORY"
             android:parentActivityName=".Home.HomeActivity"
-            android:theme="@style/Theme.MaterialComponents.Light"
+            android:theme="@style/Theme.MyShop"
             />
 
         <activity
             android:name=".ProductScreen.AddProductActivity"
-            android:theme="@style/Theme.MaterialComponents.Light"
             android:parentActivityName=".ProductScreen.ProductActivity"
+            android:label="ADD NEW"
+            android:theme="@style/Theme.MyShop"
             />
 
         <activity
             android:name=".ProductScreen.ProductActivity"
             android:parentActivityName=".Home.HomeActivity"
+            android:label="PRODUCTS"
             android:theme="@style/Theme.MyShop"/>
 
         <activity android:name=".AddSale.AddSale"
@@ -38,7 +42,7 @@
         <activity
 
             android:name=".Home.HomeActivity"
-            android:label="@string/home"/>
+            android:label="HOME"/>
 
         <activity
             android:name=".Authentication.SignUp"
