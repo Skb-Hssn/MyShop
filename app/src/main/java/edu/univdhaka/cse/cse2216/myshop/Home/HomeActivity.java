@@ -214,4 +214,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        Log.d("noman",shopKeeper.getEmail());
 //        Log.d("noman",shopKeeper.getShopName());
 //    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseDatabase.getDaySaleTotal(HomeActivity.this, totalAmountToday);
+
+    }
 }

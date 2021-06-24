@@ -30,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -706,7 +707,7 @@ public class FirebaseDatabase {
     }
     public static void getProducts(Context context, ItemAdaptor itemAdaptor)
     {
-
+        Log.d("noman","getProducts");
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null) {
@@ -759,8 +760,9 @@ public class FirebaseDatabase {
                 });
 
     }
-    public static void getDaySaleTotal(Context context, TextView textView,String date)
+    public static void getDaySaleTotal(Context context, TextView textView)
     {
+        String date = LocalDate.now().toString();
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
@@ -791,7 +793,7 @@ public class FirebaseDatabase {
                             }
 
 
-                            textView.setText(String.valueOf(total)+" $");
+                            textView.setText(String.valueOf(total));
                             Log.d("nomansalman",String.valueOf(carts.size()));
                             progressDialog.dismiss();
                         }

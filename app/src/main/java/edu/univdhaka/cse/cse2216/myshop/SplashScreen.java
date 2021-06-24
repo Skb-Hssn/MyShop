@@ -28,27 +28,27 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent intent = new Intent(SplashScreen.this, Login.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(SplashScreen.this, Login.class);
+//                startActivity(intent);
+//                finish();
 
-//                if(FirebaseDatabase.isAlreadyLoggedIn())
-//                {
-//                    Log.d("noman","logged in");
-//                    FirebaseDatabase.setCurrentShopKeeper(SplashScreen.this);
-////                    get data from firebase
-////                    Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
-////                    startActivity(intent);
-//                }
-//                else {
-//                    Log.d("noman","not logged in");
-//
-//                    Intent intent = new Intent(SplashScreen.this, Login.class);
+                if(FirebaseDatabase.isAlreadyLoggedIn())
+                {
+                    Log.d("noman","logged in");
+                    FirebaseDatabase.setCurrentShopKeeper(SplashScreen.this);
+//                    get data from firebase
+//                    Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
 //                    startActivity(intent);
-//                    finish();
-////                    Intent intent = new Intent(SplashScreen.this, HistoryActivity.class);
-////                    startActivity(intent);
-//                }
+                }
+                else {
+                    Log.d("noman","not logged in");
+
+                    Intent intent = new Intent(SplashScreen.this, Login.class);
+                    startActivity(intent);
+                    finish();
+//                    Intent intent = new Intent(SplashScreen.this, HistoryActivity.class);
+//                    startActivity(intent);
+                }
 
             }
         }, SPLASH_SCREEN_TIMER);

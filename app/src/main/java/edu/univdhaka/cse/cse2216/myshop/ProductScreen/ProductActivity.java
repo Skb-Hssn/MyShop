@@ -136,45 +136,6 @@ public class ProductActivity extends AppCompatActivity {
     {
         productAdaptor.setList(products);
     }
-    public void seeItem()
-    {
-        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(ProductActivity.this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.sale_items,null);
-        builder.setView(view);
-        RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
-        SearchView searchView = (SearchView)view.findViewById(R.id.searchItem);
-        ItemAdaptor itemAdaptor =new ItemAdaptor(ProductActivity.this);
 
-
-        FirebaseDatabase.getProducts(builder.getContext(),itemAdaptor);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                itemAdaptor.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        itemRecyclerView.setAdapter(itemAdaptor);
-        itemRecyclerView.setLayoutManager(new LinearLayoutManager(ProductActivity.this));
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
-        ImageButton closeButton = (ImageButton)view.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-    }
 
 }

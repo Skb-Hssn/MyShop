@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +15,9 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.R.id;
 
@@ -39,10 +48,14 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     private AppCompatButton discountButton;
     private AppCompatButton doneButton;
     private AppCompatButton backButton;
+//    noman
 
+    Cart newCart = new Cart();
+//    ArrayList<Item> itemList = newCart.getItemList();
     private int currentTotal = 0;
     private int discount = 0;
     private int payableAmount = 0;
+
     private boolean done = false;
 
     ArrayList<AddSaleItem> cart = new ArrayList<>();
@@ -95,8 +108,51 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * add item
      */
     public void openAddItemDialogue() {
-        AddSaleAddItemDialogue dialogue = new AddSaleAddItemDialogue(availableItems);
-        dialogue.show(getSupportFragmentManager(), "Add Item");
+            seeItem();
+//        AddSaleAddItemDialogue dialogue = new AddSaleAddItemDialogue(availableItems);
+//        dialogue.show(getSupportFragmentManager(), "Add Item");
+    }
+    public void seeItem()
+    {
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(AddSale.this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.sale_items,null);
+        builder.setView(view);
+        RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
+        SearchView searchView = (SearchView)view.findViewById(R.id.searchItem);
+        ItemAdaptor itemAdaptor = new ItemAdaptor(AddSale.this,adapter);
+
+
+        FirebaseDatabase.getProducts(builder.getContext(),itemAdaptor);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                itemAdaptor.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        itemRecyclerView.setAdapter(itemAdaptor);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(AddSale.this));
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+        ImageButton closeButton = (ImageButton)view.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                totalAmountTextView.setText(String.valueOf(newCart.getTotal()));
+                payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
+            }
+        });
+
     }
 
     /*
@@ -153,7 +209,8 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         recyclerView = findViewById(R.id.add_sale_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new AddSaleAdapter(this, cart);
+//        adapter = new AddSaleAdapter(this, cart);
+        adapter = new AddSaleAdapter(AddSale.this,newCart);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -169,7 +226,9 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         discountTextView.setText(String.format("%s %s", discount, getResources().getString(R.string.taka_logo)));
 
         payableAmount = currentTotal - discount;
-        payableAmountTextView.setText(String.format("%s %s", payableAmount, getResources().getString(R.string.taka_logo)));
+        newCart.setDiscount(discount);
+        payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
+//        payableAmountTextView.setText(String.format("%s %s", payableAmount, getResources().getString(R.string.taka_logo)));
     }
 
     /*
@@ -184,7 +243,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * Set the updated itemList Firebase after done.
      */
     public void updateDataBase() {
-
+        FirebaseDatabase.addCart(AddSale.this,newCart);
     }
 
     /*

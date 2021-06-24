@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +22,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSaleAdapter;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 
 public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> implements Filterable {
     private Context context;
     private ArrayList<Product> availableItems;
+    private AddSaleAdapter addSaleAdapter;
     private ArrayList<Item> soldItems;
     private double cost = 0;
-    public ItemAdaptor(Context context)
+    TextView nameText,companyNameText,quantityText,priceText;
+    public ItemAdaptor(Context context,AddSaleAdapter addSaleAdapter)
     {
         this.context = context;
         availableItems = new ArrayList<>();
-        soldItems = new ArrayList<>();
+        this.addSaleAdapter = addSaleAdapter;
     }
     @NonNull
     @NotNull
@@ -45,7 +49,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ItemAdaptor.ViewHolder holder, int position) {
-        TextView nameText,companyNameText,quantityText,priceText;
+        Log.d("noman","calling");
         ImageButton addButton = (ImageButton)holder.itemView.findViewById(R.id.itemAddButton);
         nameText = (TextView)holder.itemView.findViewById(R.id.itemName);
         companyNameText = (TextView)holder.itemView.findViewById(R.id.itemCompany);
@@ -91,11 +95,26 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 //                    cost = price;
 //                    Product cartProduct = new Product(product.getName(), product.getCompanyName(), product.getUnit(),quantity,price);
                     Item cartItem = new Item(product,quantity,price);
-                    soldItems.add(cartItem);
-                    product.setAvailableQuantity(product.getAvailableQuantity()-quantity);
-                    notifyDataSetChanged();
+                    boolean flag = false;
+                    for(Item item : addSaleAdapter.getItems())
+                    {
+                        if(cartItem == item)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(!flag) {
+                        addSaleAdapter.addItem(cartItem);
+                        product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+                        notifyDataSetChanged();
 //                    FirebaseDatabase.updateJust(product);
-                    FirebaseDatabase.updateProduct(context,product);
+                        FirebaseDatabase.updateProduct(context, product);
+                    }
+                    else
+                    {
+                        Log.d("noman","item already in cart");
+                    }
 
                 }
             }
@@ -149,12 +168,19 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+
+            ImageButton addButton = (ImageButton)itemView.findViewById(R.id.itemAddButton);
+            nameText = (TextView)itemView.findViewById(R.id.itemName);
+            companyNameText = (TextView)itemView.findViewById(R.id.itemCompany);
+            quantityText = (TextView)itemView.findViewById(R.id.itemQuantity);
         }
     }
     public void setList(ArrayList<Product> products)
     {
+        Log.d("noman",String.valueOf(products.size()));
         this.availableItems = products;
-        notifyDataSetChanged();
+
+        this.notifyDataSetChanged();
 
     }
 

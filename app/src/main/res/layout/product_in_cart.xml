@@ -7,8 +7,8 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="413dp"
-        android:layout_height="144dp"
+        android:layout_width="391dp"
+        android:layout_height="140dp"
         android:background="@drawable/border">
 
         <TextView

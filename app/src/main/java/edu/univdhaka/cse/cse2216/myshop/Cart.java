@@ -16,7 +16,8 @@ import java.util.Date;
 public class Cart implements Serializable {
     private String date;
     private String time;
-    double discount,paidAmount;
+    private double discount,paidAmount,total;
+
     int id;
     private ArrayList<Item> itemList;
 
@@ -28,6 +29,8 @@ public class Cart implements Serializable {
         time = dateTimeFormatter.format(LocalTime.now());
         itemList = new ArrayList<>();
         this.id = 3;
+        paidAmount = 0;
+        total = 0;
 //        set id
     }
     public Cart(int id,String date,String time,double discount,double paidAmount,ArrayList<Item> itemList)
@@ -63,9 +66,13 @@ public class Cart implements Serializable {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+        paidAmount -= discount;
     }
     public void addItem(Item item)
     {
+        this.total += item.totalPrice;
+        this.paidAmount += item.totalPrice;
+        Log.d("noman",String.valueOf(paidAmount));
         itemList.add(item);
     }
 
@@ -75,6 +82,10 @@ public class Cart implements Serializable {
 
     public String getTime() {
         return time;
+    }
+    public double getTotal()
+    {
+        return this.total;
     }
 
     public void setItemList(ArrayList<Item> itemList) {
