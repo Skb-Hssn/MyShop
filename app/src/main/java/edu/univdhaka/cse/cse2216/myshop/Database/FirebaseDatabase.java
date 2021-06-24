@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.Database;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -47,6 +48,7 @@ import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
+import edu.univdhaka.cse.cse2216.myshop.SplashScreen;
 
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
@@ -151,7 +153,11 @@ public class FirebaseDatabase {
                                 currentShopKeeper = new ShopKeeper(name,shopName,email);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(context, HomeActivity.class);
+                                ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
                                 context.startActivity(intent);
+
+
+
                             }
 
 
@@ -192,6 +198,7 @@ public class FirebaseDatabase {
                                 currentShopKeeper = new ShopKeeper(name,shopName,email);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(context, HomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 context.startActivity(intent);
                             }
 

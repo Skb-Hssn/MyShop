@@ -36,6 +36,7 @@ public class SplashScreen extends AppCompatActivity {
                 {
                     Log.d("noman","logged in");
                     FirebaseDatabase.setCurrentShopKeeper(SplashScreen.this);
+
 //                    get data from firebase
 //                    Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
 //                    startActivity(intent);
@@ -45,12 +46,18 @@ public class SplashScreen extends AppCompatActivity {
 
                     Intent intent = new Intent(SplashScreen.this, Login.class);
                     startActivity(intent);
-                    finish();
 //                    Intent intent = new Intent(SplashScreen.this, HistoryActivity.class);
 //                    startActivity(intent);
                 }
 
+
             }
         }, SPLASH_SCREEN_TIMER);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.finish();
     }
 }
