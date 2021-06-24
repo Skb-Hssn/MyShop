@@ -9,7 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartHistoryRecycelerView"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="509dp"
         android:background="@color/primary_color"
         app:layout_constraintBottom_toBottomOf="parent"
