@@ -65,8 +65,9 @@ public class Cart implements Serializable {
     }
 
     public void setDiscount(double discount) {
-        this.discount = discount;
         paidAmount -= discount;
+        this.discount += discount;
+
     }
     public void addItem(Item item)
     {
