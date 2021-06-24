@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="7dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="391dp"
-        android:layout_height="140dp"
-        android:background="@drawable/border">
+        android:layout_width="393dp"
+        android:layout_height="144dp"
+        android:background="@drawable/border"
+        android:backgroundTint="@color/white">
 
         <TextView
             android:layout_width="139dp"
@@ -54,45 +55,48 @@
 
         <TextView
             android:id="@+id/nameInCartDeatail"
-            android:layout_width="194dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="156dp"
+            android:layout_width="193dp"
+            android:layout_height="31dp"
             android:gravity="center"
             android:text="TextView"
             android:textColor="#300606"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.88"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.045" />
+            app:layout_constraintVertical_bias="0.088" />
 
         <TextView
             android:id="@+id/quantityInCartDetail"
             android:layout_width="197dp"
             android:layout_height="29dp"
-            android:text="Company"
-            android:layout_marginStart="160dp"
             android:gravity="center"
+            android:text="Company"
             android:textColor="#300606"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.892"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.365" />
+            app:layout_constraintVertical_bias="0.382" />
 
         <TextView
             android:id="@+id/priceInCartDeatail"
             android:layout_width="198dp"
             android:layout_height="30dp"
-            android:layout_marginStart="164dp"
             android:gravity="center"
             android:text="TextView"
             android:textColor="#300606"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.917"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.698" />
+            app:layout_constraintVertical_bias="0.719" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

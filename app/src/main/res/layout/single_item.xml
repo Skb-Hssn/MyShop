@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:background="@color/white"
+
     android:layout_marginBottom="7dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="339dp"
         android:layout_height="114dp"
+        android:backgroundTint="@color/white"
         android:background="@drawable/border"
         tools:layout_editor_absoluteX="-3dp"
         tools:layout_editor_absoluteY="0dp">
