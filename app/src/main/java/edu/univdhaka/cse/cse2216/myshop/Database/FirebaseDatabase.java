@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.Database;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,7 @@ import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
+import edu.univdhaka.cse.cse2216.myshop.SplashScreen;
 
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
@@ -150,7 +153,11 @@ public class FirebaseDatabase {
                                 currentShopKeeper = new ShopKeeper(name,shopName,email);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(context, HomeActivity.class);
+                                ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
                                 context.startActivity(intent);
+
+
+
                             }
 
 
@@ -706,7 +713,7 @@ public class FirebaseDatabase {
     }
     public static void getProducts(Context context, ItemAdaptor itemAdaptor)
     {
-
+        Log.d("noman","getProducts");
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null) {
@@ -759,8 +766,9 @@ public class FirebaseDatabase {
                 });
 
     }
-    public static void getDaySaleTotal(Context context, TextView textView,String date)
+    public static void getDaySaleTotal(Context context, TextView textView)
     {
+        String date = LocalDate.now().toString();
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
@@ -791,7 +799,7 @@ public class FirebaseDatabase {
                             }
 
 
-                            textView.setText(String.valueOf(total)+" $");
+                            textView.setText(String.valueOf(total));
                             Log.d("nomansalman",String.valueOf(carts.size()));
                             progressDialog.dismiss();
                         }

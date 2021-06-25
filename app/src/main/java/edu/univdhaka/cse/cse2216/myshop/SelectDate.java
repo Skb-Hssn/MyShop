@@ -63,7 +63,7 @@ public class SelectDate extends DialogFragment implements DatePickerDialog.OnDat
         String date = yearString+"-"+monthString+"-"+dayString;
         Log.d("noman",date);
         Log.d("noman",String.valueOf(month));
-        dateText.setText(date);
+        dateText.setText(dayString+"/"+monthString+"/"+yearString);
         FirebaseDatabase.getCarts(view.getContext(),cartAdaptor,date);
 
     }

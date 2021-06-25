@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
@@ -22,6 +25,7 @@ public class HistoryActivity extends AppCompatActivity {
     private CartAdaptor cartAdaptor;
     private RecyclerView cartRecycelerView;
     private TextView dateText;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +37,12 @@ public class HistoryActivity extends AppCompatActivity {
         cartRecycelerView.setAdapter(cartAdaptor);
         cartRecycelerView.setLayoutManager(new LinearLayoutManager(this));
         dateText = (TextView)findViewById(R.id.dateTextViewInHistory);
-        String date = LocalDate.now().toString();
-        dateText.setText(date);
-        FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,date);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatter.format(date);
+        String dateForFirebase = LocalDate.now().toString();
+        dateText.setText(dateString);
+        FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,dateForFirebase);
     }
 
     @Override

@@ -10,12 +10,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.auth.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TextView dateToday;
     Button signOutButton;
     Button addSaleButton;
+    private ShopKeeper shopKeeper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
 
 //        seeUser();
-
+        shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
         homeToolbar = findViewById(R.id.home_toolbar);
@@ -155,7 +158,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * */
     public void setHomeNavigationHeaderStoreName() {
 //        String name = FirebaseDatabase.getCurrentShopKeeper().getShopName();
-        homeNavigationHeaderStoreName.setText("name");
+        homeNavigationHeaderStoreName.setText(shopKeeper.getShopName());
     }
 
     /*
@@ -163,7 +166,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * */
     public void setHomeNavigationHeaderEmail() {
 //        String email = FirebaseDatabase.getCurrentShopKeeper().getEmail();
-        homeNavigationHeaderEmail.setText("email");
+        homeNavigationHeaderEmail.setText(shopKeeper.getEmail());
     }
 
     /*
@@ -214,4 +217,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        Log.d("noman",shopKeeper.getEmail());
 //        Log.d("noman",shopKeeper.getShopName());
 //    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseDatabase.getDaySaleTotal(HomeActivity.this, totalAmountToday);
+
+    }
 }

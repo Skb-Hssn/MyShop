@@ -1,19 +1,25 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +30,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.R.id;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue.AddSaleAddItemDialogueListener, DiscountDialog.DiscountDialogListener{
 
     private RecyclerView recyclerView;
@@ -39,10 +52,14 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     private AppCompatButton discountButton;
     private AppCompatButton doneButton;
     private AppCompatButton backButton;
+//    noman
 
+    Cart newCart = new Cart();
+//    ArrayList<Item> itemList = newCart.getItemList();
     private int currentTotal = 0;
     private int discount = 0;
     private int payableAmount = 0;
+
     private boolean done = false;
 
     ArrayList<AddSaleItem> cart = new ArrayList<>();
@@ -83,6 +100,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     AddSale.super.onBackPressed();
+                                    updateDatabaseWhenCancel();
                                     finish();
                                 }
                             }
@@ -91,19 +109,74 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         }
     }
 
+    private void updateDatabaseWhenCancel() {
+        for(Item item : adapter.getItems())
+        {
+            Product itemProduct = (Product)item;
+
+            FirebaseDatabase.updateJust(itemProduct);
+//            Log.d("noman","product");
+            Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
+
+        }
+    }
+
     /*
      * add item
      */
     public void openAddItemDialogue() {
-        AddSaleAddItemDialogue dialogue = new AddSaleAddItemDialogue(availableItems);
-        dialogue.show(getSupportFragmentManager(), "Add Item");
+            seeItem();
+//        AddSaleAddItemDialogue dialogue = new AddSaleAddItemDialogue(availableItems);
+//        dialogue.show(getSupportFragmentManager(), "Add Item");
+    }
+    public void seeItem()
+    {
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(AddSale.this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.sale_items,null);
+        builder.setView(view);
+        RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
+        SearchView searchView = (SearchView)view.findViewById(R.id.searchItem);
+        ItemAdaptor itemAdaptor = new ItemAdaptor(AddSale.this,adapter);
+
+
+        FirebaseDatabase.getProducts(builder.getContext(),itemAdaptor);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                itemAdaptor.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        itemRecyclerView.setAdapter(itemAdaptor);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(AddSale.this));
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+        ImageButton closeButton = (ImageButton)view.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                totalAmountTextView.setText(String.valueOf(newCart.getTotal()));
+                payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
+            }
+        });
+
     }
 
     /*
      * Discount Dialog opener
      */
     public void openDiscountDialog() {
-        DiscountDialog dialog = new DiscountDialog(currentTotal);
+        DiscountDialog dialog = new DiscountDialog(newCart.getTotal());
         dialog.show(getSupportFragmentManager(), "Discount");
     }
 
@@ -153,7 +226,8 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         recyclerView = findViewById(R.id.add_sale_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new AddSaleAdapter(this, cart);
+//        adapter = new AddSaleAdapter(this, cart);
+        adapter = new AddSaleAdapter(AddSale.this,newCart);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -165,11 +239,13 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      */
     @Override
     public void setDiscount(int amount) {
-        discount = amount;
+
+        discount += amount;
         discountTextView.setText(String.format("%s %s", discount, getResources().getString(R.string.taka_logo)));
 
-        payableAmount = currentTotal - discount;
-        payableAmountTextView.setText(String.format("%s %s", payableAmount, getResources().getString(R.string.taka_logo)));
+
+        newCart.setDiscount(amount);
+        payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
     }
 
     /*
@@ -184,15 +260,22 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * Set the updated itemList Firebase after done.
      */
     public void updateDataBase() {
-
+        FirebaseDatabase.addCart(AddSale.this,newCart);
     }
 
     /*
      * Done Button
      */
     public void setDone() {
+        Log.d("amount",String.valueOf(newCart.getTotal()));
+        if(String.valueOf(newCart.getTotal()).compareTo("0.0") == 0)
+        {
+            finish();
+            return;
+        }
         updateDataBase();
         done = true;
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
