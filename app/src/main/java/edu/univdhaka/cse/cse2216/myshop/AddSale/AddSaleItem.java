@@ -1,13 +1,19 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import android.annotation.SuppressLint;
+
+import java.util.Locale;
+
 public class AddSaleItem {
     private String itemName;
-    private int itemQuantity;
-    private int itemUnitPrice;
-    private int itemTotalPrice;
+    private double itemQuantity;
+    private double itemUnitPrice;
+    private double itemTotalPrice;
     private String unit;
+    private String itemId;
 
-    AddSaleItem(String itemName, int itemQuantity, int itemUnitPrice) {
+
+    AddSaleItem(String itemName, double itemQuantity, double itemUnitPrice) {
         this.itemName = itemName;
         this.itemQuantity = itemQuantity;
         this.itemUnitPrice = itemUnitPrice;
@@ -15,7 +21,7 @@ public class AddSaleItem {
         this.unit = "pc";
     }
 
-    AddSaleItem(String itemName, int itemQuantity, int itemUnitPrice, String unit) {
+    AddSaleItem(String itemName, double itemQuantity, double itemUnitPrice, String unit) {
         this.itemName = itemName;
         this.itemQuantity = itemQuantity;
         this.itemUnitPrice = itemUnitPrice;
@@ -31,23 +37,23 @@ public class AddSaleItem {
         this.itemName = itemName;
     }
 
-    public int getItemQuantity() {
+    public double getItemQuantity() {
         return itemQuantity;
     }
 
-    public void setItemQuantity(int itemQuantity) {
+    public void setItemQuantity(double itemQuantity) {
         this.itemQuantity = itemQuantity;
     }
 
-    public int getItemUnitPrice() {
+    public double getItemUnitPrice() {
         return itemUnitPrice;
     }
 
-    public void setItemUnitPrice(int itemUnitPrice) {
+    public void setItemUnitPrice(double itemUnitPrice) {
         this.itemUnitPrice = itemUnitPrice;
     }
 
-    public int getItemTotalPrice() {
+    public double getItemTotalPrice() {
         return itemTotalPrice;
     }
 
@@ -56,10 +62,10 @@ public class AddSaleItem {
     }
 
     public String getItemQuantityText() {
-        return itemQuantity + " " + unit + " @ ৳" + itemUnitPrice;
+        return String.format(Locale.ENGLISH, "%.3f %s @ ৳ %.3f", itemQuantity, unit, itemUnitPrice);
     }
 
     public String getItemTotalPriceText() {
-        return "৳" + Integer.toString(itemTotalPrice);
+        return String.format("৳%.3f", itemTotalPrice);
     }
 }

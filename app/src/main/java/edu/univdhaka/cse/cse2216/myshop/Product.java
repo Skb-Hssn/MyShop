@@ -73,6 +73,7 @@ public class Product implements Serializable,Cloneable,Comparable<Product> {
         return this.firebaseProductId;
     }
 
+
     @NonNull
     @NotNull
     @Override
