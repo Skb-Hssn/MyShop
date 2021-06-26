@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSaleAdapter;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
@@ -184,6 +185,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     {
         Log.d("noman",String.valueOf(products.size()));
         this.availableItems = products;
+        Collections.sort(availableItems);
         this.originalList = new ArrayList<>();
         originalList.addAll(products);
         this.notifyDataSetChanged();

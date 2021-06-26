@@ -94,7 +94,8 @@ public class Product implements Serializable,Cloneable,Comparable<Product> {
         {
             return 0;
         }
-        return 1;
+        return this.name.toLowerCase().compareTo(o.getName().toLowerCase());
 
     }
+
 }

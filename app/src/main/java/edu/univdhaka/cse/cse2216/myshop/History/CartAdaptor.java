@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.History.HistoryActivity;
@@ -40,6 +42,7 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
     {
         this.cartInList = carts;
         this.carts = carts;
+        Collections.sort(this.carts);
         notifyDataSetChanged();
     }
     @NonNull

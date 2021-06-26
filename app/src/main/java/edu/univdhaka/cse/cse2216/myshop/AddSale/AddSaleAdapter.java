@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.Item;
@@ -71,6 +72,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     }
     public void setItems(ArrayList<Item> items)
     {
+
         this.items = items;
         notifyDataSetChanged();
     }
