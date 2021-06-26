@@ -41,9 +41,11 @@ public class ProductAdaptorInCart extends RecyclerView.Adapter<ProductAdaptorInC
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProductAdaptorInCart.CartViewHolder holder, int position) {
             Log.d("noman",items.toString());
-            nameText.setText(items.get(position).getName()+" © "+items.get(position).getCompanyName());
-            quantityText.setText(String.valueOf(items.get(position).getSoldQuantity()));
-            totalPriceText.setText(String.valueOf(items.get(position).getTotalPrice())+" "+context.getString(R.string.taka_logo));
+            String itemNameWithCompany = String.format("%s %s %s",items.get(position).getName()," © ",items.get(position).getCompanyName());
+            nameText.setText(itemNameWithCompany);
+            String quantityWithUnit = String.format("%s %s",String.valueOf(items.get(position).getSoldQuantity()),items.get(position).getUnit());
+            quantityText.setText(quantityWithUnit);
+            totalPriceText.setText(String.format("%s %s",String.valueOf(items.get(position).getTotalPrice()),context.getString(R.string.taka_logo)));
     }
 
     @Override

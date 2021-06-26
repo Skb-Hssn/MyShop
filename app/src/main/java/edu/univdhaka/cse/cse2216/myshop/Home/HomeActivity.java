@@ -173,7 +173,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * TODO: set sign out state in FIREBASE
     * */
     public void signOut() {
-//        FirebaseDatabase.signOut();
+        FirebaseDatabase.signOut();
         Intent intent = new Intent(HomeActivity.this, Login.class);
         startActivity(intent);
         homeDrawerLayout.closeDrawer(GravityCompat.START);
@@ -196,8 +196,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     * */
     public void setTodayTotalSale() {
 //        FirebaseDatabase.getDaySaleTotal();
-        String totalSale = "550";
-        totalAmountToday.setText(totalSale);
+//        String totalSale = "550";
+//        totalAmountToday.setText(totalSale);
     }
 
 
@@ -208,15 +208,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(HomeActivity.this, AddSale.class);
         startActivity(intent);
     }
-
-//    debug purpose noman
-//    private void seeUser()
-//    {
-//        ShopKeeper shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
-//        Log.d("noman",shopKeeper.getName());
-//        Log.d("noman",shopKeeper.getEmail());
-//        Log.d("noman",shopKeeper.getShopName());
-//    }
 
     @Override
     protected void onResume() {

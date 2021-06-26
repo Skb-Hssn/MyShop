@@ -63,9 +63,9 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         paidText = (TextView)holder.itemView.findViewById(R.id.paidTextView);
 
         timeText.setText(cartInList.get(position).getTime());
-        totalText.setText(String.valueOf(cartInList.get(position).getDiscount()+cartInList.get(position).getPaidAmount()));
-        discountText.setText(String.valueOf(cartInList.get(position).getDiscount()));
-        paidText.setText(String.valueOf(cartInList.get(position).getPaidAmount()));
+        totalText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getDiscount()+cartInList.get(position).getPaidAmount()),context.getResources().getString(R.string.taka_logo)));
+        discountText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getDiscount()),context.getResources().getString(R.string.taka_logo)));
+        paidText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getPaidAmount()),context.getResources().getString(R.string.taka_logo)));
         ConstraintLayout container = (ConstraintLayout)holder.itemView.findViewById(R.id.cartContainer);
         Log.d("noman","time");
         container.setOnClickListener(new View.OnClickListener() {
