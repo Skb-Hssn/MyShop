@@ -200,7 +200,49 @@ public class FirebaseDatabase {
                     }
                 });
     }
-    
+    public static void setCurrentShopKeeper(Context context)
+    {
+
+        authentication = FirebaseAuth.getInstance();
+        myDatabase = FirebaseFirestore.getInstance();
+        ProgressDialog progressDialog = getProgressDialog(context);
+        FirebaseUser firebaseUser = authentication.getCurrentUser();
+        assert firebaseUser != null;
+        String email = firebaseUser.getEmail();
+        myDatabase.collection("users").whereEqualTo("email",email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            String name,email,shopName;
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult())
+                            {
+                                name = documentSnapshot.getString("name");
+                                email = documentSnapshot.getString("email");
+                                shopName = documentSnapshot.getString("shopName");
+                                currentShopKeeper = new ShopKeeper(name,shopName,email);
+                                progressDialog.dismiss();
+                                Intent intent = new Intent(context, HomeActivity.class);
+                                context.startActivity(intent);
+                            }
+
+
+                        }
+                        else
+                        {
+                            progressDialog.dismiss();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+
+                        progressDialog.dismiss();
+                    }
+                });
+    }
     public static void signIn(String email,String password,Context context,TextView errorText)
     {
         Log.d("noman","sign in ");
