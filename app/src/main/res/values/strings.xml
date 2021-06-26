@@ -42,4 +42,6 @@
     <string name="quantity_cant_be_empty">Quantity cannot be empty.</string>
     <string name="discount_error">Discount cannot be greater than total amount</string>
     <string name="discount_cant_be_empty">Discount cannot be empty.</string>
+    <string name="connectToNetwork">Please connect to Internet</string>
+    <string name="haveAccount">You have an account</string>
 </resources>

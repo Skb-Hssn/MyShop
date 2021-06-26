@@ -10,10 +10,12 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
-public class Cart implements Serializable {
+public class Cart implements Serializable,Comparable<Cart> {
     private String date;
     private String time;
     private double discount,paidAmount,total;
@@ -91,5 +93,14 @@ public class Cart implements Serializable {
 
     public void setItemList(ArrayList<Item> itemList) {
         this.itemList = itemList;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public int compareTo(Cart o) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
+        LocalTime time1 = LocalTime.from(dateTimeFormatter.parse(this.time));
+        LocalTime time2 = LocalTime.from(dateTimeFormatter.parse(o.time));
+        return  time2.compareTo(time1);
     }
 }

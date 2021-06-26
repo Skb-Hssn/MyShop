@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSaleAdapter;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
@@ -30,6 +31,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     private ArrayList<Product> availableItems;
     private AddSaleAdapter addSaleAdapter;
     private ArrayList<Product> soldProducts;
+    private ArrayList<Product> originalList;
     private double cost = 0;
     TextView nameText,companyNameText,quantityText,priceText;
     public ItemAdaptor(Context context,AddSaleAdapter addSaleAdapter)
@@ -59,7 +61,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         nameText.setText(availableItems.get(position).getName());
         companyNameText.setText(availableItems.get(position).getCompanyName());
         quantityText.setText(String.valueOf(availableItems.get(position).getAvailableQuantity())+" "+availableItems.get(position).getUnit());
-        priceText.setText(String.valueOf(availableItems.get(position).getSoldPrice())+" $");
+        priceText.setText(String.valueOf(availableItems.get(position).getSoldPrice())+" Tk");
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +75,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
@@ -144,10 +146,11 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                 ArrayList<Product> temp = new ArrayList<>();
                 if(text.isEmpty())
                 {
-                    FirebaseDatabase.getProducts(context,ItemAdaptor.this);
+//                    FirebaseDatabase.getProducts(context,ItemAdaptor.this);
+                    temp.addAll(originalList);
                 }
                 else {
-                    for(Product product : availableItems)
+                    for(Product product : originalList)
                     {
                         if(product.getName().toLowerCase().contains(text))
                         {
@@ -182,7 +185,9 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     {
         Log.d("noman",String.valueOf(products.size()));
         this.availableItems = products;
-
+        Collections.sort(availableItems);
+        this.originalList = new ArrayList<>();
+        originalList.addAll(products);
         this.notifyDataSetChanged();
 
     }

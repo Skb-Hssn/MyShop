@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "@color/primary_color"
-    tools:context=".CartDetailsActivity$ProductActivity">
+    tools:context=".ProductScreen.ProductActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
         android:id="@+id/productList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Product;
@@ -298,6 +299,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
     {
         this.productInList = products;
         this.products = products;
+        Collections.sort(products);
         notifyDataSetChanged();
     }
 
