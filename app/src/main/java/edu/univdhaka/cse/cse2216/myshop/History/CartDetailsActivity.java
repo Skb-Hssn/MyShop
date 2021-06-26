@@ -42,9 +42,12 @@ public class CartDetailsActivity extends AppCompatActivity {
         totalText = (TextView)findViewById(R.id.totalInCartText);
         discountText = (TextView)findViewById(R.id.discountInCartText);
         paidText = (TextView)findViewById(R.id.paidInCartText);
-        totalText.setText(String.valueOf(cart.getDiscount()+cart.getPaidAmount())+" Tk");
-        discountText.setText(String.valueOf(cart.getDiscount())+" Tk");
-        paidText.setText(String.valueOf(cart.getPaidAmount()) +" ");
+        String total = String.format("%s %s",String.valueOf(cart.getDiscount()+cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+        totalText.setText(total);
+        String discount = String.format("%s %s",String.valueOf(cart.getDiscount()),getResources().getString(R.string.taka_logo));
+        discountText.setText(discount);
+        String paidAmount = String.format("%s %s",String.valueOf(cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+        paidText.setText(paidAmount);
         cartHistoryRecyclerView = (RecyclerView)findViewById(R.id.cartHistoryRecycelerView);
         ArrayList<Item> items = cart.getItemList();
         Log.d("salman", String.valueOf(items.size()));

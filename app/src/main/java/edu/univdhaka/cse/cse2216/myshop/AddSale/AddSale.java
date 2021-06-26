@@ -165,8 +165,10 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                totalAmountTextView.setText(String.valueOf(newCart.getTotal()));
-                payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
+                String totalAmount = String.format("%s %s",String.valueOf(newCart.getTotal()),getResources().getString(R.string.taka_logo));
+                totalAmountTextView.setText(totalAmount);
+                String payAmount = String.format("%s %s",String.valueOf(newCart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+                payableAmountTextView.setText(payAmount);
             }
         });
 
@@ -245,7 +247,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
 
 
         newCart.setDiscount(amount);
-        payableAmountTextView.setText(String.valueOf(newCart.getPaidAmount()));
+        payableAmountTextView.setText(String.format("%s %s",String.valueOf(newCart.getPaidAmount()),getResources().getString(R.string.taka_logo)));
     }
 
     /*

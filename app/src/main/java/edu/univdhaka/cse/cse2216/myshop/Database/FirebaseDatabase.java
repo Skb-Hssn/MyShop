@@ -56,7 +56,6 @@ import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 import edu.univdhaka.cse.cse2216.myshop.SplashScreen;
-
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
     private static FirebaseFirestore myDatabase;
@@ -120,6 +119,7 @@ public class FirebaseDatabase {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         TextView errorText = (TextView)((Activity) context).findViewById(R.id.sign_up_error_text);
+                        errorText.setText("");
                         if(task.isSuccessful())
                         {
                             sendVerificationEmail(authentication,context);
@@ -131,13 +131,13 @@ public class FirebaseDatabase {
 
                             errorText.setText(context.getResources().getString(R.string.connectToNetwork));
                         }
-                        else if(task.getException() instanceof FirebaseAuthException)
-                        {
-                            errorText.setText("Invalid mail");
-                        }
                         else if(task.getException() instanceof FirebaseAuthWeakPasswordException)
                         {
                             errorText.setText("Password is weak");
+                        }
+                        else if(task.getException() instanceof FirebaseAuthException)
+                        {
+                            errorText.setText("Invalid mail");
                         }
                         else if(task.getException() instanceof FirebaseAuthEmailException)
                         {
@@ -246,7 +246,7 @@ public class FirebaseDatabase {
     public static void signIn(String email,String password,Context context,TextView errorText)
     {
         Log.d("noman","sign in ");
-
+        errorText.setText("");
         ProgressDialog progressDialog = getProgressDialog(context);
         authentication = FirebaseAuth.getInstance();
         authentication.signOut();
@@ -477,6 +477,7 @@ public class FirebaseDatabase {
                         {
 //                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
+                            ((Activity)context).finish();
 
 
                         }

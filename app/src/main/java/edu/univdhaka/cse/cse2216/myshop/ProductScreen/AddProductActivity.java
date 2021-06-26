@@ -103,6 +103,7 @@ public class AddProductActivity extends AppCompatActivity {
             FirebaseDatabase.addProduct(AddProductActivity.this,product);
 
 
+
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
