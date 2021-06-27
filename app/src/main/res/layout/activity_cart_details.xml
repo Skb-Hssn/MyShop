@@ -8,115 +8,112 @@
     tools:context=".History.CartDetailsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:padding="10dp"
         android:id="@+id/cartHistoryRecycelerView"
         android:layout_width="match_parent"
-        android:layout_height="520dp"
+        android:layout_height="0dp"
         android:background="@color/primary_color"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="5dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sale_history_details"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sale_history_details"
         android:layout_width="match_parent"
-        android:layout_height="155dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginBottom="28dp"
+        android:layout_height="wrap_content"
         android:background="@color/accent_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cartHistoryRecycelerView">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="94dp"
-            android:layout_height="29dp"
-            android:gravity="center"
-            android:text="Total"
-            android:textColor="@color/white"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.147" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="94dp"
-            android:layout_height="29dp"
-            android:gravity="center"
-            android:text="Discount"
-            android:textColor="@color/white"
-            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="94dp"
-            android:layout_height="29dp"
-            android:gravity="center"
-            android:text="Paid Amount"
-            android:textColor="@color/white"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discount"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paid_amount"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.803" />
-
-        <TextView
-            android:id="@+id/totalInCartText"
-            android:layout_width="198dp"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="#EBDDDD"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.72"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.148" />
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/discountInCartText"
-            android:layout_width="198dp"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="#E6D3D3"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.725"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.492" />
+            <TextView
+                android:id="@+id/totalInCartText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textStyle="bold"
+                android:layout_gravity="end"/>
 
-        <TextView
-            android:id="@+id/paidInCartText"
-            android:layout_width="198dp"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="#E3CFCF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.717"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.801" />
+            <TextView
+                android:id="@+id/discountInCartText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textStyle="bold"
+                android:layout_gravity="end" />
+
+            <TextView
+                android:id="@+id/paidInCartText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textStyle="bold"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

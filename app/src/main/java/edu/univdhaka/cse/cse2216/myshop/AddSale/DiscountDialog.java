@@ -51,7 +51,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
         confirmButton = view.findViewById(R.id.discount_confirm_button);
         cancelButton = view.findViewById(R.id.discount_cancel_button);
 
-        totalAmountTextView.setText(String.valueOf(total));
+        totalAmountTextView.setText(String.valueOf(total) + getResources().getString(R.string.taka_logo));
 
         confirmButton.setOnClickListener(v ->
                 {

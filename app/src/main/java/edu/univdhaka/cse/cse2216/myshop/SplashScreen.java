@@ -16,7 +16,7 @@ import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_SCREEN_TIMER = 1000;
+    private static final int SPLASH_SCREEN_TIMER = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

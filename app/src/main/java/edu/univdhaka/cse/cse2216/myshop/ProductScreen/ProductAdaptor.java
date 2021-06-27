@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -68,6 +70,8 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             companyNameTextView.setText(product.getCompanyName());
             stockTextView.setText(String.valueOf(product.getAvailableQuantity())+" "+product.getUnit());
             priceTextView.setText(String.valueOf(product.getSoldPrice()) + " "+"Tk");
+
+
             container.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
@@ -107,6 +111,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 }
             });
     }
+
     private void updateAddedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

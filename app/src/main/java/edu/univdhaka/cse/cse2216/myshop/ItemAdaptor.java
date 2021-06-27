@@ -69,6 +69,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
             }
         });
     }
+
     public void addProduct(Product product)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -77,6 +78,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         editText.setHint("Type quantity");
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
+
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -132,6 +134,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     @Override
     public int getItemCount() {
         return availableItems.size();

@@ -44,4 +44,16 @@
     <string name="discount_cant_be_empty">Discount cannot be empty.</string>
     <string name="connectToNetwork">Please connect to Internet</string>
     <string name="haveAccount">You have an account</string>
+    <string name="product_name">Product Name</string>
+    <string name="company_name">Company Name</string>
+    <string name="sold_price">Sold Price</string>
+    <string name="click_to_add">Click to add</string>
+    <string name="stock">Stock</string>
+    <string name="unit">Unit</string>
+    <string name="stock_quantity">Stock Quantity</string>
+    <string name="save">Save</string>
+    <string name="time">Time</string>
+    <string name="paid_amount">Paid Amount</string>
+    <string name="date">Date</string>
+    <string name="total_price">Total Price</string>
 </resources>

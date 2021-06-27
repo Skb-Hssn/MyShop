@@ -5,47 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_color"
-    tools:context=".HistoryActivity">
+    tools:context=".History.HistoryActivity">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="89dp"
-        android:layout_height="41dp"
-        android:gravity="center"
-        android:background="#F4E3E3"
-        android:text="date : "
-        android:textColor="#A91010"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/date_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
-
-    <TextView
-        android:id="@+id/dateTextViewInHistory"
-        android:layout_width="143dp"
-        android:layout_height="40dp"
-        android:background="#F10808"
-        android:gravity="center"
-        android:text="02-02-2021"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.416"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        android:background="@color/light_gray">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textSize="20sp"
+            android:textColor="@color/accent_color_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="70dp"/>
+
+
+        <TextView
+            android:id="@+id/dateTextViewInHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11-12-2021"
+            android:textSize="25sp"
+            android:textColor="@color/accent_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="70dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cardRecuycelerView"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
-        android:layout_marginTop="80dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
         android:background="@color/primary_color"
-        android:padding="10dp"
         android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/date_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="2dp" />
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
