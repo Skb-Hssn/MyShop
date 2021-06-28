@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -28,9 +29,11 @@ public class Cart implements Serializable,Comparable<Cart> {
     {
         date = LocalDate.now().toString();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-        time = dateTimeFormatter.format(LocalTime.now());
+        time = dateTimeFormatter.format(LocalTime.now()).toUpperCase();
         itemList = new ArrayList<>();
-        this.id = 3;
+
+        this.id = (int) (new Date()).getTime();
+        Log.d("noman",String.valueOf(id));
         paidAmount = 0;
         total = 0;
 //        set id
