@@ -24,4 +24,8 @@ public class Item extends Product{
     }
 
 
+    public void setSoldQuantity(double quantity) {
+        soldQuantity = quantity;
+        totalPrice = super.getSoldPrice() * soldQuantity;
+    }
 }

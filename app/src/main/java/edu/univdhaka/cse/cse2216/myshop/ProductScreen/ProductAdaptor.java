@@ -68,8 +68,9 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         ConstraintLayout container = (ConstraintLayout)holder.itemView.findViewById(R.id.productContainer);
             nameTextView.setText(productInList.get(position).getName());
             companyNameTextView.setText(product.getCompanyName());
-            stockTextView.setText(String.valueOf(product.getAvailableQuantity())+" "+product.getUnit());
-            priceTextView.setText(String.valueOf(product.getSoldPrice()) + " "+"Tk");
+            stockTextView.setText((String.valueOf(product.getAvailableQuantity())+" "+product.getUnit()));
+            priceTextView.setText((String.valueOf(product.getSoldPrice()) + " "+R.string.taka_logo));
+
 
 
             container.setOnClickListener(new View.OnClickListener() {
