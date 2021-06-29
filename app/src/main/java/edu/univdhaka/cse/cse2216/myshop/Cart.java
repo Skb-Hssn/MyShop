@@ -82,6 +82,10 @@ public class Cart implements Serializable,Comparable<Cart> {
         itemList.add(item);
     }
 
+    public void removeItem(int position) {
+        itemList.remove(position);
+    }
+
     public String getDate() {
         return date;
     }

@@ -297,7 +297,6 @@ public class FirebaseDatabase {
                             }
                             else if(task.getException() instanceof FirebaseNetworkException)
                             {
-
                                 errorText.setText("Connect to Internet");
                             }
                             else if(task.getException() instanceof FirebaseAuthEmailException)
@@ -312,7 +311,12 @@ public class FirebaseDatabase {
                             {
                                 errorText.setText("Wrong password");
                             }
+
                             Log.d("noman","untracked problem");
+
+                            if(task.getException() != null) {
+                                Log.d("Internet", task.getException().toString());
+                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -332,6 +336,7 @@ public class FirebaseDatabase {
             Log.d("noman","go home");
         }
     }
+
     public static void signOut()
     {
         authentication = FirebaseAuth.getInstance();
@@ -783,7 +788,7 @@ public class FirebaseDatabase {
                                 unit = document.get("unit",String.class);
                                 firebaseId = document.getId();
                                 availableQuantity = document.get("availableQuantity",Double.class);
-                                price = document.get("soldPrice",Double.class);
+                                price = document.get("soldPrice", Double.class);
                                 Product product = new Product(name,companyName,unit,availableQuantity,price,firebaseId);
                                 products.add(product);
 

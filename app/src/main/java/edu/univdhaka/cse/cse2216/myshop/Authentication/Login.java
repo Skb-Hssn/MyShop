@@ -3,13 +3,21 @@ package edu.univdhaka.cse.cse2216.myshop.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
@@ -53,6 +61,12 @@ public class Login extends AppCompatActivity {
         emailInput = findViewById(R.id.email_text_input);
         passwordInput = findViewById(R.id.password_text_input);
         errorText = findViewById(R.id.login_error_text);
+
+        if(isInternetWorking()) {
+            Log.d("Internet", "Internet Working");
+        } else {
+            Log.d("Internet", "Internet not Working");
+        }
     }
 
     /*
@@ -83,5 +97,14 @@ public class Login extends AppCompatActivity {
 //        sign in from firebase and go to home if email and password is correct
         FirebaseDatabase.signIn(email,password,Login.this,errorText);
 
+    }
+
+    public boolean isInternetWorking() {
+        ConnectivityManager cm =
+                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }
