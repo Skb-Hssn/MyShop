@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
@@ -111,10 +113,17 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 public void onClick(DialogInterface dialog, int which) {
                     if(editText.getText().length() == 0) {
                         editText.requestFocus();
-                    } else {
+                    }
+                    else if(item.getSoldQuantity()+ Double.parseDouble(editText.getText().toString()) > item.getAvailableQuantity())
+                    {
+                        Toast.makeText(context,"Insufficient amount",Toast.LENGTH_SHORT);
+                    }
+                    else {
                         item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
                         holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
                         holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+                        updateDatabase(item);
+
                     }
                 }
                })
@@ -150,6 +159,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     item.setSoldQuantity(item.getSoldQuantity() - Double.parseDouble(editText.getText().toString()));
                     holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
                     holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+                    updateDatabase(item);
                 }
             }
         })
@@ -178,6 +188,8 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+//                        to delete
+                        FirebaseDatabase.updateProduct(context,items.get(position));
                         runningCart.removeItem(position);
                         notifyDataSetChanged();
                     }
@@ -205,5 +217,20 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+
+    private void updateDatabase(Item item)
+    {
+        Product itemProduct = null;
+        try {
+            itemProduct = (Product) ((Product)item).clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        itemProduct.setAvailableQuantity(itemProduct.getAvailableQuantity()-item.getSoldQuantity());
+        FirebaseDatabase.updateProduct(context,itemProduct);
+        Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
     }
 }
