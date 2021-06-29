@@ -67,6 +67,7 @@ public class Cart implements Serializable,Comparable<Cart> {
 
     public void setPaidAmount(double paidAmount) {
         this.paidAmount = paidAmount;
+        this.total = this.paidAmount + discount;
     }
 
     public void setDiscount(double discount) {

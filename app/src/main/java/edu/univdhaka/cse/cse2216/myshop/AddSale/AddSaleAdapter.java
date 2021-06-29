@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,12 +39,15 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     private AddSaleViewHolder viewHolder;
     private Cart runningCart;
     Context context;
-
+    TextView totalText;
+    TextView payableText;
     public AddSaleAdapter(Context context, Cart cart)
     {
         this.context = context;
         runningCart = cart;
         items = cart.getItemList();
+        totalText = (TextView) ((Activity)context).findViewById(R.id.total_amount_add_sale);
+        payableText = (TextView) ((Activity)context).findViewById(R.id.payable_amount_add_sale);
     }
 
     @NonNull
@@ -119,6 +124,12 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         Toast.makeText(context,"Insufficient amount",Toast.LENGTH_SHORT);
                     }
                     else {
+                        double newQuantity = Double.parseDouble(editText.getText().toString());
+                        runningCart.setPaidAmount(runningCart.getPaidAmount()+(newQuantity*item.getSoldPrice()));
+                        String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                        totalText.setText(totalAmount);
+                        String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                        payableText.setText(payAmount);
                         item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
                         holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
                         holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
@@ -156,6 +167,12 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 } else if(Double.parseDouble(editText.getText().toString()) > item.getSoldQuantity()) {
 
                 } else {
+                    double newQuantity = Double.parseDouble(editText.getText().toString());
+                    runningCart.setPaidAmount(runningCart.getPaidAmount()-(newQuantity*item.getSoldPrice()));
+                    String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                    totalText.setText(totalAmount);
+                    String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                    payableText.setText(payAmount);
                     item.setSoldQuantity(item.getSoldQuantity() - Double.parseDouble(editText.getText().toString()));
                     holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
                     holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
@@ -189,6 +206,11 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        to delete
+                        runningCart.setPaidAmount(runningCart.getPaidAmount()-items.get(position).getTotalPrice());
+                        String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                        totalText.setText(totalAmount);
+                        String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                        payableText.setText(payAmount);
                         FirebaseDatabase.updateProduct(context,items.get(position));
                         runningCart.removeItem(position);
                         notifyDataSetChanged();

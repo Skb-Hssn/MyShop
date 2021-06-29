@@ -280,4 +280,16 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
         finish();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("noman","res");
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Log.d("noman","resume");
+    }
 }
