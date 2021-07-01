@@ -110,7 +110,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type added quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -156,7 +156,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type reduced quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
