@@ -1,6 +1,10 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
+=======
+import android.app.Activity;
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
+import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
@@ -37,15 +43,22 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     private AddSaleViewHolder viewHolder;
     private Cart runningCart;
     Context context;
+<<<<<<< HEAD
     TextView totalAmountTextView;
     TextView payableAmountTextView;
     TextView discountTextView;
 
+=======
+    TextView totalText;
+    TextView payableText;
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
     public AddSaleAdapter(Context context, Cart cart)
     {
         this.context = context;
         runningCart = cart;
         items = cart.getItemList();
+        totalText = (TextView) ((Activity)context).findViewById(R.id.total_amount_add_sale);
+        payableText = (TextView) ((Activity)context).findViewById(R.id.payable_amount_add_sale);
     }
 
     public AddSaleAdapter(Context context, Cart cart, TextView totalAmount, TextView payableAmount, TextView discountTextView) {
@@ -124,6 +137,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 public void onClick(DialogInterface dialog, int which) {
                     if(editText.getText().length() == 0) {
                         editText.requestFocus();
+<<<<<<< HEAD
                     } else {
                         double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
 
@@ -143,6 +157,25 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
                         runningCart.setTotal(total);
                         runningCart.setDiscount(discount);
+=======
+                    }
+                    else if(item.getSoldQuantity()+ Double.parseDouble(editText.getText().toString()) > item.getAvailableQuantity())
+                    {
+                        Toast.makeText(context,"Insufficient amount",Toast.LENGTH_SHORT);
+                    }
+                    else {
+                        double newQuantity = Double.parseDouble(editText.getText().toString());
+                        runningCart.setPaidAmount(runningCart.getPaidAmount()+(newQuantity*item.getSoldPrice()));
+                        String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                        totalText.setText(totalAmount);
+                        String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                        payableText.setText(payAmount);
+                        item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
+                        holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
+                        holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+                        updateDatabase(item);
+
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
                     }
                 }
                })
@@ -173,6 +206,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 } else if(Double.parseDouble(editText.getText().toString()) > item.getSoldQuantity()) {
 
                 } else {
+<<<<<<< HEAD
                     double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
                     total -= item.getTotalPrice();
 
@@ -190,6 +224,18 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
                     runningCart.setTotal(total);
                     runningCart.setDiscount(discount);
+=======
+                    double newQuantity = Double.parseDouble(editText.getText().toString());
+                    runningCart.setPaidAmount(runningCart.getPaidAmount()-(newQuantity*item.getSoldPrice()));
+                    String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                    totalText.setText(totalAmount);
+                    String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                    payableText.setText(payAmount);
+                    item.setSoldQuantity(item.getSoldQuantity() - Double.parseDouble(editText.getText().toString()));
+                    holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
+                    holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+                    updateDatabase(item);
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
                 }
             }
         })
@@ -216,6 +262,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+<<<<<<< HEAD
 
                         double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
                         total -= item.getTotalPrice();
@@ -225,6 +272,15 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         totalAmountTextView.setText(String.format("%.2f ৳", total));
                         payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
 
+=======
+//                        to delete
+                        runningCart.setPaidAmount(runningCart.getPaidAmount()-items.get(position).getTotalPrice());
+                        String totalAmount = String.format("%s %s",String.valueOf(runningCart.getTotal()),context.getResources().getString(R.string.taka_logo));
+                        totalText.setText(totalAmount);
+                        String payAmount = String.format("%s %s",String.valueOf(runningCart.getPaidAmount()),context.getResources().getString(R.string.taka_logo));
+                        payableText.setText(payAmount);
+                        FirebaseDatabase.updateProduct(context,items.get(position));
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
                         runningCart.removeItem(position);
                         notifyDataSetChanged();
 
@@ -255,5 +311,20 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+
+    private void updateDatabase(Item item)
+    {
+        Product itemProduct = null;
+        try {
+            itemProduct = (Product) ((Product)item).clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        itemProduct.setAvailableQuantity(itemProduct.getAvailableQuantity()-item.getSoldQuantity());
+        FirebaseDatabase.updateProduct(context,itemProduct);
+        Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
     }
 }

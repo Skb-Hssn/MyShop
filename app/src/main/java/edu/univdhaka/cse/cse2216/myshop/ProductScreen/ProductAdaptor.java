@@ -202,7 +202,10 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             quantityBox.setHint("Quantity with this price");
             quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             priceBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
             linearLayout.addView(priceBox);
             linearLayout.addView(quantityBox);
             builder.setView(linearLayout);
