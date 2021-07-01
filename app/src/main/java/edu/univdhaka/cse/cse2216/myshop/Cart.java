@@ -115,10 +115,7 @@ public class Cart implements Serializable,Comparable<Cart> {
     public int compareTo(Cart o) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-<<<<<<< HEAD
-=======
-        String t1,t2;
->>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
+
         LocalTime time1;
         LocalTime time2;
         try {
@@ -134,10 +131,5 @@ public class Cart implements Serializable,Comparable<Cart> {
             Log.d("noman",e.toString());
             return time2.compareTo(time1);
         }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 536d03971c4f30e7325310cafa892e99e86c0cba
     }
 }
