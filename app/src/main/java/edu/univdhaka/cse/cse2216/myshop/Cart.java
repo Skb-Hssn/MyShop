@@ -7,10 +7,12 @@ import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,9 +108,25 @@ public class Cart implements Serializable,Comparable<Cart> {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int compareTo(Cart o) {
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-        LocalTime time1 = LocalTime.from(dateTimeFormatter.parse(this.time));
-        LocalTime time2 = LocalTime.from(dateTimeFormatter.parse(o.time));
-        return  time2.compareTo(time1);
+        String t1,t2;
+        LocalTime time1;
+        LocalTime time2;
+        try {
+
+            time1 = LocalTime.parse(this.time.toLowerCase(),dateTimeFormatter);
+            time2 = LocalTime.parse(o.time.toLowerCase(),dateTimeFormatter);
+            return time2.compareTo(time1);
+        }
+        catch (DateTimeParseException e)
+        {
+            time1 = LocalTime.parse(this.time,dateTimeFormatter);
+            time2 = LocalTime.parse(o.time,dateTimeFormatter);
+            Log.d("noman",e.toString());
+            return time2.compareTo(time1);
+        }
+
+
     }
 }
