@@ -69,7 +69,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             nameTextView.setText(productInList.get(position).getName());
             companyNameTextView.setText(product.getCompanyName());
             stockTextView.setText((String.valueOf(product.getAvailableQuantity())+" "+product.getUnit()));
-            priceTextView.setText((String.valueOf(product.getSoldPrice()) + " "+R.string.taka_logo));
+            priceTextView.setText((String.valueOf(product.getSoldPrice()) + " "+ "৳"));
 
 
 

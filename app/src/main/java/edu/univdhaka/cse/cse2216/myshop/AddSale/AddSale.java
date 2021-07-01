@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -52,13 +53,12 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     private AppCompatButton discountButton;
     private AppCompatButton doneButton;
     private AppCompatButton backButton;
-//    noman
 
     Cart newCart = new Cart();
 //    ArrayList<Item> itemList = newCart.getItemList();
-    private int currentTotal = 0;
-    private int discount = 0;
-    private int payableAmount = 0;
+    private double currentTotal = 0;
+    private double discount = 0;
+    private double payableAmount = 0;
 
     private boolean done = false;
 
@@ -69,10 +69,6 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sale);
 
-        getAvailableItems();
-
-        createRecyclerView();
-
         addItemButtom = findViewById(R.id.add_item_button);
         discountButton = findViewById(R.id.discount_button);
         doneButton = findViewById(R.id.done_button);
@@ -81,6 +77,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         discountTextView = findViewById(R.id.discount_add_sale);
         payableAmountTextView = findViewById(R.id.payable_amount_add_sale);
 
+        createRecyclerView();
 
         addItemButtom.setOnClickListener(v -> openAddItemDialogue());
         discountButton.setOnClickListener(v -> openDiscountDialog());
@@ -115,9 +112,6 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
             Product itemProduct = (Product)item;
 
             FirebaseDatabase.updateJust(itemProduct);
-//            Log.d("noman","product");
-            Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
-
         }
     }
 
@@ -125,10 +119,9 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * add item
      */
     public void openAddItemDialogue() {
-            seeItem();
-//        AddSaleAddItemDialogue dialogue = new AddSaleAddItemDialogue(availableItems);
-//        dialogue.show(getSupportFragmentManager(), "Add Item");
+        seeItem();
     }
+
     public void seeItem()
     {
         android.app.AlertDialog.Builder builder = new AlertDialog.Builder(AddSale.this);
@@ -137,10 +130,9 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         builder.setView(view);
         RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         SearchView searchView = (SearchView)view.findViewById(R.id.searchItem);
-        ItemAdaptor itemAdaptor = new ItemAdaptor(AddSale.this,adapter);
+        ItemAdaptor itemAdaptor = new ItemAdaptor(AddSale.this, adapter);
 
-
-        FirebaseDatabase.getProducts(builder.getContext(),itemAdaptor);
+        FirebaseDatabase.getProducts(builder.getContext(), itemAdaptor);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -160,18 +152,21 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         AlertDialog dialog = builder.create();
 
         dialog.show();
+
         ImageButton closeButton = (ImageButton)view.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                String totalAmount = String.format("%s %s",String.valueOf(newCart.getTotal()),getResources().getString(R.string.taka_logo));
+                String totalAmount = String.format("%.2f %s",newCart.getTotal(),getResources().getString(R.string.taka_logo));
                 totalAmountTextView.setText(totalAmount);
-                String payAmount = String.format("%s %s",String.valueOf(newCart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+
+                String payAmount = String.format("%.2f %s", newCart.getPaidAmount(),getResources().getString(R.string.taka_logo));
                 payableAmountTextView.setText(payAmount);
             }
         });
-
     }
 
     /*
@@ -192,18 +187,9 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
 
 
     /*
-     * TODO: Get list of available items with quantity from FIREBASE
-     */
-    private void getAvailableItems() {
-        for (int i = 0; i < 5; i++) {
-            String s = new String("aaa" + Integer.toString(i*i));
-            availableItems.add(new Pair<String, Integer>(s, 3*i));
-        }
-    }
-
-    /*
      * Insert item to Cart.
      */
+    @SuppressLint("DefaultLocale")
     public void insertItem(String itemName, int itemQuantity) {
         done = false;
 
@@ -213,11 +199,11 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         currentTotal += item.getItemTotalPrice();
 
         totalAmountTextView.setText(
-                String.format("%s %s", currentTotal, getResources().getString(R.string.taka_logo))
+                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
         );
 
         payableAmountTextView.setText(
-                String.format("%s %s", currentTotal, getResources().getString(R.string.taka_logo))
+                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
         );
     }
 
@@ -228,8 +214,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         recyclerView = findViewById(R.id.add_sale_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-//        adapter = new AddSaleAdapter(this, cart);
-        adapter = new AddSaleAdapter(AddSale.this,newCart);
+        adapter = new AddSaleAdapter(AddSale.this, newCart, totalAmountTextView, payableAmountTextView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -239,15 +224,23 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     /*
      * discount dialog
      */
+    @SuppressLint("DefaultLocale")
     @Override
-    public void setDiscount(int amount) {
+    public void setDiscount(double amount) {
 
-        discount += amount;
-        discountTextView.setText(String.format("%s %s", discount, getResources().getString(R.string.taka_logo)));
+        discount = amount;
+        discountTextView.setText(String.format("%.2f %s", discount, getResources().getString(R.string.taka_logo)));
 
+        double currentTotal = 0;
+
+        if(totalAmountTextView != null) {
+            currentTotal = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
+        }
 
         newCart.setDiscount(amount);
-        payableAmountTextView.setText(String.format("%s %s",String.valueOf(newCart.getPaidAmount()),getResources().getString(R.string.taka_logo)));
+        newCart.setPaidAmount(currentTotal - discount);
+
+        payableAmountTextView.setText(String.format("%.2f %s", newCart.getPaidAmount(),getResources().getString(R.string.taka_logo)));
     }
 
     /*

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +20,9 @@ import java.util.Locale;
 public class Cart implements Serializable,Comparable<Cart> {
     private String date;
     private String time;
-    private double discount,paidAmount,total;
+    private double discount;
+    private double paidAmount;
+    private double total;
 
     int id;
     private ArrayList<Item> itemList;
@@ -36,8 +39,8 @@ public class Cart implements Serializable,Comparable<Cart> {
         Log.d("noman",String.valueOf(id));
         paidAmount = 0;
         total = 0;
-//        set id
     }
+
     public Cart(int id,String date,String time,double discount,double paidAmount,ArrayList<Item> itemList)
     {
         this.id = id;
@@ -70,15 +73,16 @@ public class Cart implements Serializable,Comparable<Cart> {
     }
 
     public void setDiscount(double discount) {
-        paidAmount -= discount;
-        this.discount += discount;
+        paidAmount += this.discount;
+        this.discount = discount;
+        paidAmount -= this.discount;
 
     }
     public void addItem(Item item)
     {
         this.total += item.totalPrice;
         this.paidAmount += item.totalPrice;
-        Log.d("noman",String.valueOf(paidAmount));
+
         itemList.add(item);
     }
 
@@ -102,12 +106,30 @@ public class Cart implements Serializable,Comparable<Cart> {
         this.itemList = itemList;
     }
 
+    public void setTotal (double total) {
+        this.total = total;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int compareTo(Cart o) {
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-        LocalTime time1 = LocalTime.from(dateTimeFormatter.parse(this.time));
-        LocalTime time2 = LocalTime.from(dateTimeFormatter.parse(o.time));
-        return  time2.compareTo(time1);
+        String t1,t2;
+        LocalTime time1;
+        LocalTime time2;
+        try {
+
+            time1 = LocalTime.parse(this.time.toLowerCase(),dateTimeFormatter);
+            time2 = LocalTime.parse(o.time.toLowerCase(),dateTimeFormatter);
+            return time2.compareTo(time1);
+        }
+        catch (DateTimeParseException e)
+        {
+            time1 = LocalTime.parse(this.time,dateTimeFormatter);
+            time2 = LocalTime.parse(o.time,dateTimeFormatter);
+            Log.d("noman",e.toString());
+            return time2.compareTo(time1);
+        }
     }
 }

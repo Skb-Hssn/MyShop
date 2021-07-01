@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,12 +37,22 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     private AddSaleViewHolder viewHolder;
     private Cart runningCart;
     Context context;
+    TextView totalAmountTextView;
+    TextView payableAmountTextView;
 
     public AddSaleAdapter(Context context, Cart cart)
     {
         this.context = context;
         runningCart = cart;
         items = cart.getItemList();
+    }
+
+    public AddSaleAdapter(Context context, Cart cart, TextView totalAmount, TextView payableAmount) {
+        this.context = context;
+        runningCart = cart;
+        items = cart.getItemList();
+        this.totalAmountTextView = totalAmount;
+        this.payableAmountTextView = payableAmount;
     }
 
     @NonNull
@@ -54,14 +66,15 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         return viewHolder;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull @NotNull AddSaleViewHolder holder, int position) {
 
         Item item = items.get(position);
 
         holder.setItemNameText(item.getName());
-        holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
-        holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+        holder.setItemQuantityText(String.format("%.2f %s @ %.2f ৳", item.getSoldQuantity(), item.getUnit(), item.getSoldPrice()));
+        holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
         holder.setItemNumberText(position+1);
 
         ConstraintLayout container = holder.itemView.findViewById(R.id.item_details);
@@ -83,7 +96,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                             updateReducedProduct(items.get(position), holder);
 
                         } else if(item.getItemId() == R.id.delete) {
-                            deleteProduct(position);
+                            deleteProduct(position, items.get(position));
                         }
                         return false;
                     }
@@ -94,27 +107,35 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         });
     }
 
-    /*
-    TODO : Update in firebase
-     */
 
     public void updateAddedProduct(Item item, AddSaleViewHolder holder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type added quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if(editText.getText().length() == 0) {
                         editText.requestFocus();
                     } else {
+                        double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
+                        total -= item.getTotalPrice();
+
                         item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
-                        holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
-                        holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+
+                        holder.setItemQuantityText(String.format("%.2f %s @ %.2f ৳", item.getSoldQuantity(), item.getUnit(), item.getSoldPrice()));
+                        holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
+
+                        total += item.getTotalPrice();
+                        totalAmountTextView.setText(String.format("%.2f ৳", total));
+                        payableAmountTextView.setText(String.format("%.2f ৳", total));
+
+                        runningCart.setTotal(total);
                     }
                 }
                })
@@ -127,19 +148,17 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                .show();
     }
 
-    /*
-    TODO : Update in firebase
-     */
 
     public void updateReducedProduct(Item item, AddSaleViewHolder holder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type reduced quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(editText.getText().length() == 0) {
@@ -147,9 +166,19 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                 } else if(Double.parseDouble(editText.getText().toString()) > item.getSoldQuantity()) {
 
                 } else {
+                    double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
+                    total -= item.getTotalPrice();
+
                     item.setSoldQuantity(item.getSoldQuantity() - Double.parseDouble(editText.getText().toString()));
-                    holder.setItemQuantityText(String.valueOf(item.getSoldQuantity()) + " " + item.getUnit() + " @ " + item.getSoldPrice() + "৳");
-                    holder.setItemTotalPriceText("৳" + String.valueOf(item.getTotalPrice()));
+
+                    holder.setItemQuantityText(String.format("%.2f %s @ %.2f ৳", item.getSoldQuantity(), item.getUnit(), item.getSoldPrice()));
+                    holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
+
+                    total += item.getTotalPrice();
+                    totalAmountTextView.setText(String.format("%.2f ৳", total));
+                    payableAmountTextView.setText(String.format("%.2f ৳", total));
+
+                    runningCart.setTotal(total);
                 }
             }
         })
@@ -163,10 +192,8 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     }
 
 
-    /*
-       TODO: Update in Firebase
-     */
-    public void deleteProduct(int position) {
+
+    public void deleteProduct(int position, Item item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setTitle("Delete?")
@@ -176,10 +203,20 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     }
                 })
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
+                        total -= item.getTotalPrice();
+
+                        totalAmountTextView.setText(String.format("%.2f ৳", total));
+                        payableAmountTextView.setText(String.format("%.2f ৳", total));
+
                         runningCart.removeItem(position);
                         notifyDataSetChanged();
+
+                        runningCart.setTotal(total);
                     }
                 })
                 .show();

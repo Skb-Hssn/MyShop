@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class AddSaleViewHolder extends RecyclerView.ViewHolder {
         this.itemTotalPrice.setText(itemTotalPrice);
     }
 
+    @SuppressLint("DefaultLocale")
     public void setItemNumberText(int itemNumber) {
         this.itemNumber.setText(String.format("%d.", itemNumber));
     }

@@ -51,13 +51,13 @@ public class DiscountDialog extends AppCompatDialogFragment {
         confirmButton = view.findViewById(R.id.discount_confirm_button);
         cancelButton = view.findViewById(R.id.discount_cancel_button);
 
-        totalAmountTextView.setText(String.valueOf(total) + getResources().getString(R.string.taka_logo));
+        totalAmountTextView.setText((String.valueOf(total) + " " + getResources().getString(R.string.taka_logo)));
 
         confirmButton.setOnClickListener(v ->
                 {
                     discount = discountAmount.getText().toString();
                     if(validDiscount()) {
-                        listener.setDiscount(Integer.parseInt(discount));
+                        listener.setDiscount(Double.parseDouble(discount));
                         dismiss();
                     } else {
                         errorTextView.setText(errorText);
@@ -82,7 +82,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
     }
 
     public interface DiscountDialogListener {
-        void setDiscount(int amount);
+        void setDiscount(double amount);
     }
 
     boolean validDiscount() {
@@ -90,7 +90,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
             errorText = getResources().getString(R.string.discount_cant_be_empty);
             return false;
         }
-        double discountValue = Double.valueOf(discount);
+        double discountValue = Double.parseDouble(discount);
         if(discountValue > total) {
             errorText = getResources().getString(R.string.discount_error);
             return false;

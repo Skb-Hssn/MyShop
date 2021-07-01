@@ -60,8 +60,8 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         priceText = (TextView)holder.itemView.findViewById(R.id.itemPrice);
         nameText.setText(availableItems.get(position).getName());
         companyNameText.setText(availableItems.get(position).getCompanyName());
-        quantityText.setText(String.valueOf(availableItems.get(position).getAvailableQuantity())+" "+availableItems.get(position).getUnit());
-        priceText.setText(String.valueOf(availableItems.get(position).getSoldPrice())+" Tk");
+        quantityText.setText((availableItems.get(position).getAvailableQuantity())+" "+availableItems.get(position).getUnit());
+        priceText.setText((availableItems.get(position).getSoldPrice())+" Tk");
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +101,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                     Item cartItem = new Item(product,quantity,price);
                     boolean flag = false;
                     Log.d("size",String.valueOf(addSaleAdapter.getItems().size()));
+
                     for (Product product1 : soldProducts)
                     {
                         if(product1 == product)
@@ -115,7 +116,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                         addSaleAdapter.addItem(cartItem);
                         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
                         notifyDataSetChanged();
-//                    FirebaseDatabase.updateJust(product);
+
                         FirebaseDatabase.updateProduct(context, product);
                     }
                     else

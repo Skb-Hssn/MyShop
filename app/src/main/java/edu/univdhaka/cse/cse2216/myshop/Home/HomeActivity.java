@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         homeDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        homeToolbar.setNavigationIcon(R.drawable.menu_icon_white);
+        homeToolbar.setNavigationIcon(R.drawable.menu_icon_30);
         homeToolbar.setTitleTextColor(getResources().getColor(R.color.primary_color));
 
         homeNavigation.setNavigationItemSelectedListener(this);
