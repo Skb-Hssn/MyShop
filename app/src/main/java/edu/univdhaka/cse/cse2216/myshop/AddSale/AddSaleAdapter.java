@@ -39,6 +39,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
     Context context;
     TextView totalAmountTextView;
     TextView payableAmountTextView;
+    TextView discountTextView;
 
     public AddSaleAdapter(Context context, Cart cart)
     {
@@ -47,12 +48,13 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         items = cart.getItemList();
     }
 
-    public AddSaleAdapter(Context context, Cart cart, TextView totalAmount, TextView payableAmount) {
+    public AddSaleAdapter(Context context, Cart cart, TextView totalAmount, TextView payableAmount, TextView discountTextView) {
         this.context = context;
         runningCart = cart;
         items = cart.getItemList();
         this.totalAmountTextView = totalAmount;
         this.payableAmountTextView = payableAmount;
+        this.discountTextView = discountTextView;
     }
 
     @NonNull
@@ -124,6 +126,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         editText.requestFocus();
                     } else {
                         double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
+
                         total -= item.getTotalPrice();
 
                         item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
@@ -132,10 +135,14 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
 
                         total += item.getTotalPrice();
+
+                        double discount = Double.parseDouble(discountTextView.getText().toString().split(" ")[0]);
+
                         totalAmountTextView.setText(String.format("%.2f ৳", total));
-                        payableAmountTextView.setText(String.format("%.2f ৳", total));
+                        payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
 
                         runningCart.setTotal(total);
+                        runningCart.setDiscount(discount);
                     }
                 }
                })
@@ -175,10 +182,14 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
 
                     total += item.getTotalPrice();
+
+                    double discount = Double.parseDouble(discountTextView.getText().toString().split(" ")[0]);
+
                     totalAmountTextView.setText(String.format("%.2f ৳", total));
-                    payableAmountTextView.setText(String.format("%.2f ৳", total));
+                    payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
 
                     runningCart.setTotal(total);
+                    runningCart.setDiscount(discount);
                 }
             }
         })
@@ -190,7 +201,6 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         })
         .show();
     }
-
 
 
     public void deleteProduct(int position, Item item) {
@@ -210,13 +220,16 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
                         total -= item.getTotalPrice();
 
+                        double discount = Double.parseDouble(discountTextView.getText().toString().split(" ")[0]);
+
                         totalAmountTextView.setText(String.format("%.2f ৳", total));
-                        payableAmountTextView.setText(String.format("%.2f ৳", total));
+                        payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
 
                         runningCart.removeItem(position);
                         notifyDataSetChanged();
 
                         runningCart.setTotal(total);
+                        runningCart.setDiscount(discount);
                     }
                 })
                 .show();

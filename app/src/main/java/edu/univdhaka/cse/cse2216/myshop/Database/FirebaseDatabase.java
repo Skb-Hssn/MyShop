@@ -11,12 +11,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -814,6 +816,7 @@ public class FirebaseDatabase {
                 });
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void getDaySaleTotal(Context context, TextView textView)
     {
         String date = LocalDate.now().toString();
@@ -828,6 +831,7 @@ public class FirebaseDatabase {
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful())
@@ -840,14 +844,12 @@ public class FirebaseDatabase {
                                 Map<String,Object> map = document.getData();
 
 
-
                                 double paidAmount = (double)map.get("paidAmount");
                                 total += paidAmount;
 
                             }
 
-
-                            textView.setText(String.valueOf(total));
+                            textView.setText(String.format("%.2f", total));
                             Log.d("nomansalman",String.valueOf(carts.size()));
                             progressDialog.dismiss();
                         }

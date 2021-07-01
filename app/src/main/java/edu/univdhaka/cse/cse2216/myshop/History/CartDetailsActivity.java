@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,34 +29,39 @@ import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class CartDetailsActivity extends AppCompatActivity {
-    private TextView totalText,discountText,paidText;
+    private TextView totalText;
+    private TextView discountText;
+    private TextView paidText;
     private RecyclerView cartHistoryRecyclerView;
+
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_details);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         Cart cart = (Cart) bundle.get("cartObject");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         totalText = (TextView)findViewById(R.id.totalInCartText);
         discountText = (TextView)findViewById(R.id.discountInCartText);
         paidText = (TextView)findViewById(R.id.paidInCartText);
-        String total = String.format("%s %s",String.valueOf(cart.getDiscount()+cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+
+        String total = String.format("%.2f %s", (cart.getDiscount()+cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
         totalText.setText(total);
-        String discount = String.format("%s %s",String.valueOf(cart.getDiscount()),getResources().getString(R.string.taka_logo));
+        String discount = String.format("%.2f %s", (cart.getDiscount()),getResources().getString(R.string.taka_logo));
         discountText.setText(discount);
-        String paidAmount = String.format("%s %s",String.valueOf(cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
+        String paidAmount = String.format("%.2f %s", (cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
         paidText.setText(paidAmount);
         cartHistoryRecyclerView = (RecyclerView)findViewById(R.id.cartHistoryRecycelerView);
         ArrayList<Item> items = cart.getItemList();
-        Log.d("salman", String.valueOf(items.size()));
 
         ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,items);
         cartHistoryRecyclerView.setAdapter(productAdaptorInCart);
         cartHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-
 }

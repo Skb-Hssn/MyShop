@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,6 +35,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
         this.total = total;
     }
 
+    @SuppressLint("DefaultLocale")
     @NonNull
     @NotNull
     @Override
@@ -51,7 +53,7 @@ public class DiscountDialog extends AppCompatDialogFragment {
         confirmButton = view.findViewById(R.id.discount_confirm_button);
         cancelButton = view.findViewById(R.id.discount_cancel_button);
 
-        totalAmountTextView.setText((String.valueOf(total) + " " + getResources().getString(R.string.taka_logo)));
+        totalAmountTextView.setText(String.format("%.2f ৳", total));
 
         confirmButton.setOnClickListener(v ->
                 {

@@ -20,7 +20,7 @@ import java.util.Locale;
 public class Cart implements Serializable,Comparable<Cart> {
     private String date;
     private String time;
-    private double discount;
+    private double discount = 0;
     private double paidAmount;
     private double total;
 
@@ -36,7 +36,6 @@ public class Cart implements Serializable,Comparable<Cart> {
         itemList = new ArrayList<>();
 
         this.id = (int) (new Date()).getTime();
-        Log.d("noman",String.valueOf(id));
         paidAmount = 0;
         total = 0;
     }
@@ -73,9 +72,8 @@ public class Cart implements Serializable,Comparable<Cart> {
     }
 
     public void setDiscount(double discount) {
-        paidAmount += this.discount;
         this.discount = discount;
-        paidAmount -= this.discount;
+        paidAmount = total - this.discount;
 
     }
     public void addItem(Item item)
@@ -115,7 +113,6 @@ public class Cart implements Serializable,Comparable<Cart> {
     public int compareTo(Cart o) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh : mm : ss a");
-        String t1,t2;
         LocalTime time1;
         LocalTime time2;
         try {

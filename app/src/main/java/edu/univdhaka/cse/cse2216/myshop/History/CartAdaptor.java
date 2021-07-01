@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.History;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -54,6 +55,7 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         return new CartViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull @NotNull CartAdaptor.CartViewHolder holder, int position) {
@@ -63,11 +65,12 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         paidText = (TextView)holder.itemView.findViewById(R.id.paidTextView);
 
         timeText.setText(cartInList.get(position).getTime());
-        totalText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getDiscount()+cartInList.get(position).getPaidAmount()),context.getResources().getString(R.string.taka_logo)));
-        discountText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getDiscount()),context.getResources().getString(R.string.taka_logo)));
-        paidText.setText(String.format("%s %s",String.valueOf(cartInList.get(position).getPaidAmount()),context.getResources().getString(R.string.taka_logo)));
+        totalText.setText(String.format("%.2f ৳", cartInList.get(position).getDiscount()+cartInList.get(position).getPaidAmount()));
+        discountText.setText(String.format("%.2f ৳", cartInList.get(position).getDiscount()));
+        paidText.setText(String.format("%.2f ৳", cartInList.get(position).getPaidAmount()));
+
         ConstraintLayout container = (ConstraintLayout)holder.itemView.findViewById(R.id.cartContainer);
-        Log.d("noman","time");
+
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,12 +79,14 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
         });
 
     }
+
     public void goToDetailActivity(Cart cart)
     {
         Intent intent = new Intent(context, CartDetailsActivity.class);
         intent.putExtra("cartObject",cart);
         context.startActivity(intent);
     }
+
     @Override
     public int getItemCount() {
         return cartInList.size();
@@ -90,8 +95,8 @@ public class CartAdaptor extends RecyclerView.Adapter<CartAdaptor.CartViewHolder
     {
         this.cartInList = carts;
         this.carts = carts;
-        Log.d("noman",String.valueOf(cartInList.size()));
     }
+
     public class CartViewHolder extends RecyclerView.ViewHolder {
         public CartViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);

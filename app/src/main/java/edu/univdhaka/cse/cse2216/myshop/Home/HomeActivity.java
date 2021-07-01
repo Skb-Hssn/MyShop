@@ -56,7 +56,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-//        seeUser();
         shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
@@ -73,8 +72,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(homeToolbar);
 
         /*
-        * NavigationView
-        * */
+         * NavigationView
+         */
         homeNavigation.bringToFront();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, homeDrawerLayout,
@@ -95,8 +94,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setHomeNavigationHeaderEmail();
 
         /*
-        * Set up today's information
-        **/
+         * Set up today's information
+         */
         setTodayDate();
         setTodayTotalSale();
 
@@ -138,24 +137,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /*
-    * TODO : Open product Activity.
-    * */
+     * TODO : Open product Activity.
+     */
     public void openProductActivity() {
         Intent intent = new Intent(HomeActivity.this, ProductActivity.class);
         startActivity(intent);
     }
 
     /*
-    * TODO: Open History Activity
-    * */
+     * TODO: Open History Activity
+     */
     public void openHistoryActivity() {
         Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
         startActivity(intent);
     }
 
     /*
-    * TODO: Get the store name from FIREBASE
-    * */
+     * TODO: Get the store name from FIREBASE
+     */
     public void setHomeNavigationHeaderStoreName() {
 //        String name = FirebaseDatabase.getCurrentShopKeeper().getShopName();
         homeNavigationHeaderStoreName.setText(shopKeeper.getShopName());
@@ -163,7 +162,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     /*
      * TODO: Get the email from FIREBASE
-    * */
+     */
     public void setHomeNavigationHeaderEmail() {
 //        String email = FirebaseDatabase.getCurrentShopKeeper().getEmail();
         homeNavigationHeaderEmail.setText(shopKeeper.getEmail());

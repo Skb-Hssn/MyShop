@@ -160,7 +160,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                String totalAmount = String.format("%.2f %s",newCart.getTotal(),getResources().getString(R.string.taka_logo));
+                String totalAmount = String.format("%.2f %s", newCart.getTotal(),getResources().getString(R.string.taka_logo));
                 totalAmountTextView.setText(totalAmount);
 
                 String payAmount = String.format("%.2f %s", newCart.getPaidAmount(),getResources().getString(R.string.taka_logo));
@@ -214,7 +214,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
         recyclerView = findViewById(R.id.add_sale_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new AddSaleAdapter(AddSale.this, newCart, totalAmountTextView, payableAmountTextView);
+        adapter = new AddSaleAdapter(AddSale.this, newCart, totalAmountTextView, payableAmountTextView, discountTextView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop.ProductScreen;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,6 +57,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         return new ProductViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ProductAdaptor.ProductViewHolder holder, int position) {
             Product product = productInList.get(position);
@@ -66,11 +68,13 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         TextView stockTextView = (TextView)holder.itemView.findViewById(R.id.stockTextView);
         TextView priceTextView = (TextView)holder.itemView.findViewById(R.id.priceTextView);
         ConstraintLayout container = (ConstraintLayout)holder.itemView.findViewById(R.id.productContainer);
-            nameTextView.setText(productInList.get(position).getName());
-            companyNameTextView.setText(product.getCompanyName());
-            stockTextView.setText((String.valueOf(product.getAvailableQuantity())+" "+product.getUnit()));
-            priceTextView.setText((String.valueOf(product.getSoldPrice()) + " "+ "৳"));
 
+        nameTextView.setText(productInList.get(position).getName());
+        companyNameTextView.setText(product.getCompanyName());
+//        stockTextView.setText((String.valueOf(product.getAvailableQuantity())+" "+product.getUnit()));
+        stockTextView.setText(String.format("%.2f %s", product.getAvailableQuantity(), product.getUnit()));
+
+        priceTextView.setText(String.format("%.2f ৳", product.getSoldPrice()));
 
 
             container.setOnClickListener(new View.OnClickListener() {

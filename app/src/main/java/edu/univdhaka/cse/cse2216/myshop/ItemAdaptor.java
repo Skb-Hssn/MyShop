@@ -1,5 +1,6 @@
 package edu.univdhaka.cse.cse2216.myshop;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,6 +51,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         return new ViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ItemAdaptor.ViewHolder holder, int position) {
         Log.d("noman","calling");
@@ -58,10 +60,13 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         companyNameText = (TextView)holder.itemView.findViewById(R.id.itemCompany);
         quantityText = (TextView)holder.itemView.findViewById(R.id.itemQuantity);
         priceText = (TextView)holder.itemView.findViewById(R.id.itemPrice);
+
         nameText.setText(availableItems.get(position).getName());
         companyNameText.setText(availableItems.get(position).getCompanyName());
-        quantityText.setText((availableItems.get(position).getAvailableQuantity())+" "+availableItems.get(position).getUnit());
-        priceText.setText((availableItems.get(position).getSoldPrice())+" Tk");
+        quantityText.setText(String.format("%.2f %s", availableItems.get(position).getAvailableQuantity(), availableItems.get(position).getUnit()));
+        priceText.setText(String.format("%.2f Tk", availableItems.get(position).getSoldPrice()));
+
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +155,6 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                 ArrayList<Product> temp = new ArrayList<>();
                 if(text.isEmpty())
                 {
-//                    FirebaseDatabase.getProducts(context,ItemAdaptor.this);
                     temp.addAll(originalList);
                 }
                 else {
@@ -195,6 +199,4 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         this.notifyDataSetChanged();
 
     }
-
-
 }
