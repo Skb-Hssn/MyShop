@@ -123,7 +123,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type newly added quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -141,7 +141,6 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                     product.setAvailableQuantity(product.getAvailableQuantity()+quantity);
                     notifyDataSetChanged();
                     FirebaseDatabase.updateProduct(context,product);
-
                 }
 
             }
@@ -155,7 +154,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         builder.setTitle("Quantity ? ");
         EditText editText = new EditText(context);
         editText.setHint("Type reduced quantity");
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(editText);
 
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -186,6 +185,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
 
             }
         });
+        
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -200,8 +200,9 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             priceBox.setHint("new Price");
             EditText quantityBox = new EditText(context);
             quantityBox.setHint("Quantity with this price");
-            quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-            priceBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+            quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            priceBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
             linearLayout.addView(priceBox);
             linearLayout.addView(quantityBox);
             builder.setView(linearLayout);
