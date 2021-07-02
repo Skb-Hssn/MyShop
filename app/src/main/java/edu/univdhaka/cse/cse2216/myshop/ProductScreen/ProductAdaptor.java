@@ -189,6 +189,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     private void updatePrice(Product product,int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Change Price");

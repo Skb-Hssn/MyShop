@@ -1,6 +1,7 @@
 package edu.univdhaka.cse.cse2216.myshop.Home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.util.Log;
@@ -57,14 +59,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
 
         shopKeeper = FirebaseDatabase.getCurrentShopKeeper();
+
         homeDrawerLayout = findViewById(R.id.home_drawer_layout);
         homeNavigation = findViewById(R.id.home_navigation);
         homeToolbar = findViewById(R.id.home_toolbar);
+
         productItem = homeNavigation.getMenu().findItem(R.id.home_nav_product);
         historyItem = homeNavigation.getMenu().findItem(R.id.home_nav_history);
+
         homeNavigationHeaderStoreName = homeNavigation.getHeaderView(0).findViewById(R.id.home_nav_header_store_name);
         homeNavigationHeaderEmail = homeNavigation.getHeaderView(0).findViewById(R.id.home_nav_header_email);
         signOutButton = homeNavigation.findViewById(R.id.home_nav_sign_out_button);
+
         addSaleButton = findViewById(R.id.add_sale_button);
         totalAmountToday = findViewById(R.id.today_total_amount);
         dateToday = findViewById(R.id.date_today);
@@ -208,10 +214,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
         FirebaseDatabase.getDaySaleTotal(HomeActivity.this, totalAmountToday);
-
     }
 }

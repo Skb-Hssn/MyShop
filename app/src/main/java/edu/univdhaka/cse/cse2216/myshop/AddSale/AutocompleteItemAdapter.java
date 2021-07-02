@@ -37,8 +37,7 @@ public class AutocompleteItemAdapter extends ArrayAdapter<Pair<String, Integer>>
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.autocomplete_item_row, parent, false
-            );
+                    R.layout.autocomplete_item_row, parent, false);
         }
 
         TextView itemName = convertView.findViewById(R.id.autocomplete_item_name);

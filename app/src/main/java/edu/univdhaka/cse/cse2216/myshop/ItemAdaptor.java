@@ -35,13 +35,14 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     private ArrayList<Product> originalList;
     private double cost = 0;
     TextView nameText,companyNameText,quantityText,priceText;
-    public ItemAdaptor(Context context,AddSaleAdapter addSaleAdapter)
+    public ItemAdaptor(Context context, AddSaleAdapter addSaleAdapter)
     {
         this.context = context;
         availableItems = new ArrayList<>();
         this.addSaleAdapter = addSaleAdapter;
         soldProducts = new ArrayList<>();
     }
+
     @NonNull
     @NotNull
     @Override
@@ -189,6 +190,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
             quantityText = (TextView)itemView.findViewById(R.id.itemQuantity);
         }
     }
+
     public void setList(ArrayList<Product> products)
     {
         Log.d("noman",String.valueOf(products.size()));
@@ -197,6 +199,5 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
         this.originalList = new ArrayList<>();
         originalList.addAll(products);
         this.notifyDataSetChanged();
-
     }
 }
