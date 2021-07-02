@@ -1,4 +1,4 @@
-package edu.univdhaka.cse.cse2216.myshop;
+package edu.univdhaka.cse.cse2216.myshop.AddSale;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -24,8 +24,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import edu.univdhaka.cse.cse2216.myshop.AddSale.AddSaleAdapter;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
+import edu.univdhaka.cse.cse2216.myshop.Item;
+import edu.univdhaka.cse.cse2216.myshop.Product;
+import edu.univdhaka.cse.cse2216.myshop.R;
 
 public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> implements Filterable {
     private Context context;
@@ -108,7 +110,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                     boolean flag = false;
                     Log.d("size",String.valueOf(addSaleAdapter.getItems().size()));
 
-                    for (Product product1 : soldProducts)
+                    for (Product product1 : addSaleAdapter.getItems())
                     {
                         if(product1 == product)
                         {
@@ -120,6 +122,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
                     if(!flag) {
                         soldProducts.add(product);
                         addSaleAdapter.addItem(cartItem);
+                        availableItems.remove(product);
                         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
                         notifyDataSetChanged();
 
@@ -193,6 +196,17 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
     public void setList(ArrayList<Product> products)
     {
+        for(Product x : addSaleAdapter.getItems())
+        {
+            Log.d("sakib",x.getName());
+            for(Product y : products)
+            {
+                if(x.compareTo(y) == 0)
+                {
+                    products.remove(y);
+                }
+            }
+        }
         Log.d("noman",String.valueOf(products.size()));
         this.availableItems = products;
         Collections.sort(availableItems);

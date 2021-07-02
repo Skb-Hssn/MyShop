@@ -104,9 +104,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                                     updatePrice(productInList.get(position),position);
                                     break;
                                 case R.id.delete:
-                                    FirebaseDatabase.deleteProduct(context,productInList.get(position));
-                                    productInList.remove(position);
-                                    notifyDataSetChanged();
+                                    deleteProduct(position);
                             }
                             return false;
                         }
@@ -115,6 +113,25 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
 
                 }
             });
+    }
+
+    private void deleteProduct(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete ?")
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseDatabase.deleteProduct(context,productInList.get(position));
+                        productInList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+
     }
 
     private void updateAddedProduct(Product product,int position)
@@ -222,6 +239,10 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                     {
                         Toast.makeText(context,"GiveQuantity",Toast.LENGTH_SHORT).show();
                     }
+                    else if (Math.abs(newProduct.getSoldPrice()-Double.parseDouble(priceText)) < .000001)
+                    {
+                        Toast.makeText(context,"Already Exist",Toast.LENGTH_SHORT).show();
+                    }
                     else
                     {
                         newProduct.setAvailableQuantity(Double.parseDouble(quantityText));
@@ -230,6 +251,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                         notifyDataSetChanged();
 //                        FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
                         FirebaseDatabase.addProduct(context,newProduct);
+                        Collections.sort(productInList);
                         Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
                     }
 

@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,31 +15,23 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
 import edu.univdhaka.cse.cse2216.myshop.Item;
-import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Product;
-import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 import edu.univdhaka.cse.cse2216.myshop.R;
-import edu.univdhaka.cse.cse2216.myshop.R.id;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue.AddSaleAddItemDialogueListener, DiscountDialog.DiscountDialogListener{
+public class AddSale extends AppCompatActivity implements DiscountDialog.DiscountDialogListener{
 
     private RecyclerView recyclerView;
     private AddSaleAdapter adapter;
@@ -55,14 +45,13 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     private AppCompatButton backButton;
 
     Cart newCart = new Cart();
-//    ArrayList<Item> itemList = newCart.getItemList();
     private double currentTotal = 0;
     private double discount = 0;
     private double payableAmount = 0;
 
     private boolean done = false;
 
-    ArrayList<AddSaleItem> cart = new ArrayList<>();
+//    ArrayList<AddSaleItem> cart = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +108,7 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
      * add item
      */
     public void openAddItemDialogue() {
+
         seeItem();
     }
 
@@ -180,32 +170,29 @@ public class AddSale extends AppCompatActivity implements AddSaleAddItemDialogue
     /*
      * Get the item that has been added to cart
      */
-    @Override
-    public void applyTexts(String itemName, String itemQuantity) {
-        insertItem(itemName, Integer.parseInt(itemQuantity));
-    }
+
 
 
     /*
      * Insert item to Cart.
      */
-    @SuppressLint("DefaultLocale")
-    public void insertItem(String itemName, int itemQuantity) {
-        done = false;
-
-        AddSaleItem item = new AddSaleItem(itemName, itemQuantity, 500);
-        cart.add(item);
-        adapter.notifyItemInserted(cart.size()-1);
-        currentTotal += item.getItemTotalPrice();
-
-        totalAmountTextView.setText(
-                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
-        );
-
-        payableAmountTextView.setText(
-                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
-        );
-    }
+//    @SuppressLint("DefaultLocale")
+//    public void insertItem(String itemName, int itemQuantity) {
+//        done = false;
+//
+//        AddSaleItem item = new AddSaleItem(itemName, itemQuantity, 500);
+//        cart.add(item);
+//        adapter.notifyItemInserted(cart.size()-1);
+//        currentTotal += item.getItemTotalPrice();
+//
+//        totalAmountTextView.setText(
+//                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
+//        );
+//
+//        payableAmountTextView.setText(
+//                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
+//        );
+//    }
 
     /*
      *  Recycler view for items of the Cart.

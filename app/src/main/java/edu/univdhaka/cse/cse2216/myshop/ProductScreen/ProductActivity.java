@@ -2,35 +2,26 @@ package edu.univdhaka.cse.cse2216.myshop.ProductScreen;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.SearchView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.Database.FirebaseDatabase;
-import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.R;
-import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
 
 public class ProductActivity extends AppCompatActivity {
     private androidx.appcompat.widget.SearchView productSearchView;
@@ -42,24 +33,18 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3d3d3d")));
-
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         productRecyclerView = (RecyclerView)findViewById(R.id.productList);
         productAdaptor = new ProductAdaptor(this);
-                ArrayList<Product> products = new ArrayList<>();
-                products.add(new Product("sakib","aa","aaa",10,10));
-                products.add(new Product("ab","aa","aaa",10,100));
-                products.add(new Product("noman","aa","aaa",10,100));
-                productAdaptor.setList(products);
+        ArrayList<Product> products = new ArrayList<>();
+        productAdaptor.setList(products);
         productRecyclerView.setAdapter(productAdaptor);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//                workingWithFirebase();
-//        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
 
@@ -112,6 +97,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onStart();
         Log.d("noman","start");
         FirebaseDatabase.getProducts(ProductActivity.this,productAdaptor);
+
 
     }
 
