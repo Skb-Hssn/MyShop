@@ -28,7 +28,7 @@
         android:layout_marginBottom="20dp"
         android:text="abc@gamil.com"
         android:textColor="@color/primary_color"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

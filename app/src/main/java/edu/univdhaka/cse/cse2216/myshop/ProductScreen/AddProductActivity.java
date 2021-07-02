@@ -101,6 +101,7 @@ public class AddProductActivity extends AppCompatActivity {
             products.add(product);
             Toast.makeText(AddProductActivity.this,"Saved",Toast.LENGTH_SHORT).show();
             FirebaseDatabase.addProduct(AddProductActivity.this,product);
+            this.finish();
 
 
 

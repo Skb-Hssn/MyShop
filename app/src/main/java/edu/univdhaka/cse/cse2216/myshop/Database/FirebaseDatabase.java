@@ -10,9 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,12 +50,12 @@ import edu.univdhaka.cse.cse2216.myshop.Cart;
 import edu.univdhaka.cse.cse2216.myshop.History.CartAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Home.HomeActivity;
 import edu.univdhaka.cse.cse2216.myshop.Item;
-import edu.univdhaka.cse.cse2216.myshop.ItemAdaptor;
+import edu.univdhaka.cse.cse2216.myshop.AddSale.ItemAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.Product;
 import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductAdaptor;
 import edu.univdhaka.cse.cse2216.myshop.R;
 import edu.univdhaka.cse.cse2216.myshop.ShopKeeper;
-import edu.univdhaka.cse.cse2216.myshop.SplashScreen;
+
 public class FirebaseDatabase {
     private static FirebaseAuth authentication;
     private static FirebaseFirestore myDatabase;
@@ -484,7 +482,6 @@ public class FirebaseDatabase {
                         {
 //                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-                            ((Activity)context).finish();
 
 
                         }
