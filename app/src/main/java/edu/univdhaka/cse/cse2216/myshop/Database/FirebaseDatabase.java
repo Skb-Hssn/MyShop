@@ -64,6 +64,8 @@ public class FirebaseDatabase {
     {
         return currentShopKeeper;
     }
+
+
     public static boolean isAlreadyLoggedIn()
     {
         authentication = FirebaseAuth.getInstance();
@@ -73,9 +75,11 @@ public class FirebaseDatabase {
             return false;
         if(firebaseUser.isEmailVerified() == false)
             return false;
-        Log.d("noman",firebaseUser.getEmail());
+
         return true;
     }
+
+
     public static void alreadyAnUser(ShopKeeper shopKeeper, String password, Context context)
     {
         authentication = FirebaseAuth.getInstance();
@@ -96,8 +100,6 @@ public class FirebaseDatabase {
                         }
                         else if(task.getException() instanceof FirebaseNetworkException)
                         {
-
-                            Log.d("noman","untracked problem");
                             Toast.makeText(context,"Connect to network",Toast.LENGTH_SHORT).show();
                         }
 
@@ -110,9 +112,10 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void signUp(ShopKeeper shopKeeper, String password, Context context,ProgressDialog progressDialog)
     {
-
         authentication = FirebaseAuth.getInstance();
         authentication.createUserWithEmailAndPassword(shopKeeper.getEmail(),password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -152,6 +155,8 @@ public class FirebaseDatabase {
             }
         });
     }
+
+
     private static void setCurrentShopKeeper(Context context,ProgressDialog progressDialog,String email)
     {
         authentication = FirebaseAuth.getInstance();
@@ -174,12 +179,7 @@ public class FirebaseDatabase {
                                 ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
                                 context.startActivity(intent);
                                 ((Activity)context).finish();
-
-
-
                             }
-
-
                         }
                         else if(task.getException() instanceof FirebaseNetworkException)
                         {
@@ -200,9 +200,10 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void setCurrentShopKeeper(Context context)
     {
-
         authentication = FirebaseAuth.getInstance();
         myDatabase = FirebaseFirestore.getInstance();
         ProgressDialog progressDialog = getProgressDialog(context);
@@ -226,8 +227,6 @@ public class FirebaseDatabase {
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 context.startActivity(intent);
                             }
-
-
                         }
                         else
                         {
@@ -243,9 +242,10 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void signIn(String email,String password,Context context,TextView errorText)
     {
-        Log.d("noman","sign in ");
         errorText.setText("");
         ProgressDialog progressDialog = getProgressDialog(context);
         authentication = FirebaseAuth.getInstance();
@@ -253,7 +253,6 @@ public class FirebaseDatabase {
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
         {
-            Log.d("noman","here");
             authentication.signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @SuppressLint("SetTextI18n")
@@ -264,12 +263,7 @@ public class FirebaseDatabase {
                                 FirebaseUser user = authentication.getCurrentUser();
                                 if(user.isEmailVerified())
                                 {
-//                                    go to home page
-                                    Log.d("noman","email is verified");
-//                                    progressDialog.dismiss();
-//                                    go to home
                                     setCurrentShopKeeper(context,progressDialog,email);
-
                                 }
                                 else
                                 {
@@ -312,36 +306,32 @@ public class FirebaseDatabase {
                                 errorText.setText("Wrong password");
                             }
 
-                            Log.d("noman","untracked problem");
-
-                            if(task.getException() != null) {
-                                Log.d("Internet", task.getException().toString());
-                            }
+//                            if(task.getException() != null) {
+//                                Log.d("Internet", task.getException().toString());
+//                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull @NotNull Exception e) {
-//                            Toast.makeText(context,"Please Sign Up first",Toast.LENGTH_SHORT).show();
-
                             progressDialog.dismiss();
-
                         }
                     });
         }
         else if(user.isEmailVerified())
         {
-//            go to home page
             progressDialog.dismiss();
-            Log.d("noman","go home");
         }
     }
+
 
     public static void signOut()
     {
         authentication = FirebaseAuth.getInstance();
         authentication.signOut();
     }
+
+
     private static void sendVerificationEmail(FirebaseAuth authentication,Context context)
     {
 
@@ -352,39 +342,34 @@ public class FirebaseDatabase {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(context,"Verify your Email",Toast.LENGTH_SHORT).show();
-//                                            go to signIn page
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-                        Log.d("noman","verification mail don't send");
+
                     }
                 });
 
     }
+
+
     public static boolean isValidUser()
     {
-
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
         {
-            Log.d("noman","null");
             return false;
         }
         else
         {
             if(user.isEmailVerified())
             {
-//
-
                 return true;
             }
             else
             {
-                //            go to Login
-                Log.d("noman","not null");
                 signOut();
                 return false;
             }
@@ -405,14 +390,13 @@ public class FirebaseDatabase {
 
     public static void storeUser(ShopKeeper shopKeeper,Context context,ProgressDialog progressDialog)
     {
-//        ProgressDialog progressDialog = getProgressDialog(context);
         authentication = FirebaseAuth.getInstance();
         myDatabase = FirebaseFirestore.getInstance();
         myDatabase.collection("users").add(shopKeeper)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
-//                        progressDialog.dismiss();
+
                         if(task.isSuccessful())
                         {
                             progressDialog.dismiss();
@@ -438,7 +422,7 @@ public class FirebaseDatabase {
     }
     public static void addExistingProduct(Context context, Product product)
     {
-//        ProgressDialog progressDialog = getProgressDialog(context);
+
         myDatabase = FirebaseFirestore.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         myDatabase.collection("products").document(user.getUid()).collection("products")
@@ -448,14 +432,10 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
                         if(task.isSuccessful())
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-//                            getProducts(context,productAdaptor);
-
                         }
                         else
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -463,14 +443,14 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
     public static void addProduct(Context context,Product product)
     {
-//        ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         myDatabase.collection("products").document(user.getUid()).collection("products")
@@ -480,14 +460,10 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
                         if(task.isSuccessful())
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
-
-
                         }
                         else
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -495,11 +471,12 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
     public static void getProducts(Context context, ProductAdaptor productAdaptor)
     {
 
@@ -531,7 +508,6 @@ public class FirebaseDatabase {
                                 products.add(product);
 
                             }
-                            Log.d("noman","setting");
                             productAdaptor.setList(products);
                             progressDialog.dismiss();
                         }
@@ -559,7 +535,7 @@ public class FirebaseDatabase {
         if(user == null)
             return;
         myDatabase = FirebaseFirestore.getInstance();
-//        ProgressDialog progressDialog = getProgressDialog(context);
+
         DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
         documentReference.set(product)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -567,14 +543,10 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful())
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Updated",Toast.LENGTH_SHORT).show();
-//                            getProducts(context,productAdaptor);
                         }
                         else
                         {
-//                            progressDialog.dismiss();
-                            Log.d("noman","not success");
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -582,14 +554,14 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-//                        progressDialog.dismiss();
                         Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
     public static void addCart(Context context, Cart cart)
     {
-        Log.d("noman","cart");
         ProgressDialog progressDialog = getProgressDialog(context);
         myDatabase = FirebaseFirestore.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
@@ -602,8 +574,6 @@ public class FirebaseDatabase {
                         {
                             progressDialog.dismiss();
                             Toast.makeText(context,"Added cart",Toast.LENGTH_SHORT).show();
-
-
                         }
                         else
                         {
@@ -620,15 +590,18 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void getCarts(Context context, CartAdaptor cartAdaptor, String date)
     {
-        Log.d("noman",date);
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
             return;
+
         myDatabase = FirebaseFirestore.getInstance();
         ProgressDialog progressDialog = getProgressDialog(context);
+
         myDatabase.collection("cart").document(user.getUid()).collection("cart")
                 .whereEqualTo("date",date)
                 .get()
@@ -641,7 +614,6 @@ public class FirebaseDatabase {
                             ArrayList<Cart> carts = new ArrayList<>();
                             for(QueryDocumentSnapshot document : task.getResult())
                             {
-                                Log.d("noman","noman");
                                 Map<String,Object> map = document.getData();
                                 String x = map.toString();
                                 String time = (String) map.get("time");
@@ -670,9 +642,8 @@ public class FirebaseDatabase {
                                 carts.add(cart);
                             }
 
-
                             cartAdaptor.setList(carts);
-                            Log.d("nomansalman",String.valueOf(carts.size()));
+
                             progressDialog.dismiss();
                         }
                         else
@@ -691,6 +662,8 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void deleteProduct(Context context,Product product)
     {
         authentication = FirebaseAuth.getInstance();
@@ -698,7 +671,7 @@ public class FirebaseDatabase {
         if(user == null)
             return;
         myDatabase = FirebaseFirestore.getInstance();
-//        ProgressDialog progressDialog = getProgressDialog(context);
+
         DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
         documentReference
                 .delete()
@@ -707,13 +680,10 @@ public class FirebaseDatabase {
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful())
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Deleted",Toast.LENGTH_SHORT).show();
-//                            getProducts(context,productAdaptor);
                         }
                         else
                         {
-//                            progressDialog.dismiss();
                             Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -721,17 +691,19 @@ public class FirebaseDatabase {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-//                        progressDialog.dismiss();
                         Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
     public static void updateJust(Product product)
     {
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null)
             return;
+
         myDatabase = FirebaseFirestore.getInstance();
 
         DocumentReference documentReference = myDatabase.collection("products").document(user.getUid()).collection("products").document(product.getFirebaseProductId());
@@ -742,8 +714,6 @@ public class FirebaseDatabase {
                         if(task.isSuccessful())
                         {
 
-
-
                         }
                         else
                         {
@@ -758,17 +728,19 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void getProducts(Context context, ItemAdaptor itemAdaptor)
     {
-        Log.d("noman","getProducts");
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
         if(user == null) {
-            Log.d("noman","null");
             return;
         }
+
         myDatabase = FirebaseFirestore.getInstance();
         ProgressDialog progressDialog = getProgressDialog(context);
+
         myDatabase.collection("products").document(user.getUid()).collection("products")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -779,7 +751,6 @@ public class FirebaseDatabase {
                             ArrayList<Product> products = new ArrayList<>();
                             for(QueryDocumentSnapshot document : task.getResult())
                             {
-                                Log.d("noman","calling");
                                 String name,companyName,unit,firebaseId;
                                 double availableQuantity,price;
                                 name = document.get("name",String.class);
@@ -792,7 +763,7 @@ public class FirebaseDatabase {
                                 products.add(product);
 
                             }
-                            Log.d("noman","setting");
+
                             itemAdaptor.setList(products);
                             progressDialog.dismiss();
                         }
@@ -813,16 +784,21 @@ public class FirebaseDatabase {
                 });
 
     }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void getDaySaleTotal(Context context, TextView textView)
     {
         String date = LocalDate.now().toString();
         authentication = FirebaseAuth.getInstance();
         FirebaseUser user = authentication.getCurrentUser();
+
         if(user == null)
             return;
+
         myDatabase = FirebaseFirestore.getInstance();
         ProgressDialog progressDialog = getProgressDialog(context);
+
         myDatabase.collection("cart").document(user.getUid()).collection("cart")
                 .whereEqualTo("date",date)
                 .get()
@@ -837,9 +813,7 @@ public class FirebaseDatabase {
                             ArrayList<Cart> carts = new ArrayList<>();
                             for(QueryDocumentSnapshot document : task.getResult())
                             {
-                                Log.d("noman","noman");
                                 Map<String,Object> map = document.getData();
-
 
                                 double paidAmount = (double)map.get("paidAmount");
                                 total += paidAmount;
@@ -847,7 +821,7 @@ public class FirebaseDatabase {
                             }
 
                             textView.setText(String.format("%.2f", total));
-                            Log.d("nomansalman",String.valueOf(carts.size()));
+
                             progressDialog.dismiss();
                         }
                         else
@@ -855,7 +829,6 @@ public class FirebaseDatabase {
                             progressDialog.dismiss();
                             Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -866,6 +839,8 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static void resetPassword(String email)
     {
         authentication = FirebaseAuth.getInstance();
@@ -884,12 +859,13 @@ public class FirebaseDatabase {
                     }
                 });
     }
+
+
     public static boolean isEmailAddressValid(String email)
     {
         final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern = Pattern.compile(EMAIL_REGEX,Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.find();
-
     }
 }

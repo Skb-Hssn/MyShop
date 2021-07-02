@@ -77,9 +77,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(homeToolbar);
 
-        /*
-         * NavigationView
-         */
         homeNavigation.bringToFront();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, homeDrawerLayout,
@@ -92,16 +89,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         homeNavigation.setNavigationItemSelectedListener(this);
 
-
-        /*
-         * Set up navigation header text
-         */
         setHomeNavigationHeaderStoreName();
         setHomeNavigationHeaderEmail();
 
-        /*
-         * Set up today's information
-         */
         setTodayDate();
         setTodayTotalSale();
 
@@ -142,52 +132,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /*
-     * TODO : Open product Activity.
-     */
     public void openProductActivity() {
         Intent intent = new Intent(HomeActivity.this, ProductActivity.class);
         startActivity(intent);
     }
 
-    /*
-     * TODO: Open History Activity
-     */
+
     public void openHistoryActivity() {
         Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
         startActivity(intent);
     }
 
-    /*
-     * TODO: Get the store name from FIREBASE
-     */
+
     public void setHomeNavigationHeaderStoreName() {
-//        String name = FirebaseDatabase.getCurrentShopKeeper().getShopName();
         homeNavigationHeaderStoreName.setText(shopKeeper.getShopName());
     }
 
-    /*
-     * TODO: Get the email from FIREBASE
-     */
+
     public void setHomeNavigationHeaderEmail() {
-//        String email = FirebaseDatabase.getCurrentShopKeeper().getEmail();
         homeNavigationHeaderEmail.setText(shopKeeper.getEmail());
     }
 
-    /*
-    * TODO: set sign out state in FIREBASE
-    * */
+
     public void signOut() {
         FirebaseDatabase.signOut();
         Intent intent = new Intent(HomeActivity.this, Login.class);
         startActivity(intent);
+
         homeDrawerLayout.closeDrawer(GravityCompat.START);
         finish();
     }
 
-    /*
-    *   TODO: Get Today's date every refresh time
-    **/
+
     @SuppressLint("SimpleDateFormat")
     public void setTodayDate() {
         DateFormat dateFormat;
@@ -196,19 +172,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         dateToday.setText(dateFormat.format(calendar.getTime()));
     }
 
-    /*
-    * TODO: Get today's total amount of sale From FIREBASE
-    * */
+
     public void setTodayTotalSale() {
-//        FirebaseDatabase.getDaySaleTotal();
-//        String totalSale = "550";
-//        totalAmountToday.setText(totalSale);
+
     }
 
 
-    /*
-    * TODO : Make Add Sale Activity.
-    * */
     public void addSale() {
         Intent intent = new Intent(HomeActivity.this, AddSale.class);
         startActivity(intent);

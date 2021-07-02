@@ -90,6 +90,10 @@ public class Cart implements Serializable,Comparable<Cart> {
         itemList.remove(position);
     }
 
+    public Item getItem(int position) {
+        return itemList.get(position);
+    }
+
     public String getDate() {
         return date;
     }
@@ -119,7 +123,6 @@ public class Cart implements Serializable,Comparable<Cart> {
         LocalTime time1;
         LocalTime time2;
         try {
-
             time1 = LocalTime.parse(this.time.toLowerCase(),dateTimeFormatter);
             time2 = LocalTime.parse(o.time.toLowerCase(),dateTimeFormatter);
             return time2.compareTo(time1);
@@ -128,7 +131,7 @@ public class Cart implements Serializable,Comparable<Cart> {
         {
             time1 = LocalTime.parse(this.time,dateTimeFormatter);
             time2 = LocalTime.parse(o.time,dateTimeFormatter);
-            Log.d("noman",e.toString());
+
             return time2.compareTo(time1);
         }
     }

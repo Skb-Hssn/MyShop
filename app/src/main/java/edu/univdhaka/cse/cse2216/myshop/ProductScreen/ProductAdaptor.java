@@ -43,11 +43,14 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
     private TextView priceTextView;
     private ConstraintLayout container;
     private Context context;
+
+
     public ProductAdaptor(Context context)
     {
         this.context = context;
         productInList = new ArrayList<>();
     }
+
     @NonNull
     @org.jetbrains.annotations.NotNull
     @Override
@@ -60,8 +63,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
     @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ProductAdaptor.ProductViewHolder holder, int position) {
-            Product product = productInList.get(position);
-        Log.d("noman",product.getName());
+        Product product = productInList.get(position);
 
         TextView nameTextView = (TextView)holder.itemView.findViewById(R.id.productNameTextView);
         TextView companyNameTextView = (TextView)holder.itemView.findViewById(R.id.companyNameTextView);
@@ -71,48 +73,45 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
 
         nameTextView.setText(productInList.get(position).getName());
         companyNameTextView.setText(product.getCompanyName());
-//        stockTextView.setText((String.valueOf(product.getAvailableQuantity())+" "+product.getUnit()));
+
         stockTextView.setText(String.format("%.2f %s", product.getAvailableQuantity(), product.getUnit()));
 
         priceTextView.setText(String.format("%.2f ৳", product.getSoldPrice()));
 
 
-            container.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.M)
-                @Override
-                public void onClick(View v) {
-                    PopupMenu editProductPopUp = new PopupMenu(context,v);
-                    editProductPopUp.inflate(R.menu.popup_menu_edit_product);
-                    editProductPopUp.setGravity(Gravity.CENTER);
-                    editProductPopUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId())
-                            {
-                                case R.id.addQuantity:
-                                    Log.d("noman","add");
-//                                    updateProduct();
-                                    updateAddedProduct(productInList.get(position),position);
-                                    break;
-                                case R.id.reduceQuantity:
-//                                    updateProduct();
-                                    Log.d("noman","reduce");
-                                    updateReducedProduct(productInList.get(position),position);
-                                    break;
-                                case R.id.changePrice:
-                                    Log.d("noman","change");
-                                    updatePrice(productInList.get(position),position);
-                                    break;
-                                case R.id.delete:
-                                    deleteProduct(position);
-                            }
-                            return false;
-                        }
-                    });
-                    editProductPopUp.show();
+        container.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                PopupMenu editProductPopUp = new PopupMenu(context,v);
+                editProductPopUp.inflate(R.menu.popup_menu_edit_product);
+                editProductPopUp.setGravity(Gravity.CENTER);
+                editProductPopUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId())
+                        {
+                            case R.id.addQuantity:
+                                updateAddedProduct(productInList.get(position),position);
+                                break;
 
-                }
-            });
+                            case R.id.reduceQuantity:
+                                updateReducedProduct(productInList.get(position),position);
+                                break;
+
+                            case R.id.changePrice:
+                                updatePrice(productInList.get(position),position);
+                                break;
+
+                            case R.id.delete:
+                                deleteProduct(position);
+                        }
+                        return false;
+                    }
+                });
+                editProductPopUp.show();
+            }
+        });
     }
 
     private void deleteProduct(int position) {
@@ -165,6 +164,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     private void updateReducedProduct(Product product,int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -196,10 +196,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                         notifyDataSetChanged();
                         FirebaseDatabase.updateProduct(context,product);
                     }
-
-
                 }
-
             }
         });
         
@@ -214,9 +211,12 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             Product newProduct = (Product) product.clone();
             LinearLayout linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
+
             EditText priceBox = new EditText(context);
             priceBox.setHint("new Price");
+
             EditText quantityBox = new EditText(context);
+
             quantityBox.setHint("Quantity with this price");
             quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             priceBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -224,6 +224,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
             linearLayout.addView(priceBox);
             linearLayout.addView(quantityBox);
             builder.setView(linearLayout);
+
             builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -249,13 +250,11 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                         newProduct.setSoldPrice(Double.parseDouble(priceText));
                         productInList.add(newProduct);
                         notifyDataSetChanged();
-//                        FirebaseDatabase.addExistingProduct(context,product,ProductAdaptor.this);
+
                         FirebaseDatabase.addProduct(context,newProduct);
                         Collections.sort(productInList);
                         Toast.makeText(context,"Added",Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
             });
             AlertDialog alertDialog = builder.create();
@@ -278,6 +277,7 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
                 FilterResults filterResults;
                 String queryText = constraint.toString();
                 ArrayList<Product> newList = new ArrayList<>();
+
                 if(queryText.isEmpty())
                 {
                     newList = products;
@@ -299,13 +299,11 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-//                productInList.clear();
-//                productInList.addAll((Collection<? extends Product>) results.values);
                 productInList = (ArrayList<Product>)results.values;
-                Log.d("noman",String.valueOf(productInList.size()));
+
                 for(Product product : productInList)
                 {
-                    Log.d("noman",product.getName());
+
                 }
                 notifyDataSetChanged();
             }
@@ -342,5 +340,6 @@ public class ProductAdaptor extends RecyclerView.Adapter<ProductAdaptor.ProductV
     }
 
     public class ProductViewHolderInCart {
+
     }
 }

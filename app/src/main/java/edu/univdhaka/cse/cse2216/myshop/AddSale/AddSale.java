@@ -45,13 +45,9 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
     private AppCompatButton backButton;
 
     Cart newCart = new Cart();
-    private double currentTotal = 0;
     private double discount = 0;
-    private double payableAmount = 0;
 
     private boolean done = false;
-
-//    ArrayList<AddSaleItem> cart = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
 
         createRecyclerView();
 
-        addItemButtom.setOnClickListener(v -> openAddItemDialogue());
+        addItemButtom.setOnClickListener(v -> seeItem());
         discountButton.setOnClickListener(v -> openDiscountDialog());
         backButton.setOnClickListener(v -> onBackPressed());
         doneButton.setOnClickListener(v -> setDone());
@@ -100,24 +96,21 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
         {
             Product itemProduct = (Product)item;
 
+            itemProduct.setAvailableQuantity(item.getAvailableQuantity() + item.getSoldQuantity());
+
             FirebaseDatabase.updateJust(itemProduct);
         }
     }
 
-    /*
-     * add item
-     */
-    public void openAddItemDialogue() {
-
-        seeItem();
-    }
 
     public void seeItem()
     {
         android.app.AlertDialog.Builder builder = new AlertDialog.Builder(AddSale.this);
         LayoutInflater layoutInflater = getLayoutInflater();
+
         View view = layoutInflater.inflate(R.layout.sale_items,null);
         builder.setView(view);
+
         RecyclerView itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         SearchView searchView = (SearchView)view.findViewById(R.id.searchItem);
         ItemAdaptor itemAdaptor = new ItemAdaptor(AddSale.this, adapter);
@@ -159,44 +152,13 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
         });
     }
 
-    /*
-     * Discount Dialog opener
-     */
+
     public void openDiscountDialog() {
         DiscountDialog dialog = new DiscountDialog(newCart.getTotal());
         dialog.show(getSupportFragmentManager(), "Discount");
     }
 
-    /*
-     * Get the item that has been added to cart
-     */
 
-
-
-    /*
-     * Insert item to Cart.
-     */
-//    @SuppressLint("DefaultLocale")
-//    public void insertItem(String itemName, int itemQuantity) {
-//        done = false;
-//
-//        AddSaleItem item = new AddSaleItem(itemName, itemQuantity, 500);
-//        cart.add(item);
-//        adapter.notifyItemInserted(cart.size()-1);
-//        currentTotal += item.getItemTotalPrice();
-//
-//        totalAmountTextView.setText(
-//                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
-//        );
-//
-//        payableAmountTextView.setText(
-//                String.format("%.2f %s", currentTotal, getResources().getString(R.string.taka_logo))
-//        );
-//    }
-
-    /*
-     *  Recycler view for items of the Cart.
-     */
     public void createRecyclerView() {
         recyclerView = findViewById(R.id.add_sale_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -208,9 +170,6 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
     }
 
 
-    /*
-     * discount dialog
-     */
     @SuppressLint("DefaultLocale")
     @Override
     public void setDiscount(double amount) {
@@ -230,26 +189,12 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
         payableAmountTextView.setText(String.format("%.2f %s", newCart.getPaidAmount(),getResources().getString(R.string.taka_logo)));
     }
 
-    /*
-     * Update the current remaining items
-     */
-    public void updateItems() {
-
-    }
-
-
-    /*
-     * Set the updated itemList Firebase after done.
-     */
     public void updateDataBase() {
         FirebaseDatabase.addCart(AddSale.this,newCart);
     }
 
-    /*
-     * Done Button
-     */
+
     public void setDone() {
-        Log.d("amount",String.valueOf(newCart.getTotal()));
         if(String.valueOf(newCart.getTotal()).compareTo("0.0") == 0)
         {
             finish();
@@ -264,12 +209,10 @@ public class AddSale extends AppCompatActivity implements DiscountDialog.Discoun
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("noman","res");
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Log.d("noman","resume");
     }
 }

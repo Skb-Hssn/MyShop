@@ -41,15 +41,7 @@ public class SignUp extends AppCompatActivity {
 
         signUpButton = findViewById(R.id.sign_up_button);
         signUpButton.setOnClickListener(v -> {
-            if(validAccount()) {
-//                go home activity from firebase class
-//                Intent intent = new Intent(SignUp.this, HomeActivity.class);
-//                startActivity(intent);
-//                if (!Login.signInActivity.isFinishing() && !Login.signInActivity.isDestroyed()) {
-//                    Login.signInActivity.finish();
-//                }
-//                finish();
-            } else {
+            if (!validAccount()) {
                 errorTextView.setText(errorText);
             }
         });
@@ -63,9 +55,6 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    /*
-    * TODO : To save account in FIREBASE if valid and set sign in state true.
-    * */
     public boolean validAccount() {
         errorText = "";
         String nameInputText = nameInput.getEditText().getText().toString();
@@ -103,14 +92,13 @@ public class SignUp extends AppCompatActivity {
             errorText = "Retyped password doesn't match";
             return false;
         }
-        if(!FirebaseDatabase.isEmailAddressValid(emailInputText))
-        {
+
+        if(!FirebaseDatabase.isEmailAddressValid(emailInputText)) {
             errorText = "Invalid Email";
             return false;
         }
-//        creating shop keeper object with given data
+
         ShopKeeper shopKeeper = new ShopKeeper(nameInputText,shopNameInputText,emailInputText);
-//        check already an user and if not, then create account and send verification email
         FirebaseDatabase.alreadyAnUser(shopKeeper,passwordInputText,SignUp.this);
 
         return true;

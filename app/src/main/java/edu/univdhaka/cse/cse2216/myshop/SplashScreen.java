@@ -16,33 +16,25 @@ import edu.univdhaka.cse.cse2216.myshop.ProductScreen.ProductActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_SCREEN_TIMER = 500;
+    private static final int SPLASH_SCREEN_TIMER = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-//        FirebaseDatabase.signOut();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-
                 if(FirebaseDatabase.isAlreadyLoggedIn())
                 {
-                    Log.d("noman","logged in");
                     FirebaseDatabase.setCurrentShopKeeper(SplashScreen.this);
-
                 }
                 else {
-                    Log.d("noman","not logged in");
-
                     Intent intent = new Intent(SplashScreen.this, Login.class);
                     startActivity(intent);
                 }
-
-
             }
         }, SPLASH_SCREEN_TIMER);
     }

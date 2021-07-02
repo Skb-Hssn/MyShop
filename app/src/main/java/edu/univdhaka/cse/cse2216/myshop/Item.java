@@ -10,9 +10,7 @@ public class Item extends Product{
         super(product.name, product.companyName, product.unit, product.availableQuantity, product.soldPrice,product.firebaseProductId);
         this.soldQuantity = soldQuantity;
         this.totalPrice = totalPrice;
-
     }
-
 
 
     public double getSoldQuantity() {
@@ -22,7 +20,6 @@ public class Item extends Product{
     public double getTotalPrice() {
         return totalPrice;
     }
-
 
     public void setSoldQuantity(double quantity) {
         soldQuantity = quantity;

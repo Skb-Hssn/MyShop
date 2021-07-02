@@ -45,10 +45,9 @@ public class ProductActivity extends AppCompatActivity {
         productRecyclerView.setAdapter(productAdaptor);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
-
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -69,9 +68,8 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
-
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -88,22 +86,18 @@ public class ProductActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("noman","restart");
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("noman","start");
+
         FirebaseDatabase.getProducts(ProductActivity.this,productAdaptor);
-
-
     }
 
     @Override
     protected void onPostResume() {
-        Log.d("noman","resume");
+
         super.onPostResume();
     }
 
@@ -112,8 +106,9 @@ public class ProductActivity extends AppCompatActivity {
         Intent intent = new Intent(ProductActivity.this, AddProductActivity.class);
         intent.putExtra("object",productAdaptor.getProducts());
         startActivity(intent);
-        //        seeItem();
     }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void workingWithFirebase()
     {
@@ -123,10 +118,11 @@ public class ProductActivity extends AppCompatActivity {
         FirebaseDatabase.addCart(ProductActivity.this,cart);
 
     }
+
+
     public static void updateList(ProductAdaptor productAdaptor,ArrayList<Product> products)
     {
         productAdaptor.setList(products);
     }
-
 
 }

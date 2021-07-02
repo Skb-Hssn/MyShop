@@ -21,6 +21,7 @@ import edu.univdhaka.cse.cse2216.myshop.History.CartAdaptor;
 public class SelectDate extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private CartAdaptor cartAdaptor;
     private TextView dateText;
+
     public SelectDate(CartAdaptor cartAdaptor,TextView dateText)
     {
         this.cartAdaptor = cartAdaptor;
@@ -40,7 +41,6 @@ public class SelectDate extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//        filter adaptor
         month++;
         String yearString,monthString,dayString;
         if(month < 10)
@@ -59,12 +59,11 @@ public class SelectDate extends DialogFragment implements DatePickerDialog.OnDat
         {
             dayString = String.valueOf(dayOfMonth);
         }
+
         yearString = String.valueOf(year);
         String date = yearString+"-"+monthString+"-"+dayString;
-        Log.d("noman",date);
-        Log.d("noman",String.valueOf(month));
+
         dateText.setText(dayString+"/"+monthString+"/"+yearString);
         FirebaseDatabase.getCarts(view.getContext(),cartAdaptor,date);
-
     }
 }

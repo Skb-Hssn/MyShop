@@ -28,15 +28,19 @@ public class AddProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_product);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         productNameText = (EditText)findViewById(R.id.productNameEditBox);
         companyNameText = (EditText)findViewById(R.id.companyNameEditBox);
         unitText = (EditText)findViewById(R.id.unitEditBox);
         quantityText = (EditText)findViewById(R.id.quantityEditBox);
         priceText = (EditText)findViewById(R.id.priceEditBox);
         productSaveButton = (Button)findViewById(R.id.productSaveButton);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         products = (ArrayList<Product>)bundle.get("object");
@@ -50,12 +54,12 @@ public class AddProductActivity extends AppCompatActivity {
 
     private void saveProduct()
     {
-//        workingWithFirebase();
         String name,companyName,unit;
         double quantity,price;
         name = productNameText.getText().toString();
         companyName = companyNameText.getText().toString();
         unit = unitText.getText().toString();
+
         if(name.isEmpty())
         {
             productNameText.requestFocus();
@@ -75,7 +79,6 @@ public class AddProductActivity extends AppCompatActivity {
         {
             quantityText.requestFocus();
             Toast.makeText(AddProductActivity.this,"Give Quantity",Toast.LENGTH_SHORT).show();
-
         }
         else if(priceText.getText().toString().isEmpty())
         {
@@ -84,27 +87,22 @@ public class AddProductActivity extends AppCompatActivity {
         }
         else
         {
-
             quantity = Double.parseDouble(quantityText.getText().toString());
             price = Double.parseDouble(priceText.getText().toString());
             Product product = new Product(name,companyName,unit,quantity,price);
             for(Product product1 : products)
             {
-                Log.d("noman",product1.getName());
                 if(product1.getName().toLowerCase().compareTo(product.getName().toLowerCase()) == 0 && product1.getCompanyName().toLowerCase().compareTo(product.getCompanyName().toLowerCase()) == 0 && (int) product1.getSoldPrice() == (int)product.getSoldPrice() )
                 {
-                    Log.d("noman",product1.getName());
                     Toast.makeText(AddProductActivity.this,"Already exist",Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
+
             products.add(product);
             Toast.makeText(AddProductActivity.this,"Saved",Toast.LENGTH_SHORT).show();
             FirebaseDatabase.addProduct(AddProductActivity.this,product);
             this.finish();
-
-
-
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -113,11 +111,7 @@ public class AddProductActivity extends AppCompatActivity {
         String email = "nsakhawathhossan29@gmail.com";
         ShopKeeper shopKeeper = new ShopKeeper("Noman","MyShop",email);
         String password = "noman123";
-//        FirebaseDatabase.signOut();
-//        FirebaseDatabase.signUp(shopKeeper,password,ProductActivity.this);
-//        FirebaseDatabase.signIn(email,password,ProductActivity.this);
-//        Log.d("noman",String.valueOf(FirebaseDatabase.isValidUser()));
-//        FirebaseDatabase.pro(ProductActivity.this);
+
         ArrayList<Item> products = new ArrayList<>();
         Product product = new Product("noman","komolo","a",4,5);
         products.add(new Item(product,10,15));

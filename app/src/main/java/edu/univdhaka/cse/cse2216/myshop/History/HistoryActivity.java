@@ -29,18 +29,23 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         cartAdaptor = new CartAdaptor(HistoryActivity.this);
         cartRecycelerView = (RecyclerView)findViewById(R.id.cardRecuycelerView);
         cartRecycelerView.setAdapter(cartAdaptor);
         cartRecycelerView.setLayoutManager(new LinearLayoutManager(this));
         dateText = (TextView)findViewById(R.id.dateTextViewInHistory);
+
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateString = formatter.format(date);
         String dateForFirebase = LocalDate.now().toString();
         dateText.setText(dateString);
+
         FirebaseDatabase.getCarts(HistoryActivity.this,cartAdaptor,dateForFirebase);
     }
 

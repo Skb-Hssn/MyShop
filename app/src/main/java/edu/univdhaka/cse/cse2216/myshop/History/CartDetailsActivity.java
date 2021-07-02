@@ -40,11 +40,14 @@ public class CartDetailsActivity extends AppCompatActivity {
 
         String total = String.format("%.2f %s", (cart.getDiscount()+cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
         totalText.setText(total);
+
         String discount = String.format("%.2f %s", (cart.getDiscount()),getResources().getString(R.string.taka_logo));
         discountText.setText(discount);
+
         String paidAmount = String.format("%.2f %s", (cart.getPaidAmount()),getResources().getString(R.string.taka_logo));
         paidText.setText(paidAmount);
         cartHistoryRecyclerView = (RecyclerView)findViewById(R.id.cartHistoryRecycelerView);
+
         ArrayList<Item> items = cart.getItemList();
 
         ProductAdaptorInCart productAdaptorInCart = new ProductAdaptorInCart(this,items);

@@ -138,6 +138,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                         total -= item.getTotalPrice();
 
                         item.setSoldQuantity(item.getSoldQuantity() + Double.parseDouble(editText.getText().toString()));
+                        item.setAvailableQuantity(item.getAvailableQuantity() - Double.parseDouble(editText.getText().toString()));
 
                         holder.setItemQuantityText(String.format("%.2f %s @ %.2f ৳", item.getSoldQuantity(), item.getUnit(), item.getSoldPrice()));
                         holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
@@ -148,6 +149,9 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
                         totalAmountTextView.setText(String.format("%.2f ৳", total));
                         payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
+
+                        Product product = item;
+                        FirebaseDatabase.updateProduct(context, product);
 
                         runningCart.setTotal(total);
                         runningCart.setDiscount(discount);
@@ -185,6 +189,7 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     total -= item.getTotalPrice();
 
                     item.setSoldQuantity(item.getSoldQuantity() - Double.parseDouble(editText.getText().toString()));
+                    item.setAvailableQuantity(item.getAvailableQuantity() + Double.parseDouble(editText.getText().toString()));
 
                     holder.setItemQuantityText(String.format("%.2f %s @ %.2f ৳", item.getSoldQuantity(), item.getUnit(), item.getSoldPrice()));
                     holder.setItemTotalPriceText(String.format("৳%.2f", item.getTotalPrice()));
@@ -195,6 +200,9 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
                     totalAmountTextView.setText(String.format("%.2f ৳", total));
                     payableAmountTextView.setText(String.format("%.2f ৳", total - discount));
+
+                    Product product = item;
+                    FirebaseDatabase.updateProduct(context, product);
 
                     runningCart.setTotal(total);
                     runningCart.setDiscount(discount);
@@ -225,7 +233,6 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
                         double total = Double.parseDouble(totalAmountTextView.getText().toString().split(" ")[0]);
                         total -= item.getTotalPrice();
 
@@ -236,6 +243,12 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
 
                         runningCart.removeItem(position);
                         notifyDataSetChanged();
+
+                        item.setAvailableQuantity(item.getAvailableQuantity() + item.getSoldQuantity());
+                        item.setSoldQuantity(0);
+
+                        Product product = item;
+                        FirebaseDatabase.updateProduct(context, product);
 
                         runningCart.setTotal(total);
                         runningCart.setDiscount(discount);
@@ -266,18 +279,4 @@ public class AddSaleAdapter extends RecyclerView.Adapter<AddSaleViewHolder> {
         return items;
     }
 
-
-    private void updateDatabase(Item item)
-    {
-        Product itemProduct = null;
-        try {
-            itemProduct = (Product) ((Product)item).clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        itemProduct.setAvailableQuantity(itemProduct.getAvailableQuantity()-item.getSoldQuantity());
-        FirebaseDatabase.updateProduct(context,itemProduct);
-        Log.d("noman",String.valueOf(itemProduct.getAvailableQuantity()));
-    }
 }

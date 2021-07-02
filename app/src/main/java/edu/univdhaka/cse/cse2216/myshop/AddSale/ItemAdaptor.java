@@ -35,8 +35,12 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     private AddSaleAdapter addSaleAdapter;
     private ArrayList<Product> soldProducts;
     private ArrayList<Product> originalList;
-    private double cost = 0;
-    TextView nameText,companyNameText,quantityText,priceText;
+
+    TextView nameText;
+    TextView companyNameText;
+    TextView quantityText;
+    TextView priceText;
+
     public ItemAdaptor(Context context, AddSaleAdapter addSaleAdapter)
     {
         this.context = context;
@@ -57,7 +61,6 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
     @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ItemAdaptor.ViewHolder holder, int position) {
-        Log.d("noman","calling");
         ImageButton addButton = (ImageButton)holder.itemView.findViewById(R.id.itemAddButton);
         nameText = (TextView)holder.itemView.findViewById(R.id.itemName);
         companyNameText = (TextView)holder.itemView.findViewById(R.id.itemCompany);
@@ -91,16 +94,13 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String quantityString = editText.getText().toString();
-                if(quantityString.isEmpty())
-                {
+                if(quantityString.isEmpty()) {
                     Toast.makeText(context,"Add quantity",Toast.LENGTH_SHORT).show();
                 }
-                else if(Double.parseDouble(quantityString) > product.getAvailableQuantity())
-                {
+                else if(Double.parseDouble(quantityString) > product.getAvailableQuantity()) {
                     Toast.makeText(context,"Insufficient product",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
+                else {
                     double quantity,price,itemPrice;
                     itemPrice = product.getSoldPrice();
                     quantity = Double.parseDouble(quantityString);
@@ -108,18 +108,17 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
                     Item cartItem = new Item(product,quantity,price);
                     boolean flag = false;
-                    Log.d("size",String.valueOf(addSaleAdapter.getItems().size()));
 
-                    for (Product product1 : addSaleAdapter.getItems())
-                    {
-                        if(product1 == product)
-                        {
+                    for (Product product1 : addSaleAdapter.getItems()) {
+                        if(product1 == product) {
                             flag = true;
                             break;
                         }
                     }
 
                     if(!flag) {
+                        cartItem.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+
                         soldProducts.add(product);
                         addSaleAdapter.addItem(cartItem);
                         availableItems.remove(product);
@@ -128,11 +127,6 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
                         FirebaseDatabase.updateProduct(context, product);
                     }
-                    else
-                    {
-                        Log.d("noman","item already in cart");
-                    }
-
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -157,15 +151,11 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
             protected FilterResults performFiltering(CharSequence constraint) {
                 String text = constraint.toString();
                 ArrayList<Product> temp = new ArrayList<>();
-                if(text.isEmpty())
-                {
+                if(text.isEmpty()) {
                     temp.addAll(originalList);
-                }
-                else {
-                    for(Product product : originalList)
-                    {
-                        if(product.getName().toLowerCase().contains(text))
-                        {
+                } else {
+                    for(Product product : originalList) {
+                        if(product.getName().toLowerCase().contains(text)) {
                             temp.add(product);
                         }
                     }
@@ -177,8 +167,8 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                    availableItems = (ArrayList<Product>)results.values;
-                    notifyDataSetChanged();
+                availableItems = (ArrayList<Product>)results.values;
+                notifyDataSetChanged();
             }
         };
     }
@@ -196,18 +186,15 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> im
 
     public void setList(ArrayList<Product> products)
     {
-        for(Product x : addSaleAdapter.getItems())
-        {
-            Log.d("sakib",x.getName());
-            for(Product y : products)
-            {
-                if(x.compareTo(y) == 0)
-                {
+        for(Product x : addSaleAdapter.getItems()) {
+            for(Product y : products) {
+                if(x.compareTo(y) == 0) {
                     products.remove(y);
+                    break;
                 }
             }
         }
-        Log.d("noman",String.valueOf(products.size()));
+
         this.availableItems = products;
         Collections.sort(availableItems);
         this.originalList = new ArrayList<>();
